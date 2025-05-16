@@ -1,0 +1,11 @@
+<div class="shell-container">
+    <app-side-menu></app-side-menu>
+    <nz-content>
+        <div class="breadcrumb-holder">
+           <app-breadcrumb [url]="url"></app-breadcrumb>
+        </div>
+        <div class="main-holder">
+            <router-outlet></router-outlet>
+        </div> 
+    </nz-content>
+</div>

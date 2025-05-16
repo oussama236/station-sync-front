@@ -1,0 +1,10 @@
+<nz-breadcrumb>
+    <nz-breadcrumb-item *ngFor="let pathName of pathNames">
+        <a *ngIf="pathName === ''" routerLink="/">
+            <span>Accueil</span>
+        </a>
+        <a>
+            <span>{{pathName}}</span>
+        </a>
+    </nz-breadcrumb-item>
+</nz-breadcrumb>

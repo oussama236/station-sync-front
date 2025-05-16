@@ -1,0 +1,34 @@
+.station-sync-nav-bar {
+    background-color: #000a83;
+  }
+  
+  .station-sync-logo-holder {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between; /* Ajouté pour espacer les éléments */
+    width: 100%; /* Ajouté pour prendre toute la largeur */
+  }
+  
+  .logo {
+    margin-top: 12px;
+    width: 110px;
+    height: 55px;
+    background-size: contain;
+    background-image: url('../../../../../assets/images/logo.png');
+    background-repeat: no-repeat;
+    float: left;
+    display: flex;
+  }
+  
+  .station-sync-dropdown-holder {
+    color: white;
+    font-size: 18px;
+    margin-right: 20px;
+    .station-sync-username-header{
+        color:white;
+        font-size: 15px;
+        font-weight: 500;
+    }
+  }
+  

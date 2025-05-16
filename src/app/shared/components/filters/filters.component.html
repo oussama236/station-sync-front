@@ -1,0 +1,52 @@
+<nz-card>
+  <div class="factures-filtres-holder">
+    <div nz-row>
+      <div nz-col nzSpan="6">
+        <h4>Status</h4>
+        <nz-radio-group nzButtonStyle="solid">
+          <nz-space [nzSize]="15">
+            <label *nzSpaceItem nz-radio-button nzValue="toutes">Toutes</label>
+            <label *nzSpaceItem nz-radio-button nzValue="default">OK</label>
+            <label *nzSpaceItem nz-radio-button nzValue="small"
+              >En Attente</label
+            >
+          </nz-space>
+        </nz-radio-group>
+      </div>
+      <div nz-col nzSpan="4" nzOffset="4">
+        <h4>Station</h4>
+        <nz-radio-group nzButtonStyle="solid">
+          <nz-space [nzSize]="15">
+            <label *nzSpaceItem nz-radio-button nzValue="toutes">Ezzahra</label>
+            <label *nzSpaceItem nz-radio-button nzValue="default"
+              >Boumhal</label
+            >
+          </nz-space>
+        </nz-radio-group>
+      </div>
+      <div nz-col nzSpan="2" nzOffset="4">
+        <h4>Recherche</h4>
+        <div>
+          <button nz-button nzType="dashed" (click)="open()">
+            <span nz-icon nzType="search"></span>
+            Lancer une Recherche
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nz-card>
+
+<nz-drawer
+  [nzClosable]="false"
+  [nzVisible]="visible"
+  nzPlacement="right"
+  nzTitle="Recherche"
+  (nzOnClose)="close()"
+>
+  <ng-container *nzDrawerContent>
+    <p>Some contents...</p>
+    <p>Some contents...</p>
+    <p>Some contents...</p>
+  </ng-container>
+</nz-drawer>

@@ -1,10 +1,65 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AppComponent } from './app.component';
+import { SideMenuComponent } from './shared/components/commun/side-menu/side-menu.component';
+import { HomeComponent } from './root/home/home.component';
+import { ShellIndexComponent } from './root/shell/index/shell-index.component';
+import { CarburantComponent } from './root/shell/carburant/carburant.component';
+import { LubrifiantComponent } from './root/shell/lubrifiant/lubrifiant.component';
+import { LoyerComponent } from './root/shell/loyer/loyer.component';
+import { AnalyseComponent } from './root/shell/analyse/analyse.component';
+import { AvoirComponent } from './root/shell/avoir/avoir.component';
+import { FacturesComponent } from './root/shell/factures/factures.component';
 
-const routes: Routes = [];
+const routes: Routes = [
+  {
+    path: '',
+    component: HomeComponent
+  },
+  {
+    path: 'shell',
+    component: ShellIndexComponent,
+    children: [
+      {
+        path: 'factures',
+        component: FacturesComponent,
+      },
+      {
+        path: 'avoir',
+        component: AvoirComponent
+      },
+      {
+        path: 'carburant',
+        component: CarburantComponent
+      },
+      {
+        path: 'lubrifiant',
+        component: LubrifiantComponent
+      },
+      {
+        path: 'loyer',
+        component: LoyerComponent
+      },
+      {
+        path: 'analyse',
+        component: AnalyseComponent
+      },
+    ]
+  },
+  {
+    path: 'bank',
+    component: SideMenuComponent,
+    children:[
+      {
+        path: 'prelevement',
+        component: SideMenuComponent
+      }
+    ]
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -1,0 +1,26 @@
+
+
+<div class="carburant-table-holder">
+    <nz-table #sortTable [nzData]="listOfData" 
+    [nzNoResult]="'En cours...'"
+    [nzPageSize]="15" [nzScroll]="{ y: '240px' }">
+        <thead>
+        <tr>
+            <th>Echéance</th>
+            <th>Montant</th>
+            <th nzColumnKey="gender" [nzFilters]="filterGender" [nzFilterFn]="true">Status</th>
+            <th>Consulter</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of sortTable.data">
+            <td>{{ data.name }}</td>
+            <td>{{ data.age }}</td>
+            <td>
+                <nz-tag [nzColor]="'green'">OK</nz-tag>
+                <nz-tag [nzColor]="'red'">En attente</nz-tag>
+            </td>
+        </tr>
+        </tbody>
+    </nz-table>
+</div>

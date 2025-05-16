@@ -1,0 +1,46 @@
+<app-filters></app-filters>
+
+<div class="btn-add-facture">
+    <button nz-button nzType="primary" (click)="addFacture()">
+        + Ajouter Facture
+    </button>
+</div>
+<div class="carburant-table-holder">
+    <nz-table 
+    #basicTable 
+    [nzData]="data" 
+    [nzPaginationPosition]="'both'"
+    [nzScroll]="{ y: '300px' }" 
+    nzSize="middle" 
+    [nzNoResult]="'En cours...'">
+        <thead>
+          <tr>
+            <th>Num Facture</th>
+            <th [colSpan]="2">Nature Operation</th>
+            <th [colSpan]="2">Date Operation</th>
+            <th [colSpan]="2">Date Prélèvement</th>
+            <th>Montant</th>
+            <th>Status</th>
+            <th>Station</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicTable.data">
+            <td>{{ data.numeroFacture }}</td>
+            <td [colSpan]="2">{{ data.natureOperation }}</td>
+            <td [colSpan]="2">{{ data.dateOperation | date:'d MMMM y'}}</td>
+            <td [colSpan]="2">{{ data.datePrelevement | date:'d MMMM y'}}</td>
+            <td>{{ data.montant }}</td>
+            <td>
+                <div [ngSwitch]="data.statut">
+                    <nz-tag *ngSwitchCase="'OK'" [nzColor]="'green'">{{data.statut}}</nz-tag>
+                    <nz-tag *ngSwitchCase="'EN_ATTENTE'" [nzColor]="'red'">{{data.statut}}</nz-tag>
+                    <nz-tag *ngSwitchCase="'VIDE'" [nzColor]="'lightblue'">{{data.statut}}</nz-tag>
+                </div>
+            </td>
+            <td>{{ data.station }}</td>
+          </tr>
+        </tbody>
+      </nz-table>  
+</div>
