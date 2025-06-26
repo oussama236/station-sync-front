@@ -22,6 +22,18 @@ import { FiltersComponent } from './shared/components/filters/filters.component'
 import { HttpClientModule } from '@angular/common/http';
 import { NgZorroModule } from './shared/modules/ng-zorro/ng-zorro.module';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { NzModalModule } from 'ng-zorro-antd/modal'; // ✅ IMPORT AJOUTÉ
+
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { PrelevementsComponent } from './root/bank/prelevements/prelevements.component';
+import { BankIndexComponent } from './root/bank/index/bank-index/bank-index.component';
+import { FiltersPrelevementsComponent } from './shared/components/filtersPrelevements/filters-prelevements/filters-prelevements.component';
+import { PrelevementSimulationModalComponent } from './root/bank/prelevements/prelevement-simulation-modal/prelevement-simulation-modal.component';
+
+
 
 @NgModule({
   declarations: [
@@ -42,6 +54,10 @@ import { CommonModule } from '@angular/common';
     AvoirComponent,
     FacturesComponent,
     FiltersComponent,
+    PrelevementsComponent,
+    BankIndexComponent,
+    FiltersPrelevementsComponent,
+    PrelevementSimulationModalComponent,
   ],
   imports: [
     CommonModule,
@@ -49,6 +65,11 @@ import { CommonModule } from '@angular/common';
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
+    NzInputModule,
+    NzButtonModule,
+    NzSelectModule,
+    NzModalModule, // ✅ AJOUTÉ ICI
     NgZorroModule
   ],
   providers: [],

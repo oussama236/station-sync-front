@@ -1,1 +1,142 @@
-<app-filters></app-filters>
+<app-filters (filtersChanged)="onFiltersChanged($event)"></app-filters>
+
+<!-- Bouton pour afficher le formulaire -->
+
+
+
+
+<!-- Tableau des avoirs -->
+<div class="shells-table-holder" style="margin-top: 30px; margin-bottom: 50px;">
+  <nz-table 
+    #basicTable 
+    [nzData]="shells" 
+    [nzPaginationPosition]="'top'"
+    [nzScroll]="{ y: '300px' }" 
+    nzSize="middle" 
+    [nzLoading]="loadingSpinner"
+    [nzNoResult]="'NO FACTURES'">
+    
+    <thead>
+      <tr>
+        <th nzWidth="120px">Num Facture</th>
+        <th nzWidth="130px">Date Operation</th>
+        <th nzWidth="180px">Nature Operation</th>
+        <th nzWidth="150px">Date Prélèvement</th>
+        <th nzWidth="100px">Montant</th>
+        <th nzWidth="120px">Status</th>
+        <th nzWidth="100px">Station</th>
+        <th nzWidth="120px">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <!-- Num Facture -->
+        <td>
+            <ng-container *ngIf="editId === data.idShell; else viewNum">
+              <input nz-input [(ngModel)]="data.numeroFacture" />
+            </ng-container>
+            <ng-template #viewNum>{{ data.numeroFacture }}</ng-template>
+          </td>
+        <!-- Date Operation -->
+        <td>
+            <ng-container *ngIf="editId === data.idShell; else viewDate">
+              <input nz-input type="date" [(ngModel)]="data.dateOperation" />
+            </ng-container>
+            <ng-template #viewDate>{{ data.dateOperation | date:'d MMMM y' }}</ng-template>
+          </td>
+        <td>{{ data.natureOperation }}</td>
+        <td>{{ data.datePrelevement | date:'d MMMM y' }}</td>
+        
+         <!-- Montant -->
+         <td>
+            <ng-container *ngIf="editId === data.idShell; else viewMontant">
+              <input nz-input type="number" [(ngModel)]="data.montant" />
+            </ng-container>
+            <ng-template #viewMontant>{{ data.montant }}</ng-template>
+          </td>
+
+             <!-- Statut (non modifiable) -->
+        <td style="text-align: center;">
+            <div [ngSwitch]="data.statut">
+              <span *ngSwitchCase="'OK'" class="status-tag status-ok">{{ data.statut }}</span>
+              <span *ngSwitchCase="'EN_ATTENTE'" class="status-tag status-attente">{{ data.statut }}</span>
+              <span *ngSwitchCase="'VIDE'" class="status-tag status-vide">{{ data.statut }}</span>
+            </div>
+          </td>
+
+
+
+       
+        <!-- Station -->
+        <td>
+          <ng-container *ngIf="editId === data.idShell; else viewStation">
+            <nz-select [(ngModel)]="data.station" style="width: 100%;">
+              <nz-option 
+                *ngFor="let option of stationOptions" 
+                [nzValue]="option"
+                [nzLabel]="option">
+                {{ option }}
+              </nz-option>
+            </nz-select>
+          </ng-container>
+        
+          <ng-template #viewStation>
+            {{ data.station }}
+          </ng-template>
+        </td>
+
+         <!-- Actions -->
+         <td style="text-align: center;">
+            <div style="display: flex; justify-content: center; gap: 8px;">
+              <ng-container *ngIf="editId === data.idShell; else viewButtons">
+                <!-- ✅ Valider -->
+                <button 
+                  nz-button 
+                  nzType="primary" 
+                  nzSize="small" 
+                  nzTooltip="Valider les modifications" 
+                  (click)="saveFacture(data)" style="width: 40px;">
+                  <i nz-icon nzType="check" style="font-size: 18px;"></i>
+                </button>
+          
+                <!-- ❌ Annuler -->
+                <button 
+                  nz-button 
+                  nzType="default" 
+                  nzSize="small" 
+                  nzTooltip="Annuler" 
+                  (click)="cancelEdit()" style="width: 40px;">
+                  <i nz-icon nzType="close" style="font-size: 18px; color: red;"></i>
+                </button>
+              </ng-container>
+          
+              <ng-template #viewButtons>
+                <!-- ✏️ Edit -->
+                <button 
+                  nz-button 
+                  nzType="default" 
+                  nzSize="small" 
+                  nzTooltip="Modifier" 
+                  (click)="editId = data.idShell" style="width: 40px;">
+                  <i nz-icon nzType="edit" style="font-size: 18px;"></i>
+                </button>
+          
+                <!-- 🗑️ Supprimer -->
+                <button 
+                  nz-button 
+                  nzType="default" 
+                  nzDanger 
+                  nzSize="small" 
+                  nzTooltip="Supprimer" 
+                  (click)="deleteFacture(data)" style="width: 40px;">
+                  <i nz-icon nzType="delete" style="font-size: 18px; color: #cc0000;"></i>
+                </button>
+              </ng-template>
+            </div>
+          </td>
+      </tr>
+    </tbody>
+    
+  </nz-table>  
+</div>

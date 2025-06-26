@@ -10,6 +10,8 @@ import { LoyerComponent } from './root/shell/loyer/loyer.component';
 import { AnalyseComponent } from './root/shell/analyse/analyse.component';
 import { AvoirComponent } from './root/shell/avoir/avoir.component';
 import { FacturesComponent } from './root/shell/factures/factures.component';
+import { BankIndexComponent } from './root/bank/index/bank-index/bank-index.component';
+import { PrelevementsComponent } from './root/bank/prelevements/prelevements.component';
 
 const routes: Routes = [
   {
@@ -48,11 +50,11 @@ const routes: Routes = [
   },
   {
     path: 'bank',
-    component: SideMenuComponent,
+    component: BankIndexComponent,
     children:[
       {
-        path: 'prelevement',
-        component: SideMenuComponent
+        path: 'prelevements',
+        component: PrelevementsComponent
       }
     ]
   },

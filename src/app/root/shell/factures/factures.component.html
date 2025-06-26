@@ -1,46 +1,288 @@
-<app-filters></app-filters>
+<app-filters 
+  (filtersChanged)="onFiltersChanged($event)" 
+  (advancedSearchResult)="handleAdvancedSearch($event)">
+</app-filters>
 
-<div class="btn-add-facture">
-    <button nz-button nzType="primary" (click)="addFacture()">
-        + Ajouter Facture
-    </button>
+<!-- Ligne Total Montant + Ajouter Facture -->
+<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 30px; margin-bottom: 20px;">
+  <!-- 💰 Total Montant -->
+  <div
+    style="
+      background-color: #f0f5ff;
+      border: 1px solid #91d5ff;
+      border-radius: 6px;
+      padding: 10px 16px;
+      font-size: 17px;
+      font-weight: 600;
+      color: #0050b3;
+      width: fit-content;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+    "
+  >
+    💰 Total Montant : {{ getTotalMontant() | number:'1.3-3' }} TND
+  </div>
+
+  <!-- Bouton Ajouter ou X -->
+  <button
+    nz-button
+    [nzType]="'primary'"
+    (click)="toggleForm()"
+    [ngStyle]="
+      showForm
+        ? {
+            width: '60px',
+            height: '60px',
+            padding: '0',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            fontSize: '24px',
+            fontWeight: 'bold'
+          }
+        : {
+            padding: '10px 24px',
+            height: '45px',
+            fontSize: '16px'
+          }
+    "
+  >
+    <span *ngIf="!showForm">+ Ajouter Facture</span>
+    <span *ngIf="showForm">X</span>
+  </button>
 </div>
-<div class="carburant-table-holder">
-    <nz-table 
-    #basicTable 
-    [nzData]="data" 
-    [nzPaginationPosition]="'both'"
-    [nzScroll]="{ y: '300px' }" 
-    nzSize="middle" 
-    [nzNoResult]="'En cours...'">
-        <thead>
-          <tr>
-            <th>Num Facture</th>
-            <th [colSpan]="2">Nature Operation</th>
-            <th [colSpan]="2">Date Operation</th>
-            <th [colSpan]="2">Date Prélèvement</th>
-            <th>Montant</th>
-            <th>Status</th>
-            <th>Station</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of basicTable.data">
-            <td>{{ data.numeroFacture }}</td>
-            <td [colSpan]="2">{{ data.natureOperation }}</td>
-            <td [colSpan]="2">{{ data.dateOperation | date:'d MMMM y'}}</td>
-            <td [colSpan]="2">{{ data.datePrelevement | date:'d MMMM y'}}</td>
-            <td>{{ data.montant }}</td>
-            <td>
-                <div [ngSwitch]="data.statut">
-                    <nz-tag *ngSwitchCase="'OK'" [nzColor]="'green'">{{data.statut}}</nz-tag>
-                    <nz-tag *ngSwitchCase="'EN_ATTENTE'" [nzColor]="'red'">{{data.statut}}</nz-tag>
-                    <nz-tag *ngSwitchCase="'VIDE'" [nzColor]="'lightblue'">{{data.statut}}</nz-tag>
-                </div>
-            </td>
-            <td>{{ data.station }}</td>
-          </tr>
-        </tbody>
-      </nz-table>  
+
+<!-- Formulaire d'ajout visible uniquement après clic -->
+<div *ngIf="showForm" style="margin-top: 20px;">
+  <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center;">
+    <label style="display: flex; flex-direction: column;">
+      Date:
+      <input
+        nz-input
+        type="date"
+        [(ngModel)]="newFacture.dateOperation"
+        name="dateOperation"
+        required
+        (ngModelChange)="calculateDatePrelevement()" />
+    </label>
+
+    <label style="display: flex; flex-direction: column;">
+      #Num:
+      <input
+        nz-input
+        type="text"
+        [(ngModel)]="newFacture.numeroFacture"
+        name="numeroFacture"
+        required />
+    </label>
+
+    <label style="display: flex; flex-direction: column;">
+      Nature:
+      <nz-select
+        [(ngModel)]="newFacture.natureOperation"
+        name="natureOperation"
+        style="width: 160px;"
+        placeholder="Nature"
+        (ngModelChange)="calculateDatePrelevement()">
+        <nz-option *ngFor="let option of natureOptions" [nzValue]="option" [nzLabel]="option"></nz-option>
+      </nz-select>
+    </label>
+
+    <label style="display: flex; flex-direction: column;">
+      Montant:
+      <input
+        nz-input
+        type="number"
+        [(ngModel)]="newFacture.montant"
+        name="montant"
+        required />
+    </label>
+
+    <label style="display: flex; flex-direction: column;">
+      Station:
+      <nz-select
+        [(ngModel)]="newFacture.station"
+        name="station"
+        style="width: 130px;"
+        placeholder="Station">
+        <nz-option *ngFor="let station of stationOptions" [nzValue]="station" [nzLabel]="station"></nz-option>
+      </nz-select>
+    </label>
+
+    <label style="display: flex; flex-direction: column;">
+      Date Prélèvement (calculée):
+      <input
+        nz-input
+        type="date"
+        [value]="newFacture.calculatedDatePrelevement"
+        disabled />
+    </label>
+
+    <nz-col nzSpan="3">
+      <button
+        nz-button
+        nzType="primary"
+        (click)="submitFacture()"
+        style="height: 40px; width: 100%; margin-top: 23px;">
+        Valider
+      </button>
+    </nz-col>
+  </div>
+</div>
+
+<!-- Tableau des factures -->
+<div class="shells-table-holder" style="margin-top: 1px; margin-bottom: 1px;">
+  <nz-table
+    #basicTable
+    [nzData]="shells"
+    [nzPaginationPosition]="'top'"
+    [nzScroll]="{ y: '300px' }"
+    nzSize="middle"
+    [nzLoading]="loadingSpinner"
+    [nzNoResult]="'No Data Available'">
+
+    <thead>
+      <tr>
+        <th nzWidth="120px">Num Facture</th>
+        <th nzWidth="180px">Nature Operation</th>
+        <th nzWidth="130px">Date Operation</th>
+        <th nzWidth="150px">Date Prélèvement</th>
+        <th nzWidth="100px">Montant</th>
+        <th nzWidth="120px">Status</th>
+        <th nzWidth="100px">Station</th>
+        <th nzWidth="120px">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let data of basicTable.data" (keydown.enter)="saveFacture(data)">
+        
+        <!-- Num Facture -->
+        <td>
+          <ng-container *ngIf="editId === data.idShell; else viewNum">
+            <input nz-input [(ngModel)]="data.numeroFacture" />
+          </ng-container>
+          <ng-template #viewNum>{{ data.numeroFacture }}</ng-template>
+        </td>
+    <!-- Nature Operation -->
+    <td>
+      <ng-container *ngIf="editId === data.idShell; else viewNature">
+        <nz-select 
+          [(ngModel)]="data.natureOperation"
+          style="width: 100%;">
+          
+          <nz-option 
+            *ngFor="let option of natureOptions" 
+            [nzValue]="option" 
+            [nzLabel]="option">
+            {{ option }}
+          </nz-option>
+    
+        </nz-select>
+      </ng-container>
+    
+      <ng-template #viewNature>
+        {{ data.natureOperation }}
+      </ng-template>
+    </td>
+    
+        <!-- Date Operation -->
+        <td>
+          <ng-container *ngIf="editId === data.idShell; else viewDate">
+            <input nz-input type="date" [(ngModel)]="data.dateOperation" />
+          </ng-container>
+          <ng-template #viewDate>{{ data.dateOperation | date:'d MMMM y' }}</ng-template>
+        </td>
+    
+        <!-- Date Prélèvement (readonly) -->
+        <td>
+          {{ data.datePrelevement | date:'d MMMM y' }}
+        </td>
+    
+        <!-- Montant -->
+        <td>
+          <ng-container *ngIf="editId === data.idShell; else viewMontant">
+            <input nz-input type="number" [(ngModel)]="data.montant" />
+          </ng-container>
+          <ng-template #viewMontant>{{ data.montant }}</ng-template>
+        </td>
+    
+        <!-- Statut (non modifiable) -->
+        <td style="text-align: center;">
+          <div [ngSwitch]="data.statut">
+            <span *ngSwitchCase="'OK'" class="status-tag status-ok">{{ data.statut }}</span>
+            <span *ngSwitchCase="'EN_ATTENTE'" class="status-tag status-attente">{{ data.statut }}</span>
+            <span *ngSwitchCase="'VIDE'" class="status-tag status-vide">{{ data.statut }}</span>
+          </div>
+        </td>
+    
+        <!-- Station -->
+        <td>
+          <ng-container *ngIf="editId === data.idShell; else viewStation">
+            <nz-select [(ngModel)]="data.station" style="width: 100%;">
+              <nz-option 
+                *ngFor="let option of stationOptions" 
+                [nzValue]="option"
+                [nzLabel]="option">
+                {{ option }}
+              </nz-option>
+            </nz-select>
+          </ng-container>
+        
+          <ng-template #viewStation>
+            {{ data.station }}
+          </ng-template>
+        </td>
+    
+        <!-- Actions -->
+        <td style="text-align: center;">
+          <div style="display: flex; justify-content: center; gap: 8px;">
+            <ng-container *ngIf="editId === data.idShell; else viewButtons">
+              <!-- ✅ Valider -->
+              <button 
+                nz-button 
+                nzType="primary" 
+                nzSize="small" 
+                nzTooltip="Valider les modifications" 
+                (click)="saveFacture(data)" style="width: 40px;">
+                <i nz-icon nzType="check" style="font-size: 18px;"></i>
+              </button>
+        
+              <!-- ❌ Annuler -->
+              <button 
+                nz-button 
+                nzType="default" 
+                nzSize="small" 
+                nzTooltip="Annuler" 
+                (click)="cancelEdit()" style="width: 40px;">
+                <i nz-icon nzType="close" style="font-size: 18px; color: red;"></i>
+              </button>
+            </ng-container>
+        
+            <ng-template #viewButtons>
+              <!-- ✏️ Edit -->
+              <button 
+                nz-button 
+                nzType="default" 
+                nzSize="small" 
+                nzTooltip="Modifier" 
+                (click)="editId = data.idShell" style="width: 40px;">
+                <i nz-icon nzType="edit" style="font-size: 18px;"></i>
+              </button>
+        
+              <!-- 🗑️ Supprimer -->
+              <button 
+                nz-button 
+                nzType="default" 
+                nzDanger 
+                nzSize="small" 
+                nzTooltip="Supprimer" 
+                (click)="deleteFacture(data)" style="width: 40px;">
+                <i nz-icon nzType="delete" style="font-size: 18px; color: #cc0000;"></i>
+              </button>
+            </ng-template>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
 </div>

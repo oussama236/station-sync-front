@@ -9,3 +9,9 @@
 .side-menu-title-holder{
     margin-top: 20px;
 }
+.full-height-sider {
+    height: 100vh !important;
+    display: flex;
+    flex-direction: column;
+  }
+  

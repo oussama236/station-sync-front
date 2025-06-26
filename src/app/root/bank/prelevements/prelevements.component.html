@@ -1,0 +1,109 @@
+<app-filters-prelevements></app-filters-prelevements>
+
+<!-- Section Formulaire + bouton -->
+<div style="display: flex; justify-content: center; align-items: flex-start; gap: 15px; margin-top: 20px;">
+
+  <!-- Formulaire -->
+  <div *ngIf="showForm" style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center;">
+    <label style="display: flex; flex-direction: column;">
+      Date d'opération:
+      <input
+        nz-input
+        type="date"
+        [(ngModel)]="newPrelevement.dateOperation"
+        name="dateOperation"
+        required
+      />
+    </label>
+
+    <label style="display: flex; flex-direction: column;">
+      Numéro de compte:
+      <input
+        nz-input
+        type="text"
+        [(ngModel)]="newPrelevement.numeroCompte"
+        name="numeroCompte"
+        required
+      />
+    </label>
+
+    <label style="display: flex; flex-direction: column;">
+      Montant:
+      <input
+        nz-input
+        type="number"
+        [(ngModel)]="newPrelevement.montant"
+        name="montant"
+        required
+      />
+    </label>
+
+    <div style="margin-top: 23px;">
+      <button
+        nz-button
+        nzType="primary"
+        (click)="openSimulationModal()"
+        style="height: 40px;">
+        Valider
+      </button>
+    </div>
+  </div>
+
+  <!-- Bouton toggle -->
+  <button
+    nz-button
+    [nzType]="'primary'"
+    (click)="toggleForm()"
+    [ngStyle]="{
+      width: '45px',
+      height: '45px',
+      padding: '0',
+      display: 'flex',
+      marginLeft: '50px',
+      justifyContent: 'center',
+      alignItems: 'center',
+      fontSize: '20px',
+      fontWeight: 'bold'
+    }"
+  >
+    <span *ngIf="!showForm">+</span>
+    <span *ngIf="showForm">−</span>
+  </button>
+
+</div>
+
+<!-- Table des prélèvements -->
+<div class="prelevements-table-holder" style="margin-top: 1px; margin-bottom: 1px;">
+  <nz-table
+    [nzData]="prelevements"
+    [nzPaginationPosition]="'top'"
+    [nzScroll]="{ y: '300px' }"
+    nzSize="middle"
+    [nzLoading]="loadingSpinner"
+    [nzNoResult]="'Aucun Prélèvement'">
+
+    <thead>
+      <tr>
+        <th nzWidth="180px">Date Opération</th>
+        <th nzWidth="180px">Numéro de Compte</th>
+        <th nzWidth="150px">Montant</th>
+        <th nzWidth="150px">Factures associées</th>
+        <th nzWidth="130px">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let prelevement of prelevements">
+        <td>{{ prelevement.dateOperation }}</td>
+        <td>{{ prelevement.numeroCompte }}</td>
+        <td>{{ prelevement.montant | number: '1.3-3' }} DT</td>
+        <td>
+          <span style="color: grey;">À venir</span>
+        </td>
+        <td>
+          <!-- Actions à venir -->
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

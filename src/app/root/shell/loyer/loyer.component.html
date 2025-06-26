@@ -1,26 +1,52 @@
+<app-filters (filtersChanged)="onFiltersChanged($event)"></app-filters>
+
+<!-- Bouton pour afficher le formulaire -->
 
 
-<div class="carburant-table-holder">
-    <nz-table #sortTable [nzData]="listOfData" 
-    [nzNoResult]="'En cours...'"
-    [nzPageSize]="15" [nzScroll]="{ y: '240px' }">
-        <thead>
-        <tr>
-            <th>Echéance</th>
-            <th>Montant</th>
-            <th nzColumnKey="gender" [nzFilters]="filterGender" [nzFilterFn]="true">Status</th>
-            <th>Consulter</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let data of sortTable.data">
-            <td>{{ data.name }}</td>
-            <td>{{ data.age }}</td>
-            <td>
-                <nz-tag [nzColor]="'green'">OK</nz-tag>
-                <nz-tag [nzColor]="'red'">En attente</nz-tag>
-            </td>
-        </tr>
-        </tbody>
-    </nz-table>
+
+
+<!-- Tableau des Loyers -->
+<div class="shells-table-holder" style="margin-top: 30px; margin-bottom: 50px;">
+  <nz-table 
+    #basicTable 
+    [nzData]="shells" 
+    [nzPaginationPosition]="'top'"
+    [nzScroll]="{ y: '300px' }" 
+    nzSize="middle" 
+    [nzLoading]="loadingSpinner"
+    [nzNoResult]="'NO FACTURES'">
+    
+    <thead>
+      <tr>
+        <th nzWidth="120px">Num Facture</th>
+        <th nzWidth="130px">Date Operation</th>
+        <th nzWidth="180px">Nature Operation</th>
+        <th nzWidth="150px">Date Prélèvement</th>
+        <th nzWidth="100px">Montant</th>
+        <th nzWidth="120px">Status</th>
+        <th nzWidth="100px">Station</th>
+        <th nzWidth="80px">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td>{{ data.numeroFacture }}</td>
+        <td>{{ data.dateOperation | date:'d MMMM y' }}</td>
+        <td>{{ data.natureOperation }}</td>
+        <td>{{ data.datePrelevement | date:'d MMMM y' }}</td>
+        <td>{{ data.montant }}</td>
+        <td style="text-align: center;">
+          <div [ngSwitch]="data.statut">
+            <span *ngSwitchCase="'OK'" class="status-tag status-ok">{{ data.statut }}</span>
+            <span *ngSwitchCase="'EN_ATTENTE'" class="status-tag status-attente">{{ data.statut }}</span>
+            <span *ngSwitchCase="'VIDE'" class="status-tag status-vide">{{ data.statut }}</span>
+          </div>
+        </td>
+        <td>{{ data.station }}</td>
+        <td>...</td>
+      </tr>
+    </tbody>
+    
+  </nz-table>  
 </div>

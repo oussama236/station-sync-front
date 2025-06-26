@@ -1,0 +1,103 @@
+<div class="modal-content">
+  <h2 style="margin-bottom: 20px;">Simulation de l'affectation</h2>
+
+  <!-- Résumé Montant -->
+  <div class="resume-montant" style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+    <div>
+      <strong>Montant du prélèvement :</strong>
+      <span>{{ montant }} DT</span>
+    </div>
+    <div [ngStyle]="{ color: exactMatch ? 'green' : 'red' }">
+      <strong>Montant affecté :</strong>
+      <span>{{ montantAffecte }} DT</span>
+    </div>
+  </div>
+
+  <!-- Table en mode automatique -->
+  <nz-table
+    *ngIf="!loading && !modeManuel && shellSimules.length > 0"
+    [nzData]="shellSimules"
+    [nzBordered]="true"
+    [nzSize]="'middle'"
+  >
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nature</th>
+        <th>Montant</th>
+        <th>Date de prélèvement</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let shell of shellSimules">
+        <td>{{ shell.idShell }}</td>
+        <td>{{ shell.natureOperation }}</td>
+        <td>{{ shell.montant }}</td>
+        <td>{{ shell.datePrelevement }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+  <!-- Table en mode manuel avec checkbox -->
+  <nz-table
+    *ngIf="!loading && modeManuel && shellsManuels.length > 0"
+    [nzData]="shellsManuels"
+    [nzBordered]="true"
+    [nzSize]="'middle'"
+  >
+    <thead>
+      <tr>
+        <th>Sélection</th>
+        <th>ID</th>
+        <th>Nature</th>
+        <th>Montant</th>
+        <th>Date de prélèvement</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let shell of shellsManuels">
+        <td>
+          <input
+            type="checkbox"
+            [checked]="selectedShellIds.includes(shell.idShell)"
+            (change)="onShellCheckboxChangeEvent(shell, $event)"
+
+
+          />
+        </td>
+        <td>{{ shell.idShell }}</td>
+        <td>{{ shell.natureOperation }}</td>
+        <td>{{ shell.montant }}</td>
+        <td>{{ shell.datePrelevement }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+  <!-- Loading -->
+  <div *ngIf="loading" style="text-align: center; margin: 20px 0;">
+    <nz-spin></nz-spin>
+    <p>Chargement...</p>
+  </div>
+
+  <!-- Boutons -->
+  <div class="modal-actions" style="margin-top: 30px; text-align: right;">
+    <button
+      nz-button
+      nzType="default"
+      (click)="allerAffectationManuelle()"
+      style="margin-right: 10px;"
+      *ngIf="!modeManuel"
+    >
+      Affectation manuelle
+    </button>
+
+    <button
+      nz-button
+      nzType="primary"
+      [disabled]="modeManuel ? !exactMatch : !exactMatch"
+      (click)="validerSimulation()"
+    >
+      Valider
+    </button>
+  </div>
+</div>

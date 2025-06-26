@@ -1,29 +1,38 @@
 <nz-card>
   <div class="factures-filtres-holder">
     <div nz-row>
+
+      <!-- FILTRE STATUT -->
       <div nz-col nzSpan="6">
         <h4>Status</h4>
-        <nz-radio-group nzButtonStyle="solid">
+        <nz-radio-group
+          nzButtonStyle="solid"
+          [(ngModel)]="selectedStatut"
+          (ngModelChange)="onStatutChange($event)">
           <nz-space [nzSize]="15">
-            <label *nzSpaceItem nz-radio-button nzValue="toutes">Toutes</label>
-            <label *nzSpaceItem nz-radio-button nzValue="default">OK</label>
-            <label *nzSpaceItem nz-radio-button nzValue="small"
-              >En Attente</label
-            >
+            <label *nzSpaceItem nz-radio-button [nzValue]="'ALL'" (click)="resetAllFilters()">Toutes</label>
+            <label *nzSpaceItem nz-radio-button [nzValue]="'OK'">OK</label>
+            <label *nzSpaceItem nz-radio-button [nzValue]="'EN_ATTENTE'">En Attente</label>
+            <label *nzSpaceItem nz-radio-button [nzValue]="'VIDE'">Vide</label>
           </nz-space>
         </nz-radio-group>
       </div>
+
+      <!-- FILTRE STATION -->
       <div nz-col nzSpan="4" nzOffset="4">
         <h4>Station</h4>
-        <nz-radio-group nzButtonStyle="solid">
+        <nz-radio-group
+          nzButtonStyle="solid"
+          [(ngModel)]="selectedStation"
+          (ngModelChange)="onStationChange($event)">
           <nz-space [nzSize]="15">
-            <label *nzSpaceItem nz-radio-button nzValue="toutes">Ezzahra</label>
-            <label *nzSpaceItem nz-radio-button nzValue="default"
-              >Boumhal</label
-            >
+            <label *nzSpaceItem nz-radio-button [nzValue]="'ZAHRA'">Ezzahra</label>
+            <label *nzSpaceItem nz-radio-button [nzValue]="'BOUMHAL'">Boumhal</label>
           </nz-space>
         </nz-radio-group>
       </div>
+
+      <!-- BOUTON RECHERCHE AVANCÉE -->
       <div nz-col nzSpan="2" nzOffset="4">
         <h4>Recherche</h4>
         <div>
@@ -33,20 +42,150 @@
           </button>
         </div>
       </div>
+
     </div>
   </div>
 </nz-card>
 
+<!-- Drawer Recherche Avancée -->
 <nz-drawer
   [nzClosable]="false"
   [nzVisible]="visible"
   nzPlacement="right"
-  nzTitle="Recherche"
+  nzTitle="Recherche avancée"
   (nzOnClose)="close()"
 >
   <ng-container *nzDrawerContent>
-    <p>Some contents...</p>
-    <p>Some contents...</p>
-    <p>Some contents...</p>
+    <form (ngSubmit)="search()" #searchForm="ngForm">
+      <div style="display: flex; flex-direction: column; gap: 12px; padding-right: 10px;">
+
+        <!-- ✅ Date exacte -->
+        <label>
+          <input type="checkbox" [(ngModel)]="enableExactDateOperation" name="enableExactDateOperation" />
+          Date exacte:
+        </label>
+        <input *ngIf="enableExactDateOperation" type="date" [(ngModel)]="searchCriteria.exactDateOperation" name="exactDateOperation" nz-input />
+
+        <!-- ✅ Période -->
+        <label>
+          <input type="checkbox" [(ngModel)]="enablePeriodOperation" name="enablePeriodOperation" />
+          Période:
+        </label>
+        <div *ngIf="enablePeriodOperation">
+          <input type="date" [(ngModel)]="searchCriteria.startDateOperation" name="startDateOperation" nz-input />
+          <input type="date" [(ngModel)]="searchCriteria.endDateOperation" name="endDateOperation" nz-input />
+        </div>
+
+        <!-- ✅ Montant exact -->
+        <label>
+          <input type="checkbox" [(ngModel)]="enableExactMontant" name="enableExactMontant" />
+          Montant exact:
+        </label>
+        <input *ngIf="enableExactMontant" type="number" [(ngModel)]="searchCriteria.exactMontant" name="exactMontant" nz-input />
+
+        <!-- ✅ Montant min/max -->
+        <label>
+          <input type="checkbox" [(ngModel)]="enableMontantRange" name="enableMontantRange" />
+          Montant min / max:
+        </label>
+        <div *ngIf="enableMontantRange">
+          <input type="number" [(ngModel)]="searchCriteria.minMontant" name="minMontant" nz-input />
+          <input type="number" [(ngModel)]="searchCriteria.maxMontant" name="maxMontant" nz-input />
+        </div>
+
+        <!-- ✅ Numéro de facture -->
+        <label>
+          <input type="checkbox" [(ngModel)]="enableNumeroFacture" name="enableNumeroFacture" />
+          Numéro de facture:
+        </label>
+        <input *ngIf="enableNumeroFacture" type="text" [(ngModel)]="searchCriteria.numeroFacture" name="numeroFacture" nz-input />
+
+        <!-- ✅ Date prélèvement exacte -->
+        <label>
+          <input type="checkbox" [(ngModel)]="enableExactDatePrelevement" name="enableExactDatePrelevement" />
+          Date prélèvement exacte:
+        </label>
+        <input *ngIf="enableExactDatePrelevement" type="date" [(ngModel)]="searchCriteria.exactDatePrelevement" name="exactDatePrelevement" nz-input />
+
+        <!-- ✅ Période prélèvement -->
+        <label>
+          <input type="checkbox" [(ngModel)]="enablePeriodPrelevement" name="enablePeriodPrelevement" />
+          Période prélèvement:
+        </label>
+        <div *ngIf="enablePeriodPrelevement">
+          <input type="date" [(ngModel)]="searchCriteria.startDatePrelevement" name="startDatePrelevement" nz-input />
+          <input type="date" [(ngModel)]="searchCriteria.endDatePrelevement" name="endDatePrelevement" nz-input />
+        </div>
+
+        <!-- ✅ Nature(s) avec checkboxes -->
+<label style="display: flex; flex-direction: column; margin-top: 8px;">
+  <label style="display: flex; align-items: center; gap: 8px;">
+    <input type="checkbox" [(ngModel)]="enableNature" name="enableNature" />
+    Nature(s)
+  </label>
+
+  <div *ngIf="enableNature" style="margin-left: 20px; display: flex; flex-direction: column; gap: 6px;">
+    <label *ngFor="let nature of natureOptions">
+      <input
+        type="checkbox"
+        [value]="nature"
+        (change)="onNatureCheckboxChange($event)"
+        [checked]="searchCriteria.natures?.includes(nature)"
+      />
+      {{ nature }}
+    </label>
+  </div>
+</label>
+
+<!-- ✅ Statut(s) avec checkboxes -->
+<label style="display: flex; flex-direction: column; margin-top: 8px;">
+  <label style="display: flex; align-items: center; gap: 8px;">
+    <input type="checkbox" [(ngModel)]="enableStatut" name="enableStatut" />
+    Statut(s)
+  </label>
+
+  <div *ngIf="enableStatut" style="margin-left: 20px; display: flex; flex-direction: column; gap: 6px;">
+    <label *ngFor="let statut of statutOptions">
+      <input
+        type="checkbox"
+        [value]="statut"
+        (change)="onStatutCheckboxChange($event)"
+        [checked]="searchCriteria.statuts?.includes(statut)"
+      />
+      {{ statut }}
+    </label>
+  </div>
+</label>
+
+    <!-- ✅ Station(s) avec checkboxes -->
+<label style="display: flex; flex-direction: column; margin-top: 8px;">
+  <label style="display: flex; align-items: center; gap: 8px;">
+    <input type="checkbox" [(ngModel)]="enableStation" name="enableStation" />
+    Station(s)
+  </label>
+
+  <div *ngIf="enableStation" style="margin-left: 20px; display: flex; flex-direction: column; gap: 6px;">
+    <label *ngFor="let station of stationOptions">
+      <input
+        type="checkbox"
+        [value]="station"
+        (change)="onStationCheckboxChange($event)"
+        [checked]="searchCriteria.stations?.includes(station)"
+      />
+      {{ station }}
+    </label>
+  </div>
+</label>
+
+
+        <!-- ✅ Bouton de validation -->
+        <div style="margin-top: 15px; display: flex; justify-content: flex-end;">
+          <button nz-button nzType="primary" htmlType="submit">
+            <span nz-icon nzType="search"></span> Lancer la recherche
+          </button>
+        </div>
+      </div>
+    </form>
   </ng-container>
 </nz-drawer>
+

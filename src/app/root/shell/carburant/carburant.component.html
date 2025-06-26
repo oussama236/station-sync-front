@@ -1,10 +1,64 @@
-<nz-tabset nzType="card">  
-    <nz-tab  [nzTitle]="'Liste des factures'">
-        <app-filters></app-filters>
-       <app-list-carburant></app-list-carburant>
-    </nz-tab>
-
-    <nz-tab  [nzTitle]="'Ajouter facture'">
-        <app-edit-carburant></app-edit-carburant>
-    </nz-tab>
-</nz-tabset>
+<app-filters (filtersChanged)="onFiltersChanged($event)"></app-filters>
+      
+<!-- Tableau des Carburants-->
+<div class="shells-table-holder" style="margin-top: 30px; margin-bottom: 50px;">
+    <nz-table 
+      #basicTable 
+      [nzData]="shells" 
+      [nzPaginationPosition]="'top'"
+      [nzScroll]="{ y: '300px' }" 
+      nzSize="middle" 
+      [nzLoading]="loadingSpinner"
+      [nzNoResult]="'NO FACTURES'">
+      
+      <thead>
+        <tr>
+          <th nzWidth="120px">Num Facture</th>
+          <th nzWidth="130px">Date Operation</th>
+          <th nzWidth="180px">Nature Operation</th>
+          <th nzWidth="150px">Date Prélèvement</th>
+          <th nzWidth="100px">Montant</th>
+          <th nzWidth="120px">Status</th>
+          <th nzWidth="100px">Station</th>
+          <th nzWidth="80px">Actions</th>
+        </tr>
+      </thead>
+  
+      <tbody>
+        <tr *ngFor="let data of basicTable.data">
+          <td>{{ data.numeroFacture }}</td>
+          <td>{{ data.dateOperation | date:'d MMMM y' }}</td>
+          <td>{{ data.natureOperation }}</td>
+          <td>{{ data.datePrelevement | date:'d MMMM y' }}</td>
+          <td>{{ data.montant }}</td>
+          <td style="text-align: center;">
+            <div [ngSwitch]="data.statut">
+              <span *ngSwitchCase="'OK'" class="status-tag status-ok">{{ data.statut }}</span>
+              <span *ngSwitchCase="'EN_ATTENTE'" class="status-tag status-attente">{{ data.statut }}</span>
+              <span *ngSwitchCase="'VIDE'" class="status-tag status-vide">{{ data.statut }}</span>
+            </div>
+          </td>
+          <td>{{ data.station }}</td>
+          <td>
+            <button 
+              nz-button 
+              nzType="default" 
+              nzSize="small" 
+              nzTooltip="Modifier">
+              <i nz-icon nzType="edit"></i>
+            </button>
+            <button 
+              nz-button 
+              nzType="default" 
+              nzDanger 
+              nzSize="small" 
+              nzTooltip="Supprimer">
+              <i nz-icon nzType="delete"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+      
+    </nz-table>  
+  </div>
+   

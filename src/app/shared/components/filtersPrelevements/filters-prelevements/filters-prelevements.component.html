@@ -1,0 +1,37 @@
+<nz-card>
+    <div class="factures-filtres-holder">
+      <div nz-row>
+  
+        <!-- FILTRE DATE -->
+        <div nz-col nzSpan="6">
+          <h4>Date d'opération</h4>
+          <input 
+            nz-input 
+            type="date" 
+            [(ngModel)]="selectedDate" 
+            placeholder="jj/mm/aaaa" />
+        </div>
+  
+        <!-- FILTRE MONTANT -->
+        <div nz-col nzSpan="6">
+          <h4>Montant</h4>
+          <input 
+            nz-input 
+            type="number" 
+            [(ngModel)]="selectedMontant" 
+            placeholder="Entrez le montant" />
+        </div>
+  
+        <!-- BOUTON RECHERCHE -->
+        <div nz-col nzSpan="4" nzOffset="2">
+          <h4>Recherche</h4>
+          <button nz-button nzType="dashed">
+            <span nz-icon nzType="search"></span>
+            Lancer la recherche
+          </button>
+        </div>
+  
+      </div>
+    </div>
+  </nz-card>
+  

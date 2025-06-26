@@ -1,4 +1,4 @@
-<nz-sider>
+<nz-sider >
     <ul class="side-menu-holder" nz-menu nzMode="inline" [nzTheme]="'dark'">
         <li class="side-menu-title-holder" nz-menu-group nzTitle="Shell">
           <ul>
@@ -12,7 +12,10 @@
         </li>
         <li class="side-menu-title-holder" nz-menu-group nzTitle="Bank">
           <ul>
-            <li nz-menu-item [nzSelected]="test? true: false">Prélèvements</li>
+            <li nz-menu-item [nzSelected]="test ? true : false" routerLink="/bank/prelevements">
+              Prélèvements
+            </li>
+            
             <li nz-menu-item>Option 4</li>
             <li nz-menu-item>Analyse & Rapport</li>
 

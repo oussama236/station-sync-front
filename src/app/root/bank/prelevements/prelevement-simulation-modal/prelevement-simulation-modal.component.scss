@@ -1,0 +1,24 @@
+.modal-content {
+  padding: 20px;
+
+  .resume-montant {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    font-size: 16px;
+
+    span {
+      margin-left: 5px;
+    }
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 30px;
+
+    button {
+      margin-left: 10px;
+    }
+  }
+}
