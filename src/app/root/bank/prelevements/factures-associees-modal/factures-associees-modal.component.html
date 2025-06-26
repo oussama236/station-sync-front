@@ -1,0 +1,19 @@
+<nz-table [nzData]="data.shells" [nzBordered]="true" [nzSize]="'middle'">
+    <thead>
+      <tr>
+        <th>Numéro Facture</th>
+        <th>Date</th>
+        <th>Montant</th>
+        <th>Nature</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let facture of data.shells">
+        <td>{{ facture.numeroFacture }}</td>
+        <td>{{ facture.dateOperation }}</td>
+        <td>{{ facture.montant | number: '1.3-3' }} DT</td>
+        <td>{{ facture.natureOperation }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+  

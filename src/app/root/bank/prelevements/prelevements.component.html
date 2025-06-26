@@ -88,7 +88,7 @@
         <th nzWidth="180px">Numéro de Compte</th>
         <th nzWidth="150px">Montant</th>
         <th nzWidth="150px">Factures associées</th>
-        <th nzWidth="130px">Actions</th>
+        <th nzWidth="80px">Actions</th>
       </tr>
     </thead>
 
@@ -97,9 +97,20 @@
         <td>{{ prelevement.dateOperation }}</td>
         <td>{{ prelevement.numeroCompte }}</td>
         <td>{{ prelevement.montant | number: '1.3-3' }} DT</td>
-        <td>
-          <span style="color: grey;">À venir</span>
+        
+        <td class="center-eye">
+          <button 
+            nz-button 
+            nzType="link"
+            [disabled]="!prelevement.shells || prelevement.shells.length === 0"
+            [ngClass]="{'eye-button': prelevement.shells?.length > 0, 'eye-disabled': !prelevement.shells || prelevement.shells.length === 0}"
+            (click)="prelevement.shells?.length > 0 && ouvrirModalFactures(prelevement.idPrelevement)">
+            <i nz-icon nzType="eye" nzTheme="outline"></i>
+          </button>
         </td>
+        
+        
+        
         <td>
           <!-- Actions à venir -->
         </td>
@@ -107,3 +118,8 @@
     </tbody>
   </nz-table>
 </div>
+
+
+
+
+

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PrelevementApiService } from 'src/app/shared/services/prelevement-api.service';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { PrelevementSimulationModalComponent } from '../prelevements/prelevement-simulation-modal/prelevement-simulation-modal.component';
+import { FacturesAssocieesModalComponent } from './factures-associees-modal/factures-associees-modal.component';
 
 @Component({
   selector: 'app-prelevements',
@@ -14,6 +15,9 @@ export class PrelevementsComponent implements OnInit {
   loadingSpinner = false;
   showSimulationModal = false;
   shellIdsSimules: number[] = [];
+  facturesAssociees: any[] = [];  // Tableau pour stocker les shells
+  modalVisible: boolean = false;  // Pour contrôler la visibilité de la modal
+
 
   constructor(
     private prelevementApiService: PrelevementApiService,
@@ -114,5 +118,23 @@ export class PrelevementsComponent implements OnInit {
       }
     });
   }
+
+  
+
+  ouvrirModalFactures(prelevementId: number): void {
+    this.prelevementApiService.getPrelevementDetails(prelevementId).subscribe(data => {
+      this.modal.create({
+        nzTitle: 'Factures associées',
+        nzContent: FacturesAssocieesModalComponent,
+        nzData: {
+          shells: data.shells  // ✅ on utilise nzData
+        },
+        nzFooter: null,
+        nzWidth: 800,
+        nzCentered: true
+      });
+    });
+  }
+  
   
 }

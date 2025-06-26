@@ -40,5 +40,9 @@ getShellsForManualAssign(dateOperation: string): Observable<any[]> {
   );
 }
 
+getPrelevementDetails(id: number): Observable<any> {
+  return this.http.get<any>(`${this.prelevementApiUrl}/Prelevement/${id}`);
+}
+
 
 }

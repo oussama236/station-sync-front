@@ -106,4 +106,6 @@ export class PrelevementSimulationModalComponent implements OnInit {
     this.onShellCheckboxChange(shell, checked);
   }
   
+
+  
 }
