@@ -1,0 +1,197 @@
+<app-filtre-operations (filtersChanged)="handleFiltresOperations($event)"></app-filtre-operations>
+
+<!-- Ligne Total Montant + Ajouter Facture -->
+<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 30px; margin-bottom: 20px;">
+    <!-- 💰 Total Montant -->
+    <div
+      style="
+        background-color: #f0f5ff;
+        border: 1px solid #91d5ff;
+        border-radius: 6px;
+        padding: 10px 16px;
+        font-size: 17px;
+        font-weight: 600;
+        color: #0050b3;
+        width: fit-content;
+        box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+      "
+    >
+      💰 Total Montant : {{ getTotalMontant() | number:'1.3-3' }} TND
+    </div>
+  
+    <!-- Bouton Ajouter ou X -->
+    <button
+      nz-button
+      [nzType]="'primary'"
+      (click)="toggleForm()"
+      [ngStyle]="
+        showForm
+          ? {
+              width: '60px',
+              height: '60px',
+              padding: '0',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              fontSize: '24px',
+              fontWeight: 'bold'
+            }
+          : {
+              padding: '10px 24px',
+              height: '45px',
+              fontSize: '16px'
+            }
+      "
+    >
+      <span *ngIf="!showForm">+ Ajouter Operation</span>
+      <span *ngIf="showForm">X</span>
+    </button>
+  </div>
+
+<!-- Formulaire d'ajout visible uniquement après clic -->
+<div *ngIf="showForm" style="margin-top: 20px;">
+    <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center;">
+      
+      <label style="display: flex; flex-direction: column;">
+        Date:
+        <input
+          nz-input
+          type="date"
+          [(ngModel)]="newOperation.dateOperation"
+          name="dateOperation"
+          required />
+      </label>
+  
+      <label style="display: flex; flex-direction: column;">
+        Nature:
+        <nz-select
+  [(ngModel)]="newOperation.natureOperationBank"
+  name="natureOperationBank"
+  style="width: 160px;"
+  placeholder="Nature">
+  <nz-option *ngFor="let option of natureOptions" [nzValue]="option" [nzLabel]="option"></nz-option>
+</nz-select>
+
+      </label>
+  
+      <label style="display: flex; flex-direction: column;">
+        Numéro Bordereau:
+        <input
+          nz-input
+          type="text"
+          [(ngModel)]="newOperation.numeroBordereau"
+          name="numeroBordereau"
+          required />
+      </label>
+  
+      <label style="display: flex; flex-direction: column;">
+        Montant:
+        <input
+          nz-input
+          type="number"
+          [(ngModel)]="newOperation.montant"
+          name="montant"
+          required />
+      </label>
+  
+      <label style="display: flex; flex-direction: column;">
+        Compte:
+        <input
+          nz-input
+          type="number"
+          [(ngModel)]="newOperation.numeroCompte"
+          name="numeroCompte"
+          required />
+      </label>
+  
+      <label style="display: flex; flex-direction: column;">
+        Station:
+        <nz-select
+          [(ngModel)]="newOperation.station"
+          name="station"
+          style="width: 130px;"
+          placeholder="Station">
+          <nz-option *ngFor="let station of stationOptions" [nzValue]="station" [nzLabel]="station"></nz-option>
+        </nz-select>
+      </label>
+  
+      <nz-col nzSpan="3">
+        <button
+          nz-button
+          nzType="primary"
+          (click)="submitOperation()"
+          style="height: 40px; width: 100%; margin-top: 23px;">
+          Valider
+        </button>
+      </nz-col>
+  
+    </div>
+  </div>
+
+  <!-- Tableau des opérations -->
+<div class="operations-table-holder" style="margin-top: 1px; margin-bottom: 1px;">
+    <nz-table
+      #basicTable
+      [nzData]="operations"
+      [nzScroll]="{ y: '300px' }"
+      nzSize="middle"
+      [nzLoading]="loadingSpinner"
+      [nzNoResult]="'Aucune donnée disponible'">
+  
+      <thead>
+        <tr>
+          <th nzWidth="130px">Date Opération</th>
+          <th nzWidth="180px">Nature Opération</th>
+          <th nzWidth="160px">Numéro Bordereau</th>
+          <th nzWidth="100px">Montant</th>
+          <th nzWidth="100px">Compte</th>
+          <th nzWidth="120px">Station</th>
+          <th nzWidth="120px">Statut</th>
+        </tr>
+      </thead>
+  
+      <tbody>
+        <tr *ngFor="let op of basicTable.data">
+          
+          <!-- Date -->
+          <td>{{ op.dateOperation | date: 'd MMMM y':'':'fr' }}</td>
+          
+          <!-- Nature -->
+          <td>{{ op.natureOperationBank }}</td>
+  
+          <!-- Numéro Bordereau -->
+          <td>{{ op.numeroBordereau }}</td>
+  
+          <!-- Montant -->
+          <td>{{ op.montant }} DT</td>
+  
+          <!-- Compte -->
+          <td>{{ op.numeroCompte }}</td>
+  
+          <!-- Station -->
+          <td>{{ op.station }}</td>
+  
+          <!-- Statut (coloré) -->
+          <td style="text-align: center;">
+            <nz-switch
+            [ngModel]="op.statut === 'OK'"
+            [nzCheckedChildren]="'OK'"
+            [nzUnCheckedChildren]="'VIDE'"
+            (ngModelChange)="onStatutToggle(op.idBanque)"
+            [disabled]="op.statut === 'OK'"
+            class="custom-switch"
+          ></nz-switch>
+          
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+  
+  
+
+
+
+
+
+

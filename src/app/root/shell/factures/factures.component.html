@@ -142,9 +142,9 @@
 
     <thead>
       <tr>
+        <th nzWidth="130px">Date Operation</th>
         <th nzWidth="120px">Num Facture</th>
         <th nzWidth="180px">Nature Operation</th>
-        <th nzWidth="130px">Date Operation</th>
         <th nzWidth="150px">Date Prélèvement</th>
         <th nzWidth="100px">Montant</th>
         <th nzWidth="120px">Status</th>
@@ -155,6 +155,14 @@
 
     <tbody>
       <tr *ngFor="let data of basicTable.data" (keydown.enter)="saveFacture(data)">
+
+         <!-- Date Operation -->
+         <td>
+          <ng-container *ngIf="editId === data.idShell; else viewDate">
+            <input nz-input type="date" [(ngModel)]="data.dateOperation" />
+          </ng-container>
+          <ng-template #viewDate>{{ data.dateOperation | date: 'd MMMM y':'':'fr' }}</ng-template>
+        </td>
         
         <!-- Num Facture -->
         <td>
@@ -184,18 +192,9 @@
         {{ data.natureOperation }}
       </ng-template>
     </td>
-    
-        <!-- Date Operation -->
-        <td>
-          <ng-container *ngIf="editId === data.idShell; else viewDate">
-            <input nz-input type="date" [(ngModel)]="data.dateOperation" />
-          </ng-container>
-          <ng-template #viewDate>{{ data.dateOperation | date:'d MMMM y' }}</ng-template>
-        </td>
-    
         <!-- Date Prélèvement (readonly) -->
         <td>
-          {{ data.datePrelevement | date:'d MMMM y' }}
+          {{ data.datePrelevement | date: 'd MMMM y':'':'fr' }}
         </td>
     
         <!-- Montant -->

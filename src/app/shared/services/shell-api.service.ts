@@ -82,4 +82,13 @@ export class ShellApiService {
   searchShells(criteria: ShellSearchCriteria): Observable<any> {
     return this.http.post(`${this.shellApiUrl}/Shell/advanced-search`, criteria);
   }
+
+  getMonthlyStats(nature?: string): Observable<any[]> {
+    let url = `${this.shellApiUrl}/Shell/monthly-stats`;
+    if (nature) {
+      url += `?nature=${nature}`;
+    }
+    return this.http.get<any[]>(url);
+  }
+  
 }

@@ -116,10 +116,12 @@ export class FacturesComponent implements OnInit {
   // Calcul automatique de la date de prélèvement
   calculateDatePrelevement() {
     const dateOp = new Date(this.newFacture.dateOperation);
+  
+    // Vérification que la date est valide et que la nature est renseignée
     if (isNaN(dateOp.getTime()) || !this.newFacture.natureOperation) return;
-
+  
     let result: Date = new Date(dateOp);
-
+  
     switch (this.newFacture.natureOperation) {
       case 'AVOIR':
         result.setDate(dateOp.getDate() + 1);
@@ -128,17 +130,22 @@ export class FacturesComponent implements OnInit {
         result.setDate(dateOp.getDate() + 3);
         break;
       case 'FACTURE_LUBRIFIANT':
+        // Dernier jour du mois suivant le mois prochain (mois + 2 - jour = 0)
         result = new Date(dateOp.getFullYear(), dateOp.getMonth() + 2, 0);
         break;
       case 'LOYER':
+        // Dernier jour du mois suivant (mois + 1 - jour = 0)
         result = new Date(dateOp.getFullYear(), dateOp.getMonth() + 1, 0);
         break;
     }
-
-    this.newFacture.calculatedDatePrelevement = result.toISOString().split('T')[0];
+  
+    // Formatage sans utiliser toISOString() (évite bug de décalage UTC)
+    const yyyy = result.getFullYear();
+    const mm = String(result.getMonth() + 1).padStart(2, '0');
+    const dd = String(result.getDate()).padStart(2, '0');
+    this.newFacture.calculatedDatePrelevement = `${yyyy}-${mm}-${dd}`;
   }
-
-  // ancien bouton (inutile ici mais conservé si besoin)
+  
 
   onFiltersChanged(filters: { statut: string, station: string }) {
     const statutParam = filters.statut !== 'ALL' ? filters.statut : null;

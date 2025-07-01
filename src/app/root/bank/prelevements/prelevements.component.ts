@@ -15,14 +15,8 @@ export class PrelevementsComponent implements OnInit {
   loadingSpinner = false;
   showSimulationModal = false;
   shellIdsSimules: number[] = [];
-  facturesAssociees: any[] = [];  // Tableau pour stocker les shells
-  modalVisible: boolean = false;  // Pour contrôler la visibilité de la modal
-
-
-  constructor(
-    private prelevementApiService: PrelevementApiService,
-    private modal: NzModalService
-  ) {}
+  facturesAssociees: any[] = [];
+  modalVisible: boolean = false;
 
   showForm = false;
 
@@ -31,6 +25,11 @@ export class PrelevementsComponent implements OnInit {
     numeroCompte: 20,
     montant: 0
   };
+
+  constructor(
+    private prelevementApiService: PrelevementApiService,
+    private modal: NzModalService
+  ) {}
 
   ngOnInit(): void {
     this.loadPrelevements();
@@ -55,28 +54,25 @@ export class PrelevementsComponent implements OnInit {
       nzFooter: null,
       nzWidth: 800,
       nzCentered: true,
-      nzData: {  // ✅ Utilise nzData et non nzComponentParams
+      nzData: {
         montant: this.newPrelevement.montant,
         dateOperation: this.newPrelevement.dateOperation
       }
     });
-  
-    // Abonnement à l'événement émis depuis le modal
+
     modalRef.afterOpen.subscribe(() => {
       const instance = modalRef.getContentComponent();
       if (instance) {
         instance.simulationConfirmed.subscribe((shellIds: number[]) => {
           this.handleSimulationConfirm(shellIds);
         });
-  
+
         instance.switchToManual.subscribe(() => {
           console.log("Utilisateur a choisi l'affectation manuelle");
-          // Tu peux ici afficher le tableau de shells manuellement cochables
         });
       }
     });
   }
-  
 
   handleSimulationConfirm(shellIds: number[]) {
     const prelevementToSend = { ...this.newPrelevement };
@@ -119,15 +115,13 @@ export class PrelevementsComponent implements OnInit {
     });
   }
 
-  
-
-  ouvrirModalFactures(prelevementId: number): void {
+  ouvrirModalPrelevements(prelevementId: number): void {
     this.prelevementApiService.getPrelevementDetails(prelevementId).subscribe(data => {
       this.modal.create({
         nzTitle: 'Factures associées',
         nzContent: FacturesAssocieesModalComponent,
         nzData: {
-          shells: data.shells  // ✅ on utilise nzData
+          shells: data.shells
         },
         nzFooter: null,
         nzWidth: 800,
@@ -135,6 +129,10 @@ export class PrelevementsComponent implements OnInit {
       });
     });
   }
-  
-  
+
+  // ✅ appelé quand les résultats filtrés sont reçus
+  handleResultatsFiltres(resultats: any[]) {
+    this.prelevements = resultats;
+    this.loadingSpinner = false; // ✅ arrêt du spinner ici
+  }
 }

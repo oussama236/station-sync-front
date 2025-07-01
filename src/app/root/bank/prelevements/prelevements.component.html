@@ -1,4 +1,8 @@
-<app-filters-prelevements></app-filters-prelevements>
+<!-- Filtres avec déclenchement du spinner -->
+<app-filters-prelevements 
+  (filtresStarted)="loadingSpinner = true"
+  (filtresAppliques)="handleResultatsFiltres($event)">
+</app-filters-prelevements>
 
 <!-- Section Formulaire + bouton -->
 <div style="display: flex; justify-content: center; align-items: flex-start; gap: 15px; margin-top: 20px;">
@@ -94,17 +98,17 @@
 
     <tbody>
       <tr *ngFor="let prelevement of prelevements">
-        <td>{{ prelevement.dateOperation }}</td>
+        <td>{{ prelevement.dateOperation | date: 'd MMMM y':'':'fr' }}</td>
         <td>{{ prelevement.numeroCompte }}</td>
         <td>{{ prelevement.montant | number: '1.3-3' }} DT</td>
-        
+
         <td class="center-eye">
           <button 
             nz-button 
             nzType="link"
             [disabled]="!prelevement.shells || prelevement.shells.length === 0"
             [ngClass]="{'eye-button': prelevement.shells?.length > 0, 'eye-disabled': !prelevement.shells || prelevement.shells.length === 0}"
-            (click)="prelevement.shells?.length > 0 && ouvrirModalFactures(prelevement.idPrelevement)">
+            (click)="prelevement.shells?.length > 0 && ouvrirModalPrelevements(prelevement.idPrelevement)">
             <i nz-icon nzType="eye" nzTheme="outline"></i>
           </button>
         </td>

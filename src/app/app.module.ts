@@ -34,6 +34,14 @@ import { FiltersPrelevementsComponent } from './shared/components/filtersPreleve
 import { PrelevementSimulationModalComponent } from './root/bank/prelevements/prelevement-simulation-modal/prelevement-simulation-modal.component';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { FacturesAssocieesModalComponent } from './root/bank/prelevements/factures-associees-modal/factures-associees-modal.component';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+import { OperationsComponent } from './root/bank/operations/operations.component';
+import { FiltreOperationsComponent } from './shared/components/filtre-operations/filtre-operations.component';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NgChartsModule } from 'ng2-charts';
+
+registerLocaleData(localeFr);
 
 
 
@@ -61,6 +69,8 @@ import { FacturesAssocieesModalComponent } from './root/bank/prelevements/factur
     FiltersPrelevementsComponent,
     PrelevementSimulationModalComponent,
     FacturesAssocieesModalComponent,
+    OperationsComponent,
+    FiltreOperationsComponent,
   ],
   imports: [
     CommonModule,
@@ -75,7 +85,9 @@ import { FacturesAssocieesModalComponent } from './root/bank/prelevements/factur
     NzModalModule, // ✅ AJOUTÉ ICI
     NgZorroModule,
     NzToolTipModule,
-    NzTableModule
+    NzTableModule,
+    NzSwitchModule,
+    NgChartsModule,
 
   ],
   providers: [],

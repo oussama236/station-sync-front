@@ -44,5 +44,13 @@ getPrelevementDetails(id: number): Observable<any> {
   return this.http.get<any>(`${this.prelevementApiUrl}/Prelevement/${id}`);
 }
 
+searchPrelevements(date?: string, montant?: number) {
+  let params: any = {};
+
+  if (date) params.date = date;
+  if (montant !== null && montant !== undefined) params.montant = montant;
+
+  return this.http.get<any[]>(`${this.prelevementApiUrl}/Prelevement/searchPrelevements`, { params });
+}
 
 }

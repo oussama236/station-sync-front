@@ -12,6 +12,8 @@ import { AvoirComponent } from './root/shell/avoir/avoir.component';
 import { FacturesComponent } from './root/shell/factures/factures.component';
 import { BankIndexComponent } from './root/bank/index/bank-index/bank-index.component';
 import { PrelevementsComponent } from './root/bank/prelevements/prelevements.component';
+import { OperationsComponent } from './root/bank/operations/operations.component';
+
 
 const routes: Routes = [
   {
@@ -55,7 +57,12 @@ const routes: Routes = [
       {
         path: 'prelevements',
         component: PrelevementsComponent
-      }
+      },
+
+      {
+        path: 'operations',
+        component: OperationsComponent
+      },
     ]
   },
 ];

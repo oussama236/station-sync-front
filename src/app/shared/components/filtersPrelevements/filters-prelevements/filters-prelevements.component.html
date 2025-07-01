@@ -1,37 +1,47 @@
 <nz-card>
-    <div class="factures-filtres-holder">
-      <div nz-row>
-  
-        <!-- FILTRE DATE -->
-        <div nz-col nzSpan="6">
-          <h4>Date d'opération</h4>
-          <input 
-            nz-input 
-            type="date" 
-            [(ngModel)]="selectedDate" 
-            placeholder="jj/mm/aaaa" />
-        </div>
-  
-        <!-- FILTRE MONTANT -->
-        <div nz-col nzSpan="6">
-          <h4>Montant</h4>
-          <input 
-            nz-input 
-            type="number" 
-            [(ngModel)]="selectedMontant" 
-            placeholder="Entrez le montant" />
-        </div>
-  
-        <!-- BOUTON RECHERCHE -->
-        <div nz-col nzSpan="4" nzOffset="2">
-          <h4>Recherche</h4>
-          <button nz-button nzType="dashed">
-            <span nz-icon nzType="search"></span>
-            Lancer la recherche
-          </button>
-        </div>
-  
+  <div class="factures-filtres-holder">
+    <div nz-row [nzGutter]="16">
+
+      <!-- FILTRE DATE -->
+      <div nz-col nzSpan="6">
+        <h4>Date d'opération</h4>
+        <input 
+          nz-input 
+          type="date" 
+          [(ngModel)]="selectedDate" 
+          placeholder="jj/mm/aaaa" />
       </div>
+
+      <!-- FILTRE MONTANT -->
+      <div nz-col nzSpan="6">
+        <h4>Montant</h4>
+        <input 
+          nz-input 
+          type="number" 
+          [(ngModel)]="selectedMontant" 
+          placeholder="Entrez le montant" />
+      </div>
+
+      <!-- BOUTONS -->
+      <div nz-col nzSpan="8" style="display: flex; align-items: end; gap: 8px;">
+        <!-- 🔍 Rechercher -->
+        <button 
+          nz-button 
+          nzType="primary" 
+          (click)="lancerRecherche()"
+          [disabled]="!selectedDate && selectedMontant === null">
+          Rechercher
+        </button>
+
+        <!-- 🔄 Réinitialiser -->
+        <button 
+          nz-button 
+          nzType="default" 
+          (click)="reinitialiserFiltres()">
+          Tous
+        </button>
+      </div>
+
     </div>
-  </nz-card>
-  
+  </div>
+</nz-card>

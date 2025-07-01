@@ -7,7 +7,7 @@
             <li nz-menu-item routerLink="/shell/carburant">Carburant</li>
             <li nz-menu-item routerLink="/shell/lubrifiant">Lubrifiant</li>
             <li nz-menu-item routerLink="/shell/loyer">Loyer</li>
-            <li nz-menu-item routerLink="/shell/analyse">Analyse & Rapport</li>
+            <li nz-menu-item routerLink="/shell/analyse">Statistiques</li>
           </ul>
         </li>
         <li class="side-menu-title-holder" nz-menu-group nzTitle="Bank">
@@ -16,8 +16,8 @@
               Prélèvements
             </li>
             
-            <li nz-menu-item>Option 4</li>
-            <li nz-menu-item>Analyse & Rapport</li>
+            <li nz-menu-item [nzSelected]="test ? true : false" routerLink="/bank/operations">Operations</li>
+            <li nz-menu-item>Statistiques</li>
 
           </ul>
         </li>

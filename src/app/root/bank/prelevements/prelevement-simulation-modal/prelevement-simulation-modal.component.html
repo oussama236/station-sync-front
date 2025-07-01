@@ -22,18 +22,16 @@
   >
     <thead>
       <tr>
-        <th>ID</th>
+        <th>Date de prélèvement</th>
         <th>Nature</th>
         <th>Montant</th>
-        <th>Date de prélèvement</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let shell of shellSimules">
-        <td>{{ shell.idShell }}</td>
+        <td>{{ shell.datePrelevement | date: 'd MMMM y':'':'fr'}}</td>
         <td>{{ shell.natureOperation }}</td>
         <td>{{ shell.montant }}</td>
-        <td>{{ shell.datePrelevement }}</td>
       </tr>
     </tbody>
   </nz-table>
@@ -48,10 +46,10 @@
     <thead>
       <tr>
         <th>Sélection</th>
-        <th>ID</th>
+        <th>Date de prélèvement</th>
         <th>Nature</th>
         <th>Montant</th>
-        <th>Date de prélèvement</th>
+        <th>Date d oepration</th>
       </tr>
     </thead>
     <tbody>
@@ -65,10 +63,11 @@
 
           />
         </td>
-        <td>{{ shell.idShell }}</td>
+        <td>{{ shell.datePrelevement| date: 'd MMMM y':'':'fr' }}</td>
         <td>{{ shell.natureOperation }}</td>
         <td>{{ shell.montant }}</td>
-        <td>{{ shell.datePrelevement }}</td>
+        <td>{{ shell.dateOperation | date: 'd MMMM y':'':'fr' }}</td>
+
       </tr>
     </tbody>
   </nz-table>

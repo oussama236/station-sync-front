@@ -1,0 +1,37 @@
+<nz-card>
+    <div class="factures-filtres-holder">
+      <div nz-row>
+  
+        <!-- FILTRE STATUT -->
+        <div nz-col nzSpan="6">
+          <h4>Status</h4>
+          <nz-radio-group
+            nzButtonStyle="solid"
+            [(ngModel)]="selectedStatut"
+            (ngModelChange)="onStatutChange($event)">
+            <nz-space [nzSize]="15">
+              <label *nzSpaceItem nz-radio-button [nzValue]="'ALL'" (click)="resetAllFilters()">Toutes</label>
+              <label *nzSpaceItem nz-radio-button [nzValue]="'OK'">OK</label>
+              <label *nzSpaceItem nz-radio-button [nzValue]="'VIDE'">Vide</label>
+            </nz-space>
+          </nz-radio-group>
+        </div>
+  
+        <!-- FILTRE STATION -->
+        <div nz-col nzSpan="4" nzOffset="4">
+          <h4>Station</h4>
+          <nz-radio-group
+            nzButtonStyle="solid"
+            [(ngModel)]="selectedStation"
+            (ngModelChange)="onStationChange($event)">
+            <nz-space [nzSize]="15">
+              <label *nzSpaceItem nz-radio-button [nzValue]="'ZAHRA'">Ezzahra</label>
+              <label *nzSpaceItem nz-radio-button [nzValue]="'BOUMHAL'">Boumhal</label>
+            </nz-space>
+          </nz-radio-group>
+        </div>
+  
+      </div>
+    </div>
+  </nz-card>
+  
