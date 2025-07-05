@@ -166,8 +166,15 @@ export class FacturesComponent implements OnInit {
   }
 
   getTotalMontant(): number {
-    return this.shells.reduce((total, shell) => total + shell.montant, 0);
+    return this.shells.reduce((total, shell) => {
+      if (shell.natureOperation === 'AVOIR') {
+        return total - shell.montant; // ✅ soustraire l'avoir
+      } else {
+        return total + shell.montant; // ✅ ajouter normalement
+      }
+    }, 0);
   }
+  
 
 
   deleteFacture(facture: any): void {

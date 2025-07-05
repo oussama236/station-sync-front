@@ -1,13 +1,92 @@
 <div style="width: 100%; max-width: 1150px; margin: auto; padding: 40px 20px;">
-  <h2 style="text-align: center; font-size: 26px; font-weight: bold; color: black; margin-bottom: 30px;">
-    Statistiques Mensuelles des Factures
-  </h2>
 
-  <canvas
-    baseChart
-    [data]="barChartData"
-    [options]="barChartOptions"
-    [type]="'bar'"
-    height="90"
-  ></canvas>
+  <!-- 🔘 Boutons pour changer de graphique -->
+  <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 20px;">
+    <button
+      (click)="chartType = 'bar'"
+      [style.fontWeight]="chartType === 'bar' ? 'bold' : 'normal'"
+      [style.backgroundColor]="chartType === 'bar' ? '#007bff' : '#f0f0f0'"
+      [style.color]="'black'"
+      style="padding: 8px 16px; border: none; border-radius: 5px; cursor: pointer;">
+      Bar Charts
+    </button>
+    <button
+      (click)="chartType = 'pie'"
+      [style.fontWeight]="chartType === 'pie' ? 'bold' : 'normal'"
+      [style.backgroundColor]="chartType === 'pie' ? '#28a745' : '#f0f0f0'"
+      [style.color]="'black'"
+      style="padding: 8px 16px; border: none; border-radius: 5px; cursor: pointer;">
+      Pie Charts
+    </button>
+  </div>
+
+  <!-- 📊 Bar Chart -->
+  <div *ngIf="chartType === 'bar'">
+    <h2 style="text-align: center; font-size: 26px; font-weight: bold; color: black; margin-bottom: 30px;">
+      Statistiques Mensuelles des Factures
+    </h2>
+    <canvas
+      baseChart
+      [data]="barChartData"
+      [options]="barChartOptions"
+      [type]="'bar'"
+      height="90">
+    </canvas>
+  </div>
+
+  <!-- 🥧 Pie Chart -->
+  <div *ngIf="chartType === 'pie'" style="margin-top: 20px;">
+    
+    <!-- 🏷️ Titre centré -->
+    <h2 style="text-align: center; font-size: 26px; font-weight: bold; color: black;">
+      Répartition des Montants par Nature
+    </h2>
+
+    <!-- 📅 Menu déroulant juste en dessous du titre -->
+    <div style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
+      <select
+        [(ngModel)]="selectedMonth"
+        (change)="buildPieChartForMonth(selectedMonth)"
+        style="padding: 8px 12px; font-size: 16px; border-radius: 5px; border: 1px solid #ccc; width: 250px;">
+        <option *ngFor="let month of availableMonths" [value]="month">
+          {{ month }}
+        </option>
+      </select>
+    </div>
+
+    <!-- 🥧 Graphique et légende côte à côte -->
+    <div style="display: flex; justify-content: center; align-items: flex-start; gap: 40px;">
+      
+      <!-- Pie chart -->
+      <div style="width: 380px;">
+        <canvas
+          baseChart
+          [data]="pieChartData"
+          [options]="pieChartOptions"
+          [type]="'pie'">
+        </canvas>
+      </div>
+
+      <!-- 🏷️ Légende custom à droite -->
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px;">
+        <div style="display: flex; align-items: center;">
+          <div style="width: 16px; height: 16px; background-color: rgba(255,99,132,0.7); margin-right: 8px;"></div>
+          <span>Avoir</span>
+        </div>
+        <div style="display: flex; align-items: center;">
+          <div style="width: 16px; height: 16px; background-color: rgba(54,162,235,0.7); margin-right: 8px;"></div>
+          <span>Carburant</span>
+        </div>
+        <div style="display: flex; align-items: center;">
+          <div style="width: 16px; height: 16px; background-color: rgba(255,206,86,0.7); margin-right: 8px;"></div>
+          <span>Lubrifiant</span>
+        </div>
+        <div style="display: flex; align-items: center;">
+          <div style="width: 16px; height: 16px; background-color: rgba(75,192,192,0.7); margin-right: 8px;"></div>
+          <span>Loyer</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>
