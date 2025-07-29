@@ -1,0 +1,22 @@
+<form nz-form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="username" nzRequired>Nom d'utilisateur</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzErrorTip="Nom d'utilisateur requis">
+          <input nz-input id="username" formControlName="username" />
+        </nz-form-control>>
+    </nz-form-item>
+  
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzFor="password" nzRequired>Mot de passe</nz-form-label>
+      <nz-form-control [nzSpan]="14" nzErrorTip="Mot de passe requis">
+        <input nz-input id="password" formControlName="password" type="password" />
+      </nz-form-control>
+    </nz-form-item>
+  
+    <nz-form-item>
+      <nz-form-control [nzSpan]="14" [nzOffset]="6">
+        <button nz-button nzType="primary" [disabled]="loginForm.invalid">Se connecter</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+  

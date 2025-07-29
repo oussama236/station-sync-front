@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AppComponent } from './app.component';
-import { SideMenuComponent } from './shared/components/commun/side-menu/side-menu.component';
+
+// Components
 import { HomeComponent } from './root/home/home.component';
 import { ShellIndexComponent } from './root/shell/index/shell-index.component';
 import { CarburantComponent } from './root/shell/carburant/carburant.component';
@@ -13,58 +13,39 @@ import { FacturesComponent } from './root/shell/factures/factures.component';
 import { BankIndexComponent } from './root/bank/index/bank-index/bank-index.component';
 import { PrelevementsComponent } from './root/bank/prelevements/prelevements.component';
 import { OperationsComponent } from './root/bank/operations/operations.component';
-
+import { RegisterComponent } from './root/auth/register/register.component';
+import { LoginComponent } from './root/auth/login/login.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: HomeComponent
-  },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
+
+  { path: 'auth/register', component: RegisterComponent },
+  { path: 'auth/login', component: LoginComponent },
+
   {
     path: 'shell',
     component: ShellIndexComponent,
     children: [
-      {
-        path: 'factures',
-        component: FacturesComponent,
-      },
-      {
-        path: 'avoir',
-        component: AvoirComponent
-      },
-      {
-        path: 'carburant',
-        component: CarburantComponent
-      },
-      {
-        path: 'lubrifiant',
-        component: LubrifiantComponent
-      },
-      {
-        path: 'loyer',
-        component: LoyerComponent
-      },
-      {
-        path: 'analyse',
-        component: AnalyseComponent
-      },
+      { path: 'factures', component: FacturesComponent },
+      { path: 'avoir', component: AvoirComponent },
+      { path: 'carburant', component: CarburantComponent },
+      { path: 'lubrifiant', component: LubrifiantComponent },
+      { path: 'loyer', component: LoyerComponent },
+      { path: 'analyse', component: AnalyseComponent },
     ]
   },
   {
     path: 'bank',
     component: BankIndexComponent,
-    children:[
-      {
-        path: 'prelevements',
-        component: PrelevementsComponent
-      },
-
-      {
-        path: 'operations',
-        component: OperationsComponent
-      },
+    children: [
+      { path: 'prelevements', component: PrelevementsComponent },
+      { path: 'operations', component: OperationsComponent },
     ]
   },
+
+  // Wildcard route for 404
+  { path: '**', redirectTo: 'home' }
 ];
 
 @NgModule({

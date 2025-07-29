@@ -3,13 +3,13 @@
         <div class="today-levy-indicator" (click)="goToBank()">
             <img class="image-indicator" src="../../../assets/images/invoice.svg">
             <h3>
-                Prélèvements d'aujourd'hui
+                Factures
             </h3>
             <div *ngIf="elementLoading" class="spinner-holder">
                 <nz-spin nzSize="large"></nz-spin>
             </div>
             <h3>
-                <span class="text-indicator">5</span>
+                <span class="text-indicator">{{ totalShells }}</span>
             </h3>
                 <nz-collapse>
                       <nz-collapse-panel [nzActive]="true">

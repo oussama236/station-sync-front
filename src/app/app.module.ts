@@ -2,6 +2,23 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+
+// NG-ZORRO & Charts
+import { NgZorroModule } from './shared/modules/ng-zorro/ng-zorro.module';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NgChartsModule } from 'ng2-charts';
+
+// Components
 import { AppComponent } from './app.component';
 import { NavBarComponent } from './shared/components/commun/nav-bar/nav-bar.component';
 import { SideMenuComponent } from './shared/components/commun/side-menu/side-menu.component';
@@ -19,31 +36,20 @@ import { AnalyseComponent } from './root/shell/analyse/analyse.component';
 import { AvoirComponent } from './root/shell/avoir/avoir.component';
 import { FacturesComponent } from './root/shell/factures/factures.component';
 import { FiltersComponent } from './shared/components/filters/filters.component';
-import { HttpClientModule } from '@angular/common/http';
-import { NgZorroModule } from './shared/modules/ng-zorro/ng-zorro.module';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { NzModalModule } from 'ng-zorro-antd/modal'; // ✅ IMPORT AJOUTÉ
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzSelectModule } from 'ng-zorro-antd/select';
 import { PrelevementsComponent } from './root/bank/prelevements/prelevements.component';
 import { BankIndexComponent } from './root/bank/index/bank-index/bank-index.component';
 import { FiltersPrelevementsComponent } from './shared/components/filtersPrelevements/filters-prelevements/filters-prelevements.component';
 import { PrelevementSimulationModalComponent } from './root/bank/prelevements/prelevement-simulation-modal/prelevement-simulation-modal.component';
-import { NzTableModule } from 'ng-zorro-antd/table';
 import { FacturesAssocieesModalComponent } from './root/bank/prelevements/factures-associees-modal/factures-associees-modal.component';
-import { registerLocaleData } from '@angular/common';
-import localeFr from '@angular/common/locales/fr';
 import { OperationsComponent } from './root/bank/operations/operations.component';
 import { FiltreOperationsComponent } from './shared/components/filtre-operations/filtre-operations.component';
-import { NzSwitchModule } from 'ng-zorro-antd/switch';
-import { NgChartsModule } from 'ng2-charts';
+import { LoginComponent } from './root/auth/login/login.component';
+import { RegisterComponent } from './root/auth/register/register.component';
+import { JwtInterceptor } from './interceptors/jwt.interceptor';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+
 
 registerLocaleData(localeFr);
-
-
 
 @NgModule({
   declarations: [
@@ -71,26 +77,33 @@ registerLocaleData(localeFr);
     FacturesAssocieesModalComponent,
     OperationsComponent,
     FiltreOperationsComponent,
+    LoginComponent,
+    RegisterComponent,
   ],
   imports: [
-    CommonModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule, // ✅ pour [formGroup]
     NzInputModule,
     NzButtonModule,
     NzSelectModule,
-    NzModalModule, // ✅ AJOUTÉ ICI
-    NgZorroModule,
+    NzModalModule,
     NzToolTipModule,
     NzTableModule,
     NzSwitchModule,
     NgChartsModule,
-
+    NgZorroModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

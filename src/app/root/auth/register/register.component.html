@@ -1,0 +1,28 @@
+<form nz-form (ngSubmit)="onSubmit()" [formGroup]="registerForm" class="register-form">
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="username" nzRequired>Nom d'utilisateur</nz-form-label>
+    <nz-form-control [nzSpan]="14" nzErrorTip="Le nom d'utilisateur est requis">
+      <input nz-input formControlName="username" id="username" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="email" nzRequired>Email</nz-form-label>
+    <nz-form-control [nzSpan]="14" nzErrorTip="Email invalide">
+      <input nz-input formControlName="email" id="email" type="email" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzFor="password" nzRequired>Mot de passe</nz-form-label>
+    <nz-form-control [nzSpan]="14" nzErrorTip="Le mot de passe est requis">
+      <input nz-input formControlName="password" id="password" type="password" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-control [nzSpan]="14" [nzOffset]="6">
+      <button nz-button nzType="primary" [disabled]="registerForm.invalid">S'inscrire</button>
+    </nz-form-control>
+  </nz-form-item>
+</form>
