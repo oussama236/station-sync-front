@@ -30,21 +30,20 @@
     [ngStyle]="
       showForm
         ? {
-            width: '60px',
-            height: '60px',
+            width: '45px',
+            height: '45px',
             padding: '0',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            fontSize: '24px',
+            fontSize: '18px',
             fontWeight: 'bold'
           }
         : {
             padding: '10px 24px',
             height: '45px',
             fontSize: '16px'
-          }
-    "
+          }"
   >
     <span *ngIf="!showForm">+ Ajouter Facture</span>
     <span *ngIf="showForm">X</span>
@@ -53,7 +52,7 @@
 
 <!-- Formulaire d'ajout visible uniquement après clic -->
 <div *ngIf="showForm" style="margin-top: 20px;">
-  <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center;">
+  <div style="display: flex; flex-wrap: wrap; gap: 45px; align-items: center;">
     <label style="display: flex; flex-direction: column;">
       Date:
       <input
@@ -80,7 +79,7 @@
       <nz-select
         [(ngModel)]="newFacture.natureOperation"
         name="natureOperation"
-        style="width: 160px;"
+        style="width: 200px;"
         placeholder="Nature"
         (ngModelChange)="calculateDatePrelevement()">
         <nz-option *ngFor="let option of natureOptions" [nzValue]="option" [nzLabel]="option"></nz-option>
@@ -102,7 +101,7 @@
       <nz-select
         [(ngModel)]="newFacture.station"
         name="station"
-        style="width: 130px;"
+        style="width: 150px;"
         placeholder="Station">
         <nz-option *ngFor="let station of stationOptions" [nzValue]="station" [nzLabel]="station"></nz-option>
       </nz-select>
@@ -122,7 +121,7 @@
         nz-button
         nzType="primary"
         (click)="submitFacture()"
-        style="height: 40px; width: 100%; margin-top: 23px;">
+        style="height: 35px; width: 80%; margin-top: 15px;">
         Valider
       </button>
     </nz-col>
@@ -130,7 +129,7 @@
 </div>
 
 <!-- Tableau des factures -->
-<div class="shells-table-holder" style="margin-top: 1px; margin-bottom: 1px;">
+<div class="shells-table-holder">
   <nz-table
   #basicTable
   [nzData]="shells"

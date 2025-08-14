@@ -4,11 +4,38 @@
   (filtresAppliques)="handleResultatsFiltres($event)">
 </app-filters-prelevements>
 
+<!-- Bouton toggle -->
+<button
+nz-button
+class="show-hide-btn"
+[nzType]="'primary'"
+(click)="toggleForm()"
+[ngStyle]="
+showForm
+  ? {
+      width: '45px',
+      height: '45px',
+      padding: '0',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      fontSize: '18px',
+      fontWeight: 'bold'
+    }
+  : {
+      padding: '10px 24px',
+      height: '45px',
+      fontSize: '16px'
+    }"
+>
+<span *ngIf="!showForm">+ Ajouter prélèvement</span>
+<span *ngIf="showForm">−</span>
+</button>
 <!-- Section Formulaire + bouton -->
 <div style="display: flex; justify-content: center; align-items: flex-start; gap: 15px; margin-top: 20px;">
 
   <!-- Formulaire -->
-  <div *ngIf="showForm" style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center;">
+  <div *ngIf="showForm" style="display: flex; flex-wrap: wrap; gap: 45px; align-items: center;">
     <label style="display: flex; flex-direction: column;">
       Date d'opération:
       <input
@@ -47,32 +74,13 @@
         nz-button
         nzType="primary"
         (click)="openSimulationModal()"
-        style="height: 40px;">
+        style="height: 35px;">
         Valider
       </button>
     </div>
   </div>
 
-  <!-- Bouton toggle -->
-  <button
-    nz-button
-    [nzType]="'primary'"
-    (click)="toggleForm()"
-    [ngStyle]="{
-      width: '45px',
-      height: '45px',
-      padding: '0',
-      display: 'flex',
-      marginLeft: '50px',
-      justifyContent: 'center',
-      alignItems: 'center',
-      fontSize: '20px',
-      fontWeight: 'bold'
-    }"
-  >
-    <span *ngIf="!showForm">+</span>
-    <span *ngIf="showForm">−</span>
-  </button>
+  
 
 </div>
 

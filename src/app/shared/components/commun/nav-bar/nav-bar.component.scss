@@ -24,11 +24,16 @@
   .station-sync-dropdown-holder {
     color: white;
     font-size: 18px;
-    margin-right: 20px;
-    .station-sync-username-header{
+    margin-right: 30px;
+    .station-sync-username-header, .station-sync-language-header{
         color:white;
         font-size: 15px;
         font-weight: 500;
     }
+
+    .station-sync-language-header{
+      margin-right: 15px;
+    }
+    
   }
   

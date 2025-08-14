@@ -1,0 +1,21 @@
+{
+    "NAVBAR":{
+
+    },
+
+    "GENERAL":{
+        "INVOICES": "Invoices",
+        "ALL_INVOICES": "All Invoices",
+        "FUEL": "Fuel",
+        "LUBRICANT": "Lubricant",
+        "RENT": "Rent",
+        "CREDIT": "Credit",
+        "STAT": "Statistics",
+        "OPERATION": "Operation",
+        "OPERATIONS": "Operations",
+        "WITHDRAWAL": "Withdrawal",
+        "WITHDRAWALS": "Withdrawals",
+        "DETAILS": "Details",
+        "LOGOUT": "Logout"
+    }
+}

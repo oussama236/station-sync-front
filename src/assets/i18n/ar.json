@@ -1,0 +1,21 @@
+{
+    "NAVBAR":{
+
+    },
+
+    "GENERAL":{
+        "INVOICES": "الفواتير",
+        "ALL_INVOICES": "جميع الفواتير",
+        "FUEL": "وقود",
+        "LUBRICANT": "زيوت",
+        "RENT": "إيجار",
+        "CREDIT": "Credit",
+        "STAT": "إحصائيات",
+        "OPERATION": "العمليات",
+        "OPERATIONS": "العمليات",
+        "WITHDRAWAL": "عمليات السحب",
+        "WITHDRAWALS": "عمليات السحب",
+        "DETAILS": "التفاصيل",
+        "LOGOUT": "تسجيل الخروج"
+    }
+}

@@ -27,13 +27,13 @@
       [ngStyle]="
         showForm
           ? {
-              width: '60px',
-              height: '60px',
+              width: '45px',
+              height: '45px',
               padding: '0',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              fontSize: '24px',
+              fontSize: '18px',
               fontWeight: 'bold'
             }
           : {
@@ -50,7 +50,7 @@
 
 <!-- Formulaire d'ajout visible uniquement après clic -->
 <div *ngIf="showForm" style="margin-top: 20px;">
-    <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: center;">
+    <div style="display: flex; flex-wrap: wrap; gap: 45px; align-items: center;">
       
       <label style="display: flex; flex-direction: column;">
         Date:
@@ -120,7 +120,7 @@
           nz-button
           nzType="primary"
           (click)="submitOperation()"
-          style="height: 40px; width: 100%; margin-top: 23px;">
+          style="height: 35px; width: 80%; margin-top: 15px;">
           Valider
         </button>
       </nz-col>
@@ -129,7 +129,7 @@
   </div>
 
   <!-- Tableau des opérations -->
-<div class="operations-table-holder" style="margin-top: 1px; margin-bottom: 1px;">
+<div class="operations-table-holder">
     <nz-table
       #basicTable
       [nzData]="operations"

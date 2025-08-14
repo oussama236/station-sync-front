@@ -1,21 +1,28 @@
 <nz-header class="station-sync-nav-bar">
-    <div class="station-sync-logo-holder">
-      <a class="logo" routerLink="/"></a>
-      <div class="station-sync-dropdown-holder">
-        <a class="station-sync-username-header" nz-dropdown [nzDropdownMenu]="menu">
-          {{ username || 'Utilisateur' }}
-        </a>
-        
-          <nz-dropdown-menu #menu="nzDropdownMenu">
-            <ul nz-menu nzSelectable>
-              <li nz-menu-item>
-                Profile
-              </li>
-              <li nz-menu-item>Locaux</li>
-              <li nz-menu-item>test</li>
-            </ul>
-          </nz-dropdown-menu>
-      </div>
+  <div class="station-sync-logo-holder">
+    <a class="logo" routerLink="/"></a>
+
+    <div class="station-sync-dropdown-holder">
+      <a class="station-sync-language-header" nz-dropdown [nzDropdownMenu]="languageDropdownMenu">
+        {{favoriteLanguage}}
+      </a>
+      <nz-dropdown-menu #languageDropdownMenu="nzDropdownMenu">
+        <ul nz-menu nzSelectable>
+          <li nz-menu-item (click)="switchLanguage('ar')">AR - Arabe</li>
+          <li nz-menu-item (click)="switchLanguage('fr')">FR - Français</li>
+          <li nz-menu-item (click)="switchLanguage('en')">EN - Anglais</li>
+        </ul>
+      </nz-dropdown-menu>
+      
+      <a class="station-sync-username-header" nz-dropdown [nzDropdownMenu]="userDropdownMenu">
+        {{ username || 'Utilisateur' }}
+      </a>
+      <nz-dropdown-menu #userDropdownMenu="nzDropdownMenu">
+        <ul nz-menu nzSelectable>
+          <li nz-menu-item>{{'GENERAL.LOGOUT' | translate}}</li>
+          <li nz-menu-item>Profil</li>
+        </ul>
+      </nz-dropdown-menu>
     </div>
-  </nz-header>
-  
+  </div>
+</nz-header>
