@@ -1,0 +1,93 @@
+.login-page-container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f8fd;
+  
+    .login-box {
+      display: flex;
+      width: 850px;
+      height: 500px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+  
+      .login-left {
+        flex: 1;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background: #fff;
+  
+        h2 {
+          margin-bottom: 30px;
+          font-size: 24px;
+          text-align: center;
+        }
+  
+        .options {
+          display: flex;
+          justify-content: space-between;
+          margin: 10px 0 20px;
+          font-size: 13px;
+  
+          .forgot-link {
+            cursor: pointer;
+            color: #1890ff;
+          }
+        }
+  
+        .login-btn {
+          width: 100%;
+          font-weight: bold;
+        }
+      }
+  
+      .login-right {
+        flex: 1;
+        background: linear-gradient(135deg, #0084FF, #0084FF);
+        color: white;
+        padding: 40px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+  
+        h2 {
+          font-size: 24px;
+          margin-bottom: 10px;
+        }
+  
+        p {
+          font-size: 14px;
+          margin-bottom: 20px;
+        }
+  
+        button {
+          width: 100px;
+          margin: auto;
+          font-weight: bold;
+        }
+
+        .logo-image {
+            width: 220px;
+            height: auto;
+            max-width: 90%;
+            margin: 0 auto 30px auto;
+            display: block;
+          }
+          
+          ::ng-deep input[nz-input]::placeholder {
+            font-size: 16px;
+          }
+          
+          
+
+        
+      }
+    }
+  }
+  

@@ -17,9 +17,9 @@ import { RegisterComponent } from './root/auth/register/register.component';
 import { LoginComponent } from './root/auth/login/login.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
+  { path: '', redirectTo: 'auth/login', pathMatch: 'full' }, // ✅ Redirige vers login
 
+  { path: 'home', component: HomeComponent },
   { path: 'auth/register', component: RegisterComponent },
   { path: 'auth/login', component: LoginComponent },
 
@@ -44,9 +44,9 @@ const routes: Routes = [
     ]
   },
 
-  // Wildcard route for 404
-  { path: '**', redirectTo: 'home' }
+  { path: '**', redirectTo: 'auth/login' } // ✅ Wildcard vers login si URL invalide
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

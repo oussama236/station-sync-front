@@ -1,28 +1,65 @@
-<form nz-form (ngSubmit)="onSubmit()" [formGroup]="registerForm" class="register-form">
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzFor="username" nzRequired>Nom d'utilisateur</nz-form-label>
-    <nz-form-control [nzSpan]="14" nzErrorTip="Le nom d'utilisateur est requis">
-      <input nz-input formControlName="username" id="username" />
-    </nz-form-control>
-  </nz-form-item>
+<div class="register-page-container">
+    <div class="register-box">
+  
+      <!-- 🔄 Partie GAUCHE maintenant = LOGO -->
+      <div class="register-left">
+        <img src="assets/images/logo-station-sync.jpeg" alt="Station Sync Logo" class="logo-image" />
+  
+        <h2>WELCOME!</h2>
+        <p>Create your account and start your journey with us</p>
+        <button nz-button nzType="default" routerLink="/auth/login">LOGIN</button>
+      </div>
+  
+      <!-- 🔄 Partie DROITE maintenant = FORMULAIRE -->
+      <div class="register-right">
+        <h2>Register</h2>
+  
+        <form nz-form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzFor="email" nzRequired>Email</nz-form-label>
-    <nz-form-control [nzSpan]="14" nzErrorTip="Email invalide">
-      <input nz-input formControlName="email" id="email" type="email" />
-    </nz-form-control>
-  </nz-form-item>
-
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzFor="password" nzRequired>Mot de passe</nz-form-label>
-    <nz-form-control [nzSpan]="14" nzErrorTip="Le mot de passe est requis">
-      <input nz-input formControlName="password" id="password" type="password" />
-    </nz-form-control>
-  </nz-form-item>
-
-  <nz-form-item>
-    <nz-form-control [nzSpan]="14" [nzOffset]="6">
-      <button nz-button nzType="primary" [disabled]="registerForm.invalid">S'inscrire</button>
-    </nz-form-control>
-  </nz-form-item>
-</form>
+            <!-- Username -->
+            <nz-form-item>
+              <nz-form-control [nzSpan]="24" nzErrorTip="Nom d'utilisateur requis">
+                <nz-input-group [nzPrefix]="userIcon">
+                  <input nz-input formControlName="username" placeholder="Nom d'utilisateur" />
+                </nz-input-group>
+                <ng-template #userIcon>
+                  <i nz-icon nzType="user"></i>
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          
+            <!-- Email -->
+            <nz-form-item>
+              <nz-form-control [nzSpan]="24" nzErrorTip="Email invalide">
+                <nz-input-group [nzPrefix]="mailIcon">
+                  <input nz-input formControlName="email" type="email" placeholder="Adresse Email" />
+                </nz-input-group>
+                <ng-template #mailIcon>
+                  <i nz-icon nzType="mail"></i>
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          
+            <!-- Password -->
+            <nz-form-item>
+              <nz-form-control [nzSpan]="24" nzErrorTip="Mot de passe requis">
+                <nz-input-group [nzPrefix]="lockIcon">
+                  <input nz-input formControlName="password" type="password" placeholder="Mot de passe" />
+                </nz-input-group>
+                <ng-template #lockIcon>
+                  <i nz-icon nzType="lock"></i>
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          
+            <!-- Submit Button -->
+            <button nz-button nzType="primary" [disabled]="registerForm.invalid" class="login-btn">
+              <i nz-icon nzType="user-add"></i> REGISTER
+            </button>
+          </form>
+          
+      </div>
+  
+    </div>
+  </div>
+  

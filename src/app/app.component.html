@@ -1,5 +1,5 @@
 <nz-layout>
-  <app-nav-bar></app-nav-bar>
+  <app-nav-bar *ngIf="!isAuthPage()"></app-nav-bar>
   <nz-layout>
     <router-outlet></router-outlet>
   </nz-layout>

@@ -132,13 +132,15 @@
 <!-- Tableau des factures -->
 <div class="shells-table-holder" style="margin-top: 1px; margin-bottom: 1px;">
   <nz-table
-    #basicTable
-    [nzData]="shells"
-    [nzPaginationPosition]="'top'"
-    [nzScroll]="{ y: '300px' }"
-    nzSize="middle"
-    [nzLoading]="loadingSpinner"
-    [nzNoResult]="'No Data Available'">
+  #basicTable
+  [nzData]="shells"
+  [nzPaginationPosition]="'top'"
+  [nzScroll]="{ y: '300px' }"
+  [nzPageSize]="6"
+  nzSize="middle"
+  [nzLoading]="loadingSpinner"
+  [nzNoResult]="'No Data Available'">
+
 
     <thead>
       <tr>

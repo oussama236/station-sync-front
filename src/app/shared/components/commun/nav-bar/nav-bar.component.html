@@ -3,8 +3,9 @@
       <a class="logo" routerLink="/"></a>
       <div class="station-sync-dropdown-holder">
         <a class="station-sync-username-header" nz-dropdown [nzDropdownMenu]="menu">
-            M. Oussama
+          {{ username || 'Utilisateur' }}
         </a>
+        
           <nz-dropdown-menu #menu="nzDropdownMenu">
             <ul nz-menu nzSelectable>
               <li nz-menu-item>
