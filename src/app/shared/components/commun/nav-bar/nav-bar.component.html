@@ -1,6 +1,6 @@
 <nz-header class="station-sync-nav-bar">
   <div class="station-sync-logo-holder">
-    <a class="logo" routerLink="/"></a>
+    <a class="logo" routerLink="/home"></a>
 
     <div class="station-sync-dropdown-holder">
       <a class="station-sync-language-header" nz-dropdown [nzDropdownMenu]="languageDropdownMenu">
@@ -19,8 +19,8 @@
       </a>
       <nz-dropdown-menu #userDropdownMenu="nzDropdownMenu">
         <ul nz-menu nzSelectable>
-          <li nz-menu-item>{{'GENERAL.LOGOUT' | translate}}</li>
-          <li nz-menu-item>Profil</li>
+          <li nz-menu-item (click)="onLogout()">{{ 'GENERAL.LOGOUT' | translate }}</li>
+          <li nz-menu-item routerLink="/profile">Profil</li>
         </ul>
       </nz-dropdown-menu>
     </div>

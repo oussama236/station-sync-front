@@ -1,108 +1,149 @@
 <div class="home-content-holder">
     <div class="home-stats-holder">
-
-        <!--FACTURES-->
-        <div class="today-levy-indicator">
-            <img class="image-indicator" src="../../../assets/images/invoice.svg">
-            <h3>{{'GENERAL.INVOICES' | translate}}</h3>
-
-            <div *ngIf="totalShellsLoading; else totalShellsReady" class="spinner-holder">
-                <nz-spin nzSize="large"></nz-spin>
-            </div>
-            <ng-template #totalShellsReady>
-                <h3>
-                    <span class="text-indicator">{{ totalShells }}</span>
-                </h3>
-            </ng-template>
-           
-            <nz-collapse class="last-update-holder">
-                <nz-collapse-panel nzHeader="Dernière Facture" [nzActive]="true">
-                    <div nz-row class="column-holder">
-                        <div nz-col nzSpan="8">Date</div>
-                        <div nz-col nzSpan="8">Nature</div>
-                        <div nz-col nzSpan="8">Montant</div>
-                    </div>
-                    <div nz-row>
-                        <div nz-col nzSpan="8">{{lastShells[0].dateOperation | date:'d MMMM y':'':'fr-FR' }}</div>
-                        <div nz-col nzSpan="8">{{lastShells[0].natureOperation}}</div>
-                        <div nz-col nzSpan="8">{{lastShells[0].montant}}</div>
-                    </div>
-                </nz-collapse-panel>
-            </nz-collapse>
-            
-            <div class="redirect-btn">
-                <button nz-button nzType="primary" (click)="handleRedirect('factures')">{{'GENERAL.DETAILS' | translate}}</button>
-            </div>
+  
+      <!-- FACTURES -->
+      <div class="today-levy-indicator">
+        <img class="image-indicator" src="../../../assets/images/invoice.svg" />
+        <h3>{{ 'GENERAL.INVOICES' | translate }}</h3>
+  
+        <div *ngIf="totalShellsLoading; else totalShellsReady" class="spinner-holder">
+          <nz-spin nzSize="large"></nz-spin>
         </div>
-
-        <!--OPERATIONS-->
-        <div class="fuel-invoice-indicator">
-            <img class="image-indicator" src="../../../assets/images/fuel.svg">
-            <h3>{{'GENERAL.OPERATIONS' | translate}}</h3>
-
-            <div *ngIf="totalOperationsLoading; else totalOperationsReady" class="spinner-holder">
-                <nz-spin nzSize="large"></nz-spin>
-            </div>
-            <ng-template #totalOperationsReady>
-                <h3>
-                    <span class="text-indicator">{{ totalOperations }}</span>
-                </h3>
+        <ng-template #totalShellsReady>
+          <h3><span class="text-indicator">{{ totalShells }}</span></h3>
+        </ng-template>
+  
+        <nz-collapse class="last-update-holder">
+          <nz-collapse-panel nzHeader="Dernière Facture" [nzActive]="true">
+  
+            <ng-container *ngIf="(lastShells?.length || 0) > 0; else noLastShell">
+                <div nz-row class="column-holder">
+                <div nz-col nzSpan="8">Date</div>
+                <div nz-col nzSpan="8">Nature</div>
+                <div nz-col nzSpan="8">Montant</div>
+              </div>
+  
+              <ng-container *ngFor="let s of (lastShells | slice:0:1)">
+                <div nz-row>
+                  <div nz-col nzSpan="8">
+                    {{ s?.dateOperation | date:'d MMMM y':'':'fr-FR' }}
+                  </div>
+                  <div nz-col nzSpan="8">{{ s?.natureOperation }}</div>
+                  <div nz-col nzSpan="8">{{ s?.montant }}</div>
+                </div>
+              </ng-container>
+            </ng-container>
+  
+            <ng-template #noLastShell>
+              <div nz-row><div nz-col nzSpan="24">Aucune facture trouvée.</div></div>
             </ng-template>
-            
-            <nz-collapse class="last-update-holder">
-                <nz-collapse-panel nzHeader="Dernière Opération" nzActive="true">
-                    <div nz-row class="column-holder">
-                        <div nz-col nzSpan="8">Date</div>
-                        <div nz-col nzSpan="8">Nature</div>
-                        <div nz-col nzSpan="8">Montant</div>
-                    </div>
-                    <div nz-row>
-                        <div nz-col nzSpan="8">{{lastOperations[0].dateOperation | date:'d MMMM y':'':'fr-FR' }}</div>
-                        <div nz-col nzSpan="8">{{lastOperations[0].natureOperationBank}}</div>
-                        <div nz-col nzSpan="8">{{lastOperations[0].montant}}</div>
-                    </div>
-                </nz-collapse-panel>
-            </nz-collapse>
-            
-            <div class="redirect-btn">
-                <button nz-button nzType="primary" (click)="handleRedirect('operations')">{{'GENERAL.DETAILS' | translate}}</button>
-            </div>
+  
+          </nz-collapse-panel>
+        </nz-collapse>
+  
+        <div class="redirect-btn">
+          <button nz-button nzType="primary" (click)="handleRedirect('factures')">
+            {{ 'GENERAL.DETAILS' | translate }}
+          </button>
         </div>
-
-        <!--PRELEVEMENTS-->
-        <div class="oil-invoice-indicator">
-            <img class="image-indicator" src="../../../assets/images/fuel.svg">
-            <h3>{{'GENERAL.WITHDRAWALS' | translate}}</h3>
-          
-            <div *ngIf="totalPrelevementLoading; else totalPrelevementReady" class="spinner-holder">
-                <nz-spin nzSize="large"></nz-spin>
-            </div>
-            <ng-template #totalPrelevementReady>
-                <h3>
-                    <span class="text-indicator">{{ totalPrelevement }}</span>
-                </h3>
+      </div>
+  
+      <!-- OPERATIONS -->
+      <div class="fuel-invoice-indicator">
+        <img class="image-indicator" src="../../../assets/images/fuel.svg" />
+        <h3>{{ 'GENERAL.OPERATIONS' | translate }}</h3>
+  
+        <div *ngIf="totalOperationsLoading; else totalOperationsReady" class="spinner-holder">
+          <nz-spin nzSize="large"></nz-spin>
+        </div>
+        <ng-template #totalOperationsReady>
+          <h3><span class="text-indicator">{{ totalOperations }}</span></h3>
+        </ng-template>
+  
+        <nz-collapse class="last-update-holder">
+          <nz-collapse-panel nzHeader="Dernière Opération" [nzActive]="true">
+  
+            <ng-container *ngIf="(lastOperations?.length || 0) > 0; else noLastOp">
+                <div nz-row class="column-holder">
+                <div nz-col nzSpan="8">Date</div>
+                <div nz-col nzSpan="8">Nature</div>
+                <div nz-col nzSpan="8">Montant</div>
+              </div>
+  
+              <ng-container *ngFor="let op of (lastOperations | slice:0:1)">
+                <div nz-row>
+                  <div nz-col nzSpan="8">
+                    {{ op?.dateOperation | date:'d MMMM y':'':'fr-FR' }}
+                  </div>
+                  <div nz-col nzSpan="8">{{ op?.natureOperationBank }}</div>
+                  <div nz-col nzSpan="8">{{ op?.montant }}</div>
+                </div>
+              </ng-container>
+            </ng-container>
+  
+            <ng-template #noLastOp>
+              <div nz-row><div nz-col nzSpan="24">Aucune opération trouvée.</div></div>
             </ng-template>
-            
-            <nz-collapse class="last-update-holder">
-                <nz-collapse-panel nzHeader="Dernier Prélèvement" [nzActive]="true">
-                    <div nz-row class="column-holder">
-                        <div nz-col nzSpan="8">Date</div>
-                        <div nz-col nzSpan="8">Num. Commpte</div>
-                        <div nz-col nzSpan="8">Montant</div>
-                    </div>
-                    <div nz-row>
-                        <div nz-col nzSpan="8">{{lastPrelevements[0].dateOperation | date:'d MMMM y':'':'fr-FR' }}</div>
-                        <div nz-col nzSpan="8">{{lastPrelevements[0].numeroCompte}}</div>
-                        <div nz-col nzSpan="8">{{lastPrelevements[0].montant}}</div>
-                    </div>
-                </nz-collapse-panel>
-            </nz-collapse>
-            
-            <div class="redirect-btn">
-                <button nz-button nzType="primary" (click)="handleRedirect('prelevements')">{{'GENERAL.DETAILS' | translate}}</button>
-            </div>
+  
+          </nz-collapse-panel>
+        </nz-collapse>
+  
+        <div class="redirect-btn">
+          <button nz-button nzType="primary" (click)="handleRedirect('operations')">
+            {{ 'GENERAL.DETAILS' | translate }}
+          </button>
         </div>
+      </div>
+  
+      <!-- PRELEVEMENTS -->
+      <div class="oil-invoice-indicator">
+        <img class="image-indicator" src="../../../assets/images/fuel.svg" />
+        <h3>{{ 'GENERAL.WITHDRAWALS' | translate }}</h3>
+  
+        <div *ngIf="totalPrelevementLoading; else totalPrelevementReady" class="spinner-holder">
+          <nz-spin nzSize="large"></nz-spin>
+        </div>
+        <ng-template #totalPrelevementReady>
+          <h3><span class="text-indicator">{{ totalPrelevement }}</span></h3>
+        </ng-template>
+  
+        <nz-collapse class="last-update-holder">
+          <nz-collapse-panel nzHeader="Dernier Prélèvement" [nzActive]="true">
+  
+            <ng-container *ngIf="(lastPrelevements?.length || 0) > 0; else noLastPrev">
+                <div nz-row class="column-holder">
+                <div nz-col nzSpan="8">Date</div>
+                <div nz-col nzSpan="8">Num. Compte</div>
+                <div nz-col nzSpan="8">Montant</div>
+              </div>
+  
+              <ng-container *ngFor="let p of (lastPrelevements | slice:0:1)">
+                <div nz-row>
+                  <div nz-col nzSpan="8">
+                    {{ p?.dateOperation | date:'d MMMM y':'':'fr-FR' }}
+                  </div>
+                  <div nz-col nzSpan="8">{{ p?.numeroCompte }}</div>
+                  <div nz-col nzSpan="8">{{ p?.montant }}</div>
+                </div>
+              </ng-container>
+            </ng-container>
+  
+            <ng-template #noLastPrev>
+              <div nz-row><div nz-col nzSpan="24">Aucun prélèvement trouvé.</div></div>
+            </ng-template>
+  
+          </nz-collapse-panel>
+        </nz-collapse>
+  
+        <div class="redirect-btn">
+          <button nz-button nzType="primary" (click)="handleRedirect('prelevements')">
+            {{ 'GENERAL.DETAILS' | translate }}
+          </button>
+        </div>
+      </div>
+  
     </div>
-</div>
-
-<app-popup-loading *ngIf="navigationLoading"></app-popup-loading>
+  </div>
+  
+  <app-popup-loading *ngIf="navigationLoading"></app-popup-loading>
+  

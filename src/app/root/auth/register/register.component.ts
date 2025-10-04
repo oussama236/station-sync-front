@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-register',
@@ -10,6 +11,8 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
+  private shellApiUrl = environment.shellApiUrl;
+
 
   constructor(
     private fb: FormBuilder,
@@ -29,8 +32,8 @@ export class RegisterComponent implements OnInit {
     if (this.registerForm.valid) {
       const userData = this.registerForm.value;
   
-      this.http.post('https://station-sync-10.onrender.com/SS/register', userData)
-        .subscribe({
+      this.http.post(`${environment.shellApiUrl}/register`, userData)
+      .subscribe({
           next: (response: any) => {
             console.log('✅ Inscription réussie:', response.message);
             this.router.navigate(['/auth/login']);

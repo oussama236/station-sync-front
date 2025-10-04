@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './root/auth/auth.guard';
+
 
 // Components
 import { HomeComponent } from './root/home/home.component';
@@ -17,15 +19,19 @@ import { RegisterComponent } from './root/auth/register/register.component';
 import { LoginComponent } from './root/auth/login/login.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'auth/login', pathMatch: 'full' }, // ✅ Redirige vers login
+  { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
 
-  { path: 'home', component: HomeComponent },
+  // Public
   { path: 'auth/register', component: RegisterComponent },
   { path: 'auth/login', component: LoginComponent },
+
+  // Protected
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
 
   {
     path: 'shell',
     component: ShellIndexComponent,
+    canActivate: [AuthGuard],          // 👈 protects all children
     children: [
       { path: 'factures', component: FacturesComponent },
       { path: 'avoir', component: AvoirComponent },
@@ -38,14 +44,16 @@ const routes: Routes = [
   {
     path: 'bank',
     component: BankIndexComponent,
+    canActivate: [AuthGuard],          // 👈 protects all children
     children: [
       { path: 'prelevements', component: PrelevementsComponent },
       { path: 'operations', component: OperationsComponent },
     ]
   },
 
-  { path: '**', redirectTo: 'auth/login' } // ✅ Wildcard vers login si URL invalide
+  { path: '**', redirectTo: 'auth/login' }
 ];
+
 
 
 @NgModule({
