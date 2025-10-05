@@ -1,6 +1,6 @@
 pipeline {
   agent any
-  options { timestamps(); ansiColor('xterm') }
+  options { timestamps() }
 
   stages {
     stage('Checkout') {
@@ -9,7 +9,6 @@ pipeline {
 
     stage('Install & Build (prod)') {
       steps {
-        // Uses Docker Node image so you don't have to install Node on Jenkins
         sh '''
           docker run --rm -v "$PWD":/app -w /app node:20-alpine sh -lc "
             npm ci &&
@@ -24,6 +23,18 @@ pipeline {
         sh 'ls -la dist || true'
         archiveArtifacts artifacts: 'dist/**', fingerprint: true
       }
+    }
+  }
+
+  post {
+    success {
+      echo "✅ Build Angular réussi : dist archivé avec succès."
+    }
+    failure {
+      echo "❌ Erreur pendant le build Angular. Vérifie les logs Jenkins."
+    }
+    always {
+      echo "📦 Pipeline terminé : ${currentBuild.currentResult}"
     }
   }
 }
