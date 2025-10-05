@@ -2,9 +2,15 @@ pipeline {
   agent any
   options { timestamps() }
 
+  environment {
+    IMAGE_NAME = "oussamamiladi123/stationsync-frontend"
+  }
+
   stages {
     stage('Checkout') {
-      steps { checkout scm }
+      steps {
+        checkout scm
+      }
     }
 
     stage('Install & Build (prod)') {
@@ -24,14 +30,39 @@ pipeline {
         archiveArtifacts artifacts: 'dist/**', fingerprint: true
       }
     }
+
+    stage('Docker Build') {
+      steps {
+        script {
+          COMMIT = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+          TAG = COMMIT
+        }
+        sh """
+          docker build -t ${IMAGE_NAME}:latest -t ${IMAGE_NAME}:${TAG} .
+        """
+      }
+    }
+
+    stage('Docker Push') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+          sh """
+            echo "${PASS}" | docker login -u "${USER}" --password-stdin
+            docker push ${IMAGE_NAME}:latest
+            docker push ${IMAGE_NAME}:${TAG}
+            docker logout
+          """
+        }
+      }
+    }
   }
 
   post {
     success {
-      echo "✅ Build Angular réussi : dist archivé avec succès."
+      echo "✅ Build Angular réussi et Docker push OK : ${IMAGE_NAME}:latest"
     }
     failure {
-      echo "❌ Erreur pendant le build Angular. Vérifie les logs Jenkins."
+      echo "❌ Erreur pendant le pipeline Angular. Vérifie les logs Jenkins."
     }
     always {
       echo "📦 Pipeline terminé : ${currentBuild.currentResult}"
