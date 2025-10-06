@@ -57,15 +57,22 @@ pipeline {
     }
 
     stage('Deploy to VM') {
-      when { branch 'main' } // change if your main branch has another name
-      steps {
-        sh '''
-          cd /opt/stationsync
-          docker compose pull
-          docker compose up -d
-        '''
-      }
-    }
+  when { branch 'main' }
+  steps {
+    sh '''
+      cd /opt/stationsync
+      echo "🧹 Cleaning old frontend container (if exists)..."
+      docker compose down frontend || true
+
+      echo "⬇️ Pulling latest frontend image..."
+      docker compose pull frontend
+
+      echo "🚀 Starting new frontend container..."
+      docker compose up -d frontend
+    '''
+  }
+}
+
   }
 
   post {
