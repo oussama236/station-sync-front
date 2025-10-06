@@ -76,7 +76,7 @@ pipeline {
       echo "❌ Erreur pendant le pipeline Angular. Vérifie les logs Jenkins."
     }
     always {
-      echo "📦 Pipeline terminé Mr: ${currentBuild.currentResult}"
+      echo "📦 Pipeline terminé : ${currentBuild.currentResult}"
     }
   }
 }
