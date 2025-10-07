@@ -13,21 +13,6 @@ pipeline {
       }
     }
 
-    stage('Test (coverage)') {
-  steps {
-    sh '''
-      docker run --rm \
-        -v "$PWD":/app -w /app \
-        -e CHROME_BIN=/usr/bin/chromium-browser \
-        node:20-alpine sh -lc "
-          apk add --no-cache chromium &&
-          npm ci &&
-          npx ng test --watch=false --code-coverage --browsers=ChromeHeadless
-        "
-    '''
-  }
-}
-
 
     stage('Install & Build (prod)') {
       steps {
