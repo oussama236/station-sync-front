@@ -32,38 +32,23 @@ pipeline {
       }
     }
 
- stage('SonarQube Analysis (frontend)') {
-  steps {
-    withSonarQubeEnv('local-sonarqube') {
-      withCredentials([string(credentialsId: 'Sonar', variable: 'SONAR_TOKEN')]) {
-        script {
-          def scannerHome = tool name: 'SonarQubeScanner', type: 'SonarQubeScanner'
-          sh """
-            set -eux
-            echo "Scanner path: ${scannerHome}/bin/sonar-scanner"
-            ${scannerHome}/bin/sonar-scanner -v
-
-            echo "Running analysis..."
-            ${scannerHome}/bin/sonar-scanner \
-              -Dsonar.projectKey=stationsync-frontend \
-              -Dsonar.projectBaseDir=${WORKSPACE} \
-              -Dsonar.sources=src \
-              -Dsonar.login=$SONAR_TOKEN \
-              -X
-
-            echo "List .scannerwork after run:"
-            ls -la .scannerwork || true
-            cat .scannerwork/report-task.txt || true
-          """
-        }
-      }
+    stage('SonarQube Analysis (frontend)') {
+      steps {
+         withCredentials([string(credentialsId: 'Sonar', variable: 'SONAR_TOKEN')]) {
+         sh """
+           docker run --rm --network host \
+          -v "$PWD":/usr/src \
+          sonarsource/sonar-scanner-cli:5 \
+          -Dsonar.projectKey=stationsync-frontend \
+          -Dsonar.sources=src \
+          -Dsonar.projectBaseDir=/usr/src \
+          -Dsonar.host.url=http://127.0.0.1:9000 \
+          -Dsonar.login=$SONAR_TOKEN \
+          -X
+      """
     }
   }
 }
-
-
-
-
 
     stage('Docker Build') {
       steps {
