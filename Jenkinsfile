@@ -32,22 +32,25 @@ pipeline {
       }
     }
 
-    stage('SonarQube Analysis (frontend)') {
+  stage('SonarQube Analysis (frontend)') {
   steps {
     withSonarQubeEnv('local-sonarqube') {
-      script {
-        def scannerHome = tool name: 'SonarQubeScanner', type: 'SonarQubeScanner'
-        sh """
-          ${scannerHome}/bin/sonar-scanner \
-            -Dsonar.projectKey=stationsync-frontend \
-            -Dsonar.sources=src \
-            -Dsonar.host.url=http://127.0.0.1:9000 \
-            -Dsonar.login=\$SONAR_AUTH_TOKEN
-        """
+      withCredentials([string(credentialsId: 'Sonar', variable: 'SONAR_TOKEN')]) {
+        script {
+          def scannerHome = tool name: 'SonarQubeScanner', type: 'SonarQubeScanner'
+          sh """
+            ${scannerHome}/bin/sonar-scanner \
+              -Dsonar.projectKey=stationsync-frontend \
+              -Dsonar.sources=src \
+              -Dsonar.host.url=http://127.0.0.1:9000 \
+              -Dsonar.login=$SONAR_TOKEN
+          """
+        }
       }
     }
   }
 }
+
 
 
 
