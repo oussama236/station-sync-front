@@ -32,24 +32,6 @@ pipeline {
       }
     }
 
-    stage('SonarQube Analysis (frontend)') {
-      steps {
-         withCredentials([string(credentialsId: 'Sonar', variable: 'SONAR_TOKEN')]) {
-         sh """
-           docker run --rm --network host \
-          -v "$PWD":/usr/src \
-          sonarsource/sonar-scanner-cli:5 \
-          -Dsonar.projectKey=stationsync-frontend \
-          -Dsonar.sources=src \
-          -Dsonar.projectBaseDir=/usr/src \
-          -Dsonar.host.url=http://127.0.0.1:9000 \
-          -Dsonar.login=$SONAR_TOKEN \
-          -X
-      """
-    }
-  }
-}
-
     stage('Docker Build') {
       steps {
         script {
