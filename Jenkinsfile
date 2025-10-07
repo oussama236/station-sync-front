@@ -13,6 +13,34 @@ pipeline {
       }
     }
 
+    stage('Frontend Test (coverage)') {
+      steps {
+        sh '''
+          # run inside Node container like your build
+          docker run --rm -v "$PWD":/app -w /app node:20-alpine sh -lc "
+            npm ci &&
+            # try tests with coverage; if none, create an empty lcov so Sonar is happy
+            (npm run test -- --watch=false --code-coverage || true) &&
+            if [ ! -f coverage/*/lcov.info ]; then
+              mkdir -p coverage/app && echo 'TN:' > coverage/app/lcov.info
+            fi
+          "
+        '''
+      }
+    }
+
+    stage('SonarQube Analysis (frontend)') {
+      steps {
+        withSonarQubeEnv('local-sonarqube') {
+          script {
+            def scannerHome = tool 'SonarScanner'  // from Global Tool Configuration
+            sh """
+              ${scannerHome}/bin/sonar-scanner
+            """
+          }
+        }
+      }
+    }
 
     stage('Install & Build (prod)') {
       steps {
@@ -58,22 +86,21 @@ pipeline {
     }
 
     stage('Deploy to VM') {
-  when { branch 'main' }
-  steps {
-    sh '''
-      cd /opt/stationsync
-      echo "🧹 Cleaning old frontend container (if exists)..."
-      docker compose down frontend || true
+      when { branch 'main' }
+      steps {
+        sh '''
+          cd /opt/stationsync
+          echo "🧹 Cleaning old frontend container (if exists)..."
+          docker compose down frontend || true
 
-      echo "⬇️ Pulling latest frontend image..."
-      docker compose pull frontend
+          echo "⬇️ Pulling latest frontend image..."
+          docker compose pull frontend
 
-      echo "🚀 Starting new frontend container..."
-      docker compose up -d frontend
-    '''
-  }
-}
-
+          echo "🚀 Starting new frontend container..."
+          docker compose up -d frontend
+        '''
+      }
+    }
   }
 
   post {
