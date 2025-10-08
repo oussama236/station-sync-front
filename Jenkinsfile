@@ -43,20 +43,21 @@ pipeline {
 
     // --------------- UPDATED STAGE BELOW ---------------
     stage('Install & Build (prod)') {
-      steps {
-        sh '''
-          docker run --rm \
-            -v "$PWD":/app \
-            -v /var/lib/jenkins/.npmrc:/root/.npmrc:ro \
-            -v /var/lib/jenkins/.npm:/root/.npm \
-            -w /app node:20-alpine sh -lc "
-              corepack enable || true &&
-              npm ci &&
-              npm run build -- --configuration production
-            "
-        '''
-      }
-    }
+  steps {
+    sh '''
+      docker run --rm \
+        -v "$PWD":/app \
+        -v /var/lib/jenkins/.npm:/root/.npm \
+        -w /app node:20-alpine sh -lc "
+          corepack enable || true &&
+          npm install -g @angular/cli &&
+          npm ci --no-audit --no-fund &&
+          npx ng build --configuration production
+        "
+    '''
+  }
+}
+
     // ---------------------------------------------------
 
     stage('Archive dist') {
