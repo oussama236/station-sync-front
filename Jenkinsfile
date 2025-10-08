@@ -7,6 +7,7 @@ pipeline {
   }
 
   stages {
+
     stage('Checkout') {
       steps {
         checkout scm
@@ -16,10 +17,8 @@ pipeline {
     stage('Frontend Test (coverage)') {
       steps {
         sh '''
-          # run inside Node container like your build
           docker run --rm -v "$PWD":/app -w /app node:20-alpine sh -lc "
             npm ci &&
-            # try tests with coverage; if none, create an empty lcov so Sonar is happy
             (npm run test -- --watch=false --code-coverage || true) &&
             if [ ! -f coverage/*/lcov.info ]; then
               mkdir -p coverage/app && echo 'TN:' > coverage/app/lcov.info
@@ -33,7 +32,7 @@ pipeline {
       steps {
         withSonarQubeEnv('local-sonarqube') {
           script {
-            def scannerHome = tool 'SonarScanner'  // from Global Tool Configuration
+            def scannerHome = tool 'SonarScanner'
             sh """
               ${scannerHome}/bin/sonar-scanner
             """
@@ -42,16 +41,23 @@ pipeline {
       }
     }
 
+    // --------------- UPDATED STAGE BELOW ---------------
     stage('Install & Build (prod)') {
       steps {
         sh '''
-          docker run --rm -v "$PWD":/app -w /app node:20-alpine sh -lc "
-            npm ci &&
-            npm run build -- --configuration production
-          "
+          docker run --rm \
+            -v "$PWD":/app \
+            -v /var/lib/jenkins/.npmrc:/root/.npmrc:ro \
+            -v /var/lib/jenkins/.npm:/root/.npm \
+            -w /app node:20-alpine sh -lc "
+              corepack enable || true &&
+              npm ci &&
+              npm run build -- --configuration production
+            "
         '''
       }
     }
+    // ---------------------------------------------------
 
     stage('Archive dist') {
       steps {
