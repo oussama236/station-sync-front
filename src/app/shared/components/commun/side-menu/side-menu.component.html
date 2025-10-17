@@ -12,12 +12,9 @@
         </li>
         <li class="side-menu-title-holder" nz-menu-group nzTitle="Bank">
           <ul>
-            <li nz-menu-item [nzSelected]="test ? true : false" routerLink="/bank/prelevements">
-              Prélèvements
-            </li>
-            
+            <li nz-menu-item [nzSelected]="test ? true : false" routerLink="/bank/prelevements">Prélèvements</li>
             <li nz-menu-item [nzSelected]="test ? true : false" routerLink="/bank/operations">Operations</li>
-            <li nz-menu-item>Statistiques</li>
+            <li nz-menu-item [nzSelected]="test ? true : false" routerLink="/bank/statement">statement</li>
 
           </ul>
         </li>

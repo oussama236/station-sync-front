@@ -1,0 +1,76 @@
+.statement-container { padding: 20px; text-align: center; }
+.table-wrapper { max-height: 500px; overflow: auto; border: 1px solid #ddd; border-radius: 6px; }
+
+.statement-table {
+  width: 100%; border-collapse: collapse; background: #fff;
+  th, td { padding: 10px; text-align: center; border-bottom: 1px solid #e0e0e0; min-width: 130px; }
+  thead { position: sticky; top: 0; background: #fafafa; font-weight: 600; z-index: 2; }
+  tfoot { position: sticky; bottom: 0; background: #fafafa; font-weight: 600; z-index: 1; }
+  .credit { color: #27ae60; font-weight: 600; }
+  .debit  { color: #c0392b; font-weight: 600; }
+  /* ✅ simple black vertical separator between credit and debit columns */
+  .vr { border-right: 1px solid #000; }
+}
+/* --- Totals Row Styling --- */
+.totals-row {
+    background: #f9f9f9;
+    border-top: 2px solid #000;
+    font-weight: 700;
+    font-size: 15px;
+    position: sticky;
+    bottom: 0;
+    z-index: 3;
+  }
+  
+  .total-value {
+    background: #fff;
+    border-radius: 6px;
+    font-size: 16px;
+    padding: 6px 12px;
+  }
+  
+  .text-end {
+    text-align: right;
+  }
+  
+  /* Optional: Make totals pop a bit */
+  .credit.total-value {
+    color: #2ecc71;
+  }
+  
+  .debit.total-value {
+    color: #e74c3c;
+  }
+  /* --- Header with balance --- */
+.statement-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px 0;
+  }
+  
+  .balance-box {
+    background: #e8f1ff; /* soft blue background */
+    border: 1px solid #a3c4f3;
+    border-radius: 8px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+  }
+  
+  .balance-label {
+    color: #4169e1; /* royal blue */
+  }
+  
+  .balance-value {
+    color: #1e40af; /* deeper blue tone */
+    font-size: 18px;
+  }
+  .empty-credit { /* looks like a normal empty cell */
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  

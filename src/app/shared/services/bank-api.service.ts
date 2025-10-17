@@ -39,5 +39,10 @@ export class BankApiService {
   }
   
 
+  getBankStatement(station?: string): Observable<any> {
+    const params: any = {};
+    if (station) params.station = station;
+    return this.http.get(`${this.bankApiUrl}/api/bank-statement`, { params });
+  }
 
 }

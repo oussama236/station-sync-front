@@ -3,6 +3,47 @@
     <a class="logo" routerLink="/home"></a>
 
     <div class="station-sync-dropdown-holder">
+      <!-- Notifications dropdown -->
+  
+<a
+  class="notification-bell"
+  nz-dropdown
+  [nzDropdownMenu]="notificationMenu"
+  [nzTrigger]="'click'"
+  [nzOverlayClassName]="'notif-overlay'"
+  aria-label="Notifications"
+>
+  <i nz-icon nzType="bell" nzTheme="fill"></i>
+  <span *ngIf="unreadCount > 0" class="notif-count">{{ unreadCount }}</span>
+</a>
+
+<nz-dropdown-menu #notificationMenu="nzDropdownMenu">
+  <div class="notification-dropdown">
+    <div class="notification-header">
+      <span>Notifications</span>
+      <button nz-button nzType="link" (click)="refreshNotifications()">
+        <i nz-icon nzType="reload"></i>
+      </button>
+    </div>
+
+    <div class="notification-list">
+      <div
+        *ngFor="let notif of recentNotifications"
+        (click)="onNotificationClick(notif)"
+        [class.unread]="notif.status === 'OPEN'"
+      >
+        <span class="notif-badge">{{ notif.type }}</span>
+        {{ notif.message }}
+      </div>
+      <div *ngIf="recentNotifications.length === 0" class="notification-empty">
+        Aucune notification
+      </div>
+    </div>
+  </div>
+</nz-dropdown-menu>
+
+
+
       <a class="station-sync-language-header" nz-dropdown [nzDropdownMenu]="languageDropdownMenu">
         {{favoriteLanguage}}
       </a>
