@@ -1,0 +1,55 @@
+<div class="statement-header">
+    <h2>📄 Relevé Bancaire</h2>
+    <div class="balance-box">
+      <span class="balance-label">Solde :</span>
+      <span class="balance-value" [ngClass]="{ 'positive': getBalance() > 0, 'negative': getBalance() < 0 }">
+        {{ getBalance() | number:'1.2-2' }} TND
+      </span>
+    </div>
+  </div>
+  
+  <div class="table-wrapper">
+    <table class="statement-table">
+      <thead>
+        <tr>
+          <th>Date (Crédit)</th>
+          <th>Nature (Crédit)</th>
+          <th class="vr">Montant (TND)</th>
+          <th>Date (Débit)</th>
+          <th>Nature (Débit)</th>
+          <th>Montant (TND)</th>
+        </tr>
+      </thead>
+  
+      <tbody>
+        <tr *ngFor="let r of rows">
+          <!-- Crédit (left) -->
+          <td>{{ r.credit?.dateOperation | date:'dd/MM/yyyy' }}</td>
+          <td>{{ r.credit?.natureOperationBank || '' }}</td>
+          <td class="credit vr">
+            {{ r.credit?.montant ? '+ ' + (r.credit.montant | number:'1.2-2') : '' }}
+          </td>
+      
+          <!-- Débit (right) -->
+          <td>{{ r.debit?.dateOperation | date:'dd/MM/yyyy' }}</td>
+          <td>{{ r.debit ? 'Prélèvement' : '' }}</td>
+          <td class="debit">
+            {{ r.debit?.montant ? '- ' + (r.debit.montant | number:'1.2-2') : '' }}
+          </td>
+        </tr>
+      </tbody>
+      
+      
+  
+      <tfoot>
+        <tr class="totals-row">
+          <th colspan="2" class="text-end">Total Crédits :</th>
+          <th class="credit vr total-value">+ {{ totalCredits() | number:'1.2-2' }}</th>
+          <th></th>
+          <th class="text-end">Total Débits :</th>
+          <th class="debit total-value">- {{ totalDebits() | number:'1.2-2' }}</th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+  

@@ -46,4 +46,9 @@
     }
     
   }
-  
+   /* your existing styles ... */
+
+.highlighted {
+  background: #fff3cd; /* soft yellow */
+  transition: background 0.8s ease;
+}

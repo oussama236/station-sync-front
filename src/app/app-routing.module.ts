@@ -17,6 +17,7 @@ import { PrelevementsComponent } from './root/bank/prelevements/prelevements.com
 import { OperationsComponent } from './root/bank/operations/operations.component';
 import { RegisterComponent } from './root/auth/register/register.component';
 import { LoginComponent } from './root/auth/login/login.component';
+import { StatementComponent } from './root/bank/statement/statement.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -41,6 +42,7 @@ const routes: Routes = [
       { path: 'analyse', component: AnalyseComponent },
     ]
   },
+
   {
     path: 'bank',
     component: BankIndexComponent,
@@ -48,6 +50,7 @@ const routes: Routes = [
     children: [
       { path: 'prelevements', component: PrelevementsComponent },
       { path: 'operations', component: OperationsComponent },
+      { path: 'statement', component: StatementComponent },
     ]
   },
 

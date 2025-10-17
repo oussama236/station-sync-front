@@ -16,7 +16,10 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NgChartsModule } from 'ng2-charts';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+
 
 // Components
 import { AppComponent } from './app.component';
@@ -49,6 +52,9 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { StatementComponent } from './root/bank/statement/statement.component';
+
+
 
 
 registerLocaleData(localeFr);
@@ -87,6 +93,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     FiltreOperationsComponent,
     LoginComponent,
     RegisterComponent,
+    StatementComponent,
+
+
   ],
   imports: [
     BrowserModule,
@@ -102,6 +111,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     NzToolTipModule,
     NzTableModule,
     NzSwitchModule,
+    NzTabsModule,
+    NzBadgeModule,
     NgChartsModule,
     NgZorroModule,
     TranslateModule.forRoot({
@@ -121,5 +132,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     },
   ],
   bootstrap: [AppComponent],
+  exports: [  
+    StatementComponent
+  ],
 })
 export class AppModule {}

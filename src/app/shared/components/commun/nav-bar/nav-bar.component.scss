@@ -1,39 +1,150 @@
 .station-sync-nav-bar {
-    background-color: #000a83;
-  }
-  
-  .station-sync-logo-holder {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between; /* Ajouté pour espacer les éléments */
-    width: 100%; /* Ajouté pour prendre toute la largeur */
-  }
-  
-  .logo {
-    margin-top: 12px;
-    width: 110px;
-    height: 55px;
-    background-size: contain;
-    background-image: url('../../../../../assets/images/logo.png');
-    background-repeat: no-repeat;
-    float: left;
-    display: flex;
-  }
-  
-  .station-sync-dropdown-holder {
-    color: white;
-    font-size: 18px;
-    margin-right: 30px;
-    .station-sync-username-header, .station-sync-language-header{
-        color:white;
-        font-size: 15px;
-        font-weight: 500;
-    }
+  background-color: #000a83;
+}
 
-    .station-sync-language-header{
-      margin-right: 15px;
-    }
-    
+.station-sync-logo-holder {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.logo {
+  margin-top: 12px;
+  width: 110px;
+  height: 55px;
+  background-size: contain;
+  background-image: url('../../../../../assets/images/logo.png');
+  background-repeat: no-repeat;
+  float: left;
+  display: flex;
+}
+
+.station-sync-dropdown-holder {
+  color: white;
+  font-size: 18px;
+  margin-right: 30px;
+
+  display: flex;
+  align-items: center;
+  gap: 24px;
+
+  .station-sync-username-header,
+  .station-sync-language-header {
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
   }
-  
+
+  .station-sync-language-header {
+    margin-right: 0;
+  }
+}
+
+/* ===== Bell & unread count ===== */
+.notification-bell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  min-width: 32px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.notification-bell i {
+  font-size: 18px;
+  color: #fff;
+  line-height: 1;
+}
+
+/* 🔴 red count beside the bell */
+.notif-count {
+  margin-left: 6px;
+  background: #ff4d4f;
+  color: #fff;
+  border-radius: 9999px;
+  padding: 0 6px;
+  font-size: 12px;
+  line-height: 18px;
+  min-width: 18px;
+  text-align: center;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== Dropdown look ===== */
+.notif-overlay {
+  .ant-dropdown,
+  .ant-dropdown-menu {
+    background: #f5f5f5 !important;
+    padding: 0 !important;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.notification-dropdown {
+  width: 360px;
+  max-height: 320px;
+  display: flex;
+  flex-direction: column;
+  background: #f5f5f5;
+  border-radius: 8px;
+}
+
+/* Header */
+.notification-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-bottom: 1px solid #e8e8e8;
+  font-weight: 600;
+}
+
+/* Scroll area (~5 visible items) */
+.notification-list {
+  overflow-y: auto;
+  max-height: 260px;
+  padding: 8px 0;
+}
+
+/* Each notification */
+.notification-list > div {
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.notification-list > div:hover {
+  background: #ededed;
+}
+
+.notification-empty {
+  padding: 12px;
+  color: #999;
+  text-align: center;
+}
+
+.notif-badge {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #fff;
+  background: #1677ff;
+}
+
+.unread {
+  font-weight: 600;
+  border-left: 3px solid #1677ff;
+  padding-left: 8px;
+}
