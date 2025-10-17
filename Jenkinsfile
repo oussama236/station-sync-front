@@ -3,21 +3,19 @@ pipeline {
   options { timestamps() }
 
   environment {
-    IMAGE_NAME = "oussamamiladi123/stationsync-frontend"
+    IMAGE_NAME   = 'oussamamiladi123/stationsync-frontend'
+    REGISTRY_CRED = 'dockerhub'
   }
 
   stages {
-
-    stage('Checkout') {
-      steps {
-        checkout scm
-      }
-    }
+    stage('Checkout') { steps { checkout scm } }
 
     stage('Frontend Test (coverage)') {
       steps {
         sh '''
-          docker run --rm -v "$PWD":/app -w /app node:20-alpine sh -lc "
+          set -e
+          docker run --rm -v "$PWD":/app -v /var/lib/jenkins/.npm:/root/.npm -w /app node:20-alpine sh -lc "
+            corepack enable || true &&
             npm ci &&
             (npm run test -- --watch=false --code-coverage || true) &&
             if [ ! -f coverage/*/lcov.info ]; then
@@ -33,32 +31,28 @@ pipeline {
         withSonarQubeEnv('local-sonarqube') {
           script {
             def scannerHome = tool 'SonarScanner'
-            sh """
-              ${scannerHome}/bin/sonar-scanner
-            """
+            sh "${scannerHome}/bin/sonar-scanner"
           }
         }
       }
     }
 
-    // --------------- UPDATED STAGE BELOW ---------------
     stage('Install & Build (prod)') {
-  steps {
-    sh '''
-      docker run --rm \
-        -v "$PWD":/app \
-        -v /var/lib/jenkins/.npm:/root/.npm \
-        -w /app node:20-alpine sh -lc "
-          corepack enable || true &&
-          npm install -g @angular/cli &&
-          npm ci --no-audit --no-fund &&
-          npx ng build --configuration production
-        "
-    '''
-  }
-}
-
-    // ---------------------------------------------------
+      steps {
+        sh '''
+          set -e
+          docker run --rm \
+            -v "$PWD":/app \
+            -v /var/lib/jenkins/.npm:/root/.npm \
+            -w /app node:20-alpine sh -lc "
+              corepack enable || true &&
+              npm install -g @angular/cli &&
+              npm ci --no-audit --no-fund &&
+              npx ng build --configuration production
+            "
+        '''
+      }
+    }
 
     stage('Archive dist') {
       steps {
@@ -67,25 +61,24 @@ pipeline {
       }
     }
 
-    stage('Docker Build') {
+    stage('Docker Build & Tag') {
       steps {
         script {
           COMMIT = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
           TAG = COMMIT
         }
-        sh """
-          docker build -t ${IMAGE_NAME}:latest -t ${IMAGE_NAME}:${TAG} .
-        """
+        sh "set -e; docker build -t ${IMAGE_NAME}:latest -t ${IMAGE_NAME}:${TAG} ."
       }
     }
 
     stage('Docker Push') {
       steps {
-        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+        withCredentials([usernamePassword(credentialsId: env.REGISTRY_CRED, usernameVariable: 'USER', passwordVariable: 'PASS')]) {
           sh """
+            set -e
             echo "${PASS}" | docker login -u "${USER}" --password-stdin
-            docker push ${IMAGE_NAME}:latest
             docker push ${IMAGE_NAME}:${TAG}
+            docker push ${IMAGE_NAME}:latest
             docker logout
           """
         }
@@ -93,32 +86,27 @@ pipeline {
     }
 
     stage('Deploy to VM') {
-      when { branch 'main' }
-      steps {
-        sh '''
-          cd /opt/stationsync
-          echo "🧹 Cleaning old frontend container (if exists)..."
-          docker compose down frontend || true
+  when { branch 'main' }
+  steps {
+    sh """
+      set -e
+      cd /opt/stationsync
 
-          echo "⬇️ Pulling latest frontend image..."
-          docker compose pull frontend
+      # Use the freshly built tag WITHOUT touching .env
+      FRONT_IMAGE=${IMAGE_NAME}:${TAG} docker compose pull frontend
+      FRONT_IMAGE=${IMAGE_NAME}:${TAG} docker compose up -d --no-deps --force-recreate --pull always frontend
 
-          echo "🚀 Starting new frontend container..."
-          docker compose up -d frontend
-        '''
-      }
-    }
+      echo '--- Running image ---'
+      docker inspect -f '{{.Config.Image}}' stationsync-frontend
+    """
+  }
+}
+
   }
 
   post {
-    success {
-      echo "✅ Build Angular réussi, Docker push & déploiement OK : ${IMAGE_NAME}:latest"
-    }
-    failure {
-      echo "❌ Erreur pendant le pipeline Angular. Vérifie les logs Jenkins."
-    }
-    always {
-      echo "📦 Pipeline terminé : ${currentBuild.currentResult}"
-    }
+    success { echo "✅ Frontend deployed: ${IMAGE_NAME}:${TAG}" }
+    failure { echo "❌ Frontend pipeline failed — check logs." }
+    always  { echo "📦 Pipeline: ${currentBuild.currentResult}" }
   }
 }
