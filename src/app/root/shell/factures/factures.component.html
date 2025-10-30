@@ -52,8 +52,14 @@
 
     <label style="display:flex;flex-direction:column;">
       Date Prélèvement (calculée):
-      <input nz-input type="date" [value]="newFacture.calculatedDatePrelevement" disabled />
+      <input
+        type="date"
+        [value]="newFacture.calculatedDatePrelevement"
+        disabled
+        style="background:none;border:none;outline:none;color:#000000;font-weight:500;font-size:17px;"/>
     </label>
+    
+    
 
     <nz-col nzSpan="3">
       <button nz-button nzType="primary" (click)="submitFacture()"
@@ -97,13 +103,15 @@
           [class.highlighted]="data.idShell === highlightedId"
           [attr.data-row-id]="data.idShell">
 
+        <!-- Date -->
         <td>
           <ng-container *ngIf="editId === data.idShell; else viewDate">
-            <input nz-input type="date" [(ngModel)]="data.dateOperation" />
+            <input nz-input type="date" [(ngModel)]="data.dateOperation" (ngModelChange)="onEditFactureChange(data)" />
           </ng-container>
           <ng-template #viewDate>{{ data.dateOperation | date: 'd MMMM y':'':'fr' }}</ng-template>
         </td>
 
+        <!-- Numéro -->
         <td>
           <ng-container *ngIf="editId === data.idShell; else viewNum">
             <input nz-input [(ngModel)]="data.numeroFacture" />
@@ -111,9 +119,10 @@
           <ng-template #viewNum>{{ data.numeroFacture }}</ng-template>
         </td>
 
+        <!-- Nature -->
         <td>
           <ng-container *ngIf="editId === data.idShell; else viewNature">
-            <nz-select [(ngModel)]="data.natureOperation" style="width:100%;">
+            <nz-select [(ngModel)]="data.natureOperation" (ngModelChange)="onEditFactureChange(data)" style="width:100%;">
               <nz-option *ngFor="let option of natureOptions" [nzValue]="option" [nzLabel]="option">
                 {{ option }}
               </nz-option>
@@ -122,8 +131,17 @@
           <ng-template #viewNature>{{ data.natureOperation }}</ng-template>
         </td>
 
-        <td>{{ data.datePrelevement | date: 'd MMMM y':'':'fr' }}</td>
+        <!-- Date Prélèvement -->
+        <td>
+          <ng-container *ngIf="editId === data.idShell; else viewPrel">
+            <input nz-input type="date"
+                   [value]="data._calcDatePrelevement || (data.dateOperation && data.natureOperation ? (computePrelevement(data.dateOperation, data.natureOperation)) : '')"
+                   disabled style="background:none;border:none;outline:none;color:#000000;font-weight:500;" />
+          </ng-container>
+          <ng-template #viewPrel>{{ data.datePrelevement | date: 'd MMMM y':'':'fr' }}</ng-template>
+        </td>
 
+        <!-- Montant -->
         <td>
           <ng-container *ngIf="editId === data.idShell; else viewMontant">
             <input nz-input type="number" [(ngModel)]="data.montant" />
@@ -131,6 +149,7 @@
           <ng-template #viewMontant>{{ data.montant }}</ng-template>
         </td>
 
+        <!-- Statut -->
         <td style="text-align:center;">
           <div [ngSwitch]="data.statut">
             <span *ngSwitchCase="'OK'" class="status-tag status-ok">{{ data.statut }}</span>
@@ -139,6 +158,7 @@
           </div>
         </td>
 
+        <!-- Station -->
         <td>
           <ng-container *ngIf="editId === data.idShell; else viewStation">
             <nz-select [(ngModel)]="data.station" style="width:100%;">
@@ -150,6 +170,7 @@
           <ng-template #viewStation>{{ data.station }}</ng-template>
         </td>
 
+        <!-- Actions -->
         <td style="text-align:center;">
           <div style="display:flex;justify-content:center;gap:8px;">
             <ng-container *ngIf="editId === data.idShell; else viewButtons">

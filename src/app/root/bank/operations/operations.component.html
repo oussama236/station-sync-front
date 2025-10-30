@@ -24,22 +24,8 @@
     (click)="toggleForm()"
     [ngStyle]="
       showForm
-        ? {
-            width: '45px',
-            height: '45px',
-            padding: '0',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            fontSize: '18px',
-            fontWeight: 'bold'
-          }
-        : {
-            padding: '10px 24px',
-            height: '45px',
-            fontSize: '16px'
-          }"
-  >
+        ? { width: '45px', height: '45px', padding: '0', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '18px', fontWeight: 'bold' }
+        : { padding: '10px 24px', height: '45px', fontSize: '16px' }">
     <span *ngIf="!showForm">+ Ajouter Operation</span>
     <span *ngIf="showForm">X</span>
   </button>
@@ -51,72 +37,40 @@
 
     <label style="display: flex; flex-direction: column;">
       Date:
-      <input
-        nz-input
-        type="date"
-        [(ngModel)]="newOperation.dateOperation"
-        name="dateOperation"
-        required />
+      <input nz-input type="date" [(ngModel)]="newOperation.dateOperation" name="dateOperation" required />
     </label>
 
     <label style="display: flex; flex-direction: column;">
       Nature:
-      <nz-select
-        [(ngModel)]="newOperation.natureOperationBank"
-        name="natureOperationBank"
-        style="width: 160px;"
-        placeholder="Nature">
+      <nz-select [(ngModel)]="newOperation.natureOperationBank" name="natureOperationBank" style="width: 160px;" placeholder="Nature">
         <nz-option *ngFor="let option of natureOptions" [nzValue]="option" [nzLabel]="option"></nz-option>
       </nz-select>
     </label>
 
     <label style="display: flex; flex-direction: column;">
       Numéro Bordereau:
-      <input
-        nz-input
-        type="text"
-        [(ngModel)]="newOperation.numeroBordereau"
-        name="numeroBordereau"
-        required />
+      <input nz-input type="text" [(ngModel)]="newOperation.numeroBordereau" name="numeroBordereau" required />
     </label>
 
     <label style="display: flex; flex-direction: column;">
       Montant:
-      <input
-        nz-input
-        type="number"
-        [(ngModel)]="newOperation.montant"
-        name="montant"
-        required />
+      <input nz-input type="number" [(ngModel)]="newOperation.montant" name="montant" required />
     </label>
 
     <label style="display: flex; flex-direction: column;">
       Compte:
-      <input
-        nz-input
-        type="number"
-        [(ngModel)]="newOperation.numeroCompte"
-        name="numeroCompte"
-        required />
+      <input nz-input type="number" [(ngModel)]="newOperation.numeroCompte" name="numeroCompte" required />
     </label>
 
     <label style="display: flex; flex-direction: column;">
       Station:
-      <nz-select
-        [(ngModel)]="newOperation.station"
-        name="station"
-        style="width: 130px;"
-        placeholder="Station">
+      <nz-select [(ngModel)]="newOperation.station" name="station" style="width: 130px;" placeholder="Station">
         <nz-option *ngFor="let station of stationOptions" [nzValue]="station" [nzLabel]="station"></nz-option>
       </nz-select>
     </label>
 
     <nz-col nzSpan="3">
-      <button
-        nz-button
-        nzType="primary"
-        (click)="submitOperation()"
-        style="height: 35px; width: 80%; margin-top: 15px;">
+      <button nz-button nzType="primary" (click)="submitOperation()" style="height: 35px; width: 80%; margin-top: 15px;">
         Valider
       </button>
     </nz-col>
@@ -146,30 +100,108 @@
         <th nzWidth="100px">Compte</th>
         <th nzWidth="120px">Station</th>
         <th nzWidth="120px">Statut</th>
+        <th nzWidth="120px">Actions</th>
       </tr>
     </thead>
 
     <tbody>
       <tr *ngFor="let op of basicTable.data"
+          (keydown.enter)="saveOperation(op)"
           [class.highlighted]="op.idBanque === highlightedId"
           [attr.data-row-id]="op.idBanque">
 
-        <td>{{ op.dateOperation | date: 'd MMMM y':'':'fr' }}</td>
-        <td>{{ op.natureOperationBank }}</td>
-        <td>{{ op.numeroBordereau }}</td>
-        <td>{{ op.montant }} DT</td>
-        <td>{{ op.numeroCompte }}</td>
-        <td>{{ op.station }}</td>
+        <!-- Date -->
+        <td>
+          <ng-container *ngIf="editId === op.idBanque; else viewDate">
+            <input nz-input type="date" [(ngModel)]="op.dateOperation" />
+          </ng-container>
+          <ng-template #viewDate>{{ op.dateOperation | date: 'd MMMM y':'':'fr' }}</ng-template>
+        </td>
 
+        <!-- Nature -->
+        <td>
+          <ng-container *ngIf="editId === op.idBanque; else viewNature">
+            <nz-select [(ngModel)]="op.natureOperationBank" style="width:100%;">
+              <nz-option *ngFor="let option of natureOptions" [nzValue]="option" [nzLabel]="option"></nz-option>
+            </nz-select>
+          </ng-container>
+          <ng-template #viewNature>{{ op.natureOperationBank }}</ng-template>
+        </td>
+
+        <!-- Bordereau -->
+        <td>
+          <ng-container *ngIf="editId === op.idBanque; else viewBordereau">
+            <input nz-input [(ngModel)]="op.numeroBordereau" />
+          </ng-container>
+          <ng-template #viewBordereau>{{ op.numeroBordereau }}</ng-template>
+        </td>
+
+        <!-- Montant -->
+        <td>
+          <ng-container *ngIf="editId === op.idBanque; else viewMontant">
+            <input nz-input type="number" [(ngModel)]="op.montant" />
+          </ng-container>
+          <ng-template #viewMontant>{{ op.montant }} DT</ng-template>
+        </td>
+
+        <!-- Compte -->
+        <td>{{ op.numeroCompte }}</td>
+
+
+        <!-- Station -->
+        <td>
+          <ng-container *ngIf="editId === op.idBanque; else viewStation">
+            <nz-select [(ngModel)]="op.station" style="width:100%;">
+              <nz-option *ngFor="let station of stationOptions" [nzValue]="station" [nzLabel]="station"></nz-option>
+            </nz-select>
+          </ng-container>
+          <ng-template #viewStation>{{ op.station }}</ng-template>
+        </td>
+
+        <!-- Statut -->
         <td style="text-align:center;">
-          <nz-switch
-            [ngModel]="op.statut === 'OK'"
-            [nzCheckedChildren]="'OK'"
-            [nzUnCheckedChildren]="'VIDE'"
-            (ngModelChange)="onStatutToggle(op.idBanque)"
-            [disabled]="op.statut === 'OK'"
-            class="custom-switch">
-          </nz-switch>
+          <ng-container *ngIf="editId === op.idBanque; else viewStatut">
+            <nz-select [(ngModel)]="op.statut" style="width:100%;">
+              <nz-option *ngFor="let s of statutOptions" [nzValue]="s" [nzLabel]="s"></nz-option>
+            </nz-select>
+          </ng-container>
+          <ng-template #viewStatut>
+            <nz-switch
+              [ngModel]="op.statut === 'OK'"
+              [nzCheckedChildren]="'OK'"
+              [nzUnCheckedChildren]="'VIDE'"
+              (ngModelChange)="onStatutToggle(op.idBanque)"
+              [disabled]="op.statut === 'OK'"
+              class="custom-switch">
+            </nz-switch>
+          </ng-template>
+        </td>
+
+        <!-- Actions -->
+        <td style="text-align:center;">
+          <div style="display:flex;justify-content:center;gap:8px;">
+            <ng-container *ngIf="editId === op.idBanque; else viewButtons">
+              <button nz-button nzType="primary" nzSize="small" nzTooltip="Valider"
+                      (click)="saveOperation(op)" style="width:40px;">
+                <i nz-icon nzType="check" style="font-size:18px;"></i>
+              </button>
+              <button nz-button nzType="default" nzSize="small" nzTooltip="Annuler"
+                      (click)="cancelEdit()" style="width:40px;">
+                <i nz-icon nzType="close" style="font-size:18px;color:red;"></i>
+              </button>
+            </ng-container>
+
+            <ng-template #viewButtons>
+              <button nz-button nzType="default" nzSize="small" nzTooltip="Modifier"
+                      (click)="editId = op.idBanque" style="width:40px;">
+                <i nz-icon nzType="edit" style="font-size:18px;"></i>
+              </button>
+              <button nz-button nzType="default" nzDanger nzSize="small" nzTooltip="Supprimer"
+                      (click)="deleteOperation(op)" style="width:40px;">
+                <i nz-icon nzType="delete" style="font-size:18px;color:#cc0000;"></i>
+              </button>
+            </ng-template>
+          </div>
         </td>
       </tr>
     </tbody>

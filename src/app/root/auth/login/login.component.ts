@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { AuthService } from 'src/app/shared/services/auth.service'; // ✅ add this
 
 @Component({
   selector: 'app-login',
@@ -16,12 +17,13 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private authService: AuthService // ✅ inject AuthService
   ) {}
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      username: ['', Validators.required], // Utilise bien 'username'
+      username: ['', Validators.required],
       password: ['', Validators.required]
     });
   }
@@ -35,8 +37,8 @@ export class LoginComponent implements OnInit {
           next: (response) => {
             console.log('✅ Connexion réussie', response);
 
-            // stocker le token
-            localStorage.setItem('token', response.token);
+            // ✅ store token using AuthService (important!)
+            this.authService.setToken(response.token);
 
             console.log('🎯 Redirection en cours...');
             this.router.navigate(['/home']); 
@@ -48,5 +50,4 @@ export class LoginComponent implements OnInit {
         });
     }
   }
-  
 }
