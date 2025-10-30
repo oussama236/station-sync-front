@@ -134,6 +134,28 @@ export class FacturesComponent implements OnInit, OnDestroy {
     this.newFacture.calculatedDatePrelevement = `${yyyy}-${mm}-${dd}`;
   }
 
+  // 🔵 Live preview of prélèvement during EDIT
+   computePrelevement(dateOpStr: string, nature: string): string | '' {
+    if (!dateOpStr || !nature) return '';
+    const dateOp = new Date(dateOpStr);
+    if (isNaN(dateOp.getTime())) return '';
+    let r = new Date(dateOp);
+    switch (nature) {
+      case 'AVOIR': r.setDate(dateOp.getDate() + 1); break;
+      case 'FACTURE_CARBURANT': r.setDate(dateOp.getDate() + 3); break;
+      case 'FACTURE_LUBRIFIANT': r = new Date(dateOp.getFullYear(), dateOp.getMonth() + 2, 0); break;
+      case 'LOYER': r = new Date(dateOp.getFullYear(), dateOp.getMonth() + 1, 0); break;
+    }
+    const yyyy = r.getFullYear();
+    const mm = String(r.getMonth() + 1).padStart(2, '0');
+    const dd = String(r.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
+  onEditFactureChange(f: any) {
+    f._calcDatePrelevement = this.computePrelevement(f.dateOperation, f.natureOperation);
+  }
+
   onFiltersChanged(filters: { statut: string, station: string }) {
     const statutParam = filters.statut !== 'ALL' ? filters.statut : null;
     const stationParam = filters.station !== 'ALL' ? filters.station : null;
@@ -196,14 +218,17 @@ export class FacturesComponent implements OnInit, OnDestroy {
       next: () => {
         this.shellApiService.updateStatuts().subscribe({
           next: () => { this.message.success('Facture mise à jour et statut recalculé'); this.editId = null; this.loadShells(); },
-          error: () => { this.message.warning('Facture mise à jour'); this.editId = null; this.loadShells(); }
+          error: () => { this.message.success('Facture mise à jour'); this.editId = null; this.loadShells(); }
         });
       },
       error: () => { this.message.error('Erreur lors de la mise à jour'); }
     });
   }
 
-  cancelEdit() { this.editId = null; }
+  cancelEdit() {
+    this.editId = null;
+    this.message.info('Modification annulée');
+  }
 
   handleAdvancedSearch(results: any[]): void { this.shells = results ?? []; }
 

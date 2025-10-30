@@ -25,7 +25,7 @@
         <th nzWidth="100px">Montant</th>
         <th nzWidth="120px">Status</th>
         <th nzWidth="100px">Station</th>
-        <th nzWidth="120px">Actions</th>
+        
       </tr>
     </thead>
 
@@ -87,54 +87,7 @@
         </td>
 
          <!-- Actions -->
-         <td style="text-align: center;">
-            <div style="display: flex; justify-content: center; gap: 8px;">
-              <ng-container *ngIf="editId === data.idShell; else viewButtons">
-                <!-- ✅ Valider -->
-                <button 
-                  nz-button 
-                  nzType="primary" 
-                  nzSize="small" 
-                  nzTooltip="Valider les modifications" 
-                  (click)="saveFacture(data)" style="width: 40px;">
-                  <i nz-icon nzType="check" style="font-size: 18px;"></i>
-                </button>
-          
-                <!-- ❌ Annuler -->
-                <button 
-                  nz-button 
-                  nzType="default" 
-                  nzSize="small" 
-                  nzTooltip="Annuler" 
-                  (click)="cancelEdit()" style="width: 40px;">
-                  <i nz-icon nzType="close" style="font-size: 18px; color: red;"></i>
-                </button>
-              </ng-container>
-          
-              <ng-template #viewButtons>
-                <!-- ✏️ Edit -->
-                <button 
-                  nz-button 
-                  nzType="default" 
-                  nzSize="small" 
-                  nzTooltip="Modifier" 
-                  (click)="editId = data.idShell" style="width: 40px;">
-                  <i nz-icon nzType="edit" style="font-size: 18px;"></i>
-                </button>
-          
-                <!-- 🗑️ Supprimer -->
-                <button 
-                  nz-button 
-                  nzType="default" 
-                  nzDanger 
-                  nzSize="small" 
-                  nzTooltip="Supprimer" 
-                  (click)="deleteFacture(data)" style="width: 40px;">
-                  <i nz-icon nzType="delete" style="font-size: 18px; color: #cc0000;"></i>
-                </button>
-              </ng-template>
-            </div>
-          </td>
+        
       </tr>
     </tbody>
     

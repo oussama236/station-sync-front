@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BankApiService } from 'src/app/shared/services/bank-api.service';
 import { Subscription } from 'rxjs';
 import { distinctUntilChanged, filter, map } from 'rxjs/operators';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-operations',
@@ -26,30 +28,27 @@ export class OperationsComponent implements OnInit, OnDestroy {
     station: ''
   };
 
-  natureOptions: string[] = [
-    'ESPECE_PISTE',
-    'ESPECE_SHOP',
-    'TRAITE',
-    'CARTE_BANK'
-  ];
+  natureOptions: string[] = ['ESPECE_PISTE', 'ESPECE_SHOP', 'TRAITE', 'CARTE_BANK'];
+  statutOptions: string[] = ['VIDE', 'OK'];
 
-  // 🔶 highlight + pagination
+  editId: number | null = null;
+  pageIndex = 1;
+  readonly pageSize = 6;
+
   highlightedId: number | null = null;
   private highlightTimer: any = null;
   private qpSub?: Subscription;
-
-  pageIndex = 1;
-  readonly pageSize = 6;
 
   constructor(
     private bankApiService: BankApiService,
     private route: ActivatedRoute,
     private router: Router,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private message: NzMessageService,
+    private modal: NzModalService
   ) {}
 
   ngOnInit(): void {
-    // Listen to ?highlight changes every time (works even if already on the page)
     this.qpSub = this.route.queryParamMap.pipe(
       map(p => Number(p.get('highlight'))),
       filter(id => Number.isFinite(id) && id > 0),
@@ -57,8 +56,6 @@ export class OperationsComponent implements OnInit, OnDestroy {
     ).subscribe(id => {
       this.highlightedId = id;
       this.focusHighlightedRow();
-
-      // remove the param so refresh won't re-trigger
       setTimeout(() => {
         this.router.navigate([], {
           queryParams: { highlight: null },
@@ -76,10 +73,8 @@ export class OperationsComponent implements OnInit, OnDestroy {
     this.qpSub?.unsubscribe();
   }
 
-  // Pagination change handler
   onPageIndexChange(i: number) {
     this.pageIndex = i;
-    // try focusing again after page renders
     setTimeout(() => this.doScroll(), 0);
   }
 
@@ -89,12 +84,13 @@ export class OperationsComponent implements OnInit, OnDestroy {
       next: (data) => {
         this.operations = data ?? [];
         this.loadingSpinner = false;
-        this.focusHighlightedRow(); // may jump to target page, then scroll
+        this.focusHighlightedRow();
       },
       error: (err) => {
         console.error('Erreur lors du chargement des opérations', err);
         this.loadingSpinner = false;
         this.operations = [];
+        this.message.error('Erreur lors du chargement des opérations');
       }
     });
   }
@@ -113,13 +109,12 @@ export class OperationsComponent implements OnInit, OnDestroy {
       error: () => {
         this.operations = [];
         this.loadingSpinner = false;
+        this.message.error('Erreur lors du filtrage');
       }
     });
   }
 
-  toggleForm(): void {
-    this.showForm = !this.showForm;
-  }
+  toggleForm(): void { this.showForm = !this.showForm; }
 
   submitOperation(): void {
     this.loadingSpinner = true;
@@ -129,11 +124,12 @@ export class OperationsComponent implements OnInit, OnDestroy {
         this.showForm = false;
         this.resetForm();
         this.loadingSpinner = false;
-        // no highlight on add; only when arriving via notification navigation
+        this.message.success('Opération ajoutée avec succès');
       },
       error: (err) => {
         console.error('Erreur lors de l’ajout de l’opération', err);
         this.loadingSpinner = false;
+        this.message.error('Erreur lors de l’ajout');
       }
     });
   }
@@ -158,26 +154,21 @@ export class OperationsComponent implements OnInit, OnDestroy {
         if (index !== -1) {
           this.operations[index] = { ...this.operations[index], statut: 'OK' };
         }
+        this.message.success('Statut mis à jour');
       },
       error: (err) => {
         console.error('Erreur lors du changement de statut', err);
+        this.message.error('Erreur lors de la mise à jour du statut');
       }
     });
   }
 
-  // === Highlight helpers with pagination awareness ===
   private focusHighlightedRow() {
     if (!this.highlightedId || !this.operations?.length) return;
-
-    // find the index of the target row in the full dataset
     const idx = this.operations.findIndex(o => o.idBanque === this.highlightedId);
     if (idx === -1) return;
-
-    // compute target page (1-based)
     const targetPage = Math.floor(idx / this.pageSize) + 1;
-
     if (targetPage !== this.pageIndex) {
-      // jump to that page first; table will re-render
       this.pageIndex = targetPage;
       setTimeout(() => this.doScroll(), 50);
     } else {
@@ -187,17 +178,55 @@ export class OperationsComponent implements OnInit, OnDestroy {
 
   private doScroll() {
     if (!this.highlightedId) return;
-
     clearTimeout(this.highlightTimer);
-
-    const el = document.querySelector(
-      `[data-row-id="${this.highlightedId}"]`
-    ) as HTMLElement | null;
-
+    const el = document.querySelector(`[data-row-id="${this.highlightedId}"]`) as HTMLElement | null;
     el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
     this.highlightTimer = setTimeout(() => {
       this.ngZone.run(() => { this.highlightedId = null; });
     }, 3000);
+  }
+
+  saveOperation(op: any): void {
+    if (!op?.idBanque) return;
+    this.bankApiService.updateBanque(op.idBanque, op).subscribe({
+      next: () => {
+        this.editId = null;
+        this.loadOperations();
+        this.message.success('Opération mise à jour');
+      },
+      error: (err) => {
+        console.error('Erreur mise à jour opération', err);
+        this.message.error('Erreur lors de la mise à jour');
+      }
+    });
+  }
+
+  cancelEdit(): void {
+    this.editId = null;
+    this.loadOperations();
+    this.message.info('Modification annulée');
+  }
+
+  // ✅ Modal de suppression
+  deleteOperation(op: any): void {
+    if (!op?.idBanque) return;
+
+    this.modal.confirm({
+      nzTitle: 'Confirmation de suppression',
+      nzContent: `Voulez-vous vraiment supprimer l’opération n° ${op.numeroBordereau || op.idBanque} ?`,
+      nzOkText: 'Oui',
+      nzCancelText: 'Annuler',
+      nzOkDanger: true,
+      nzWidth: '500px',
+      nzCentered: true,
+      nzOnOk: () =>
+        this.bankApiService.deleteBanque(op.idBanque).subscribe({
+          next: () => {
+            this.message.success('Opération supprimée avec succès');
+            this.loadOperations();
+          },
+          error: () => this.message.error('Erreur lors de la suppression')
+        })
+    });
   }
 }

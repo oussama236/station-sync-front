@@ -30,13 +30,20 @@ export class NavBarComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const rawUsername = this.authService.getUsername?.();
     this.username = rawUsername ? `Mr. ${rawUsername}` : null;
-
-    this.loadUnreadCount();
-    this.loadRecentNotifications();
-
+  
+    // ✅ Load notifications immediately if already logged in
+    if (this.authService.token) {
+      this.refreshNotifications();
+    }
+  
+    // ✅ Also reload after any navigation (for example: after login → /home)
     this.routerSub = this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
-      .subscribe(() => this.loadUnreadCount());
+      .subscribe(() => {
+        if (this.authService.token) {
+          this.refreshNotifications();
+        }
+      });
   }
 
   ngOnDestroy(): void {
