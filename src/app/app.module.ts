@@ -52,6 +52,8 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { StatementComponent } from './root/bank/statement/statement.component';
+import { AiAnalysisComponent } from './root/ai/ai-analysis/ai-analysis.component';
+import { AiIndexComponent } from './root/ai/index/ai-index/ai-index.component';
 
 
 
@@ -93,6 +95,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     LoginComponent,
     RegisterComponent,
     StatementComponent,
+    AiAnalysisComponent,
+    AiIndexComponent,
 
 
   ],

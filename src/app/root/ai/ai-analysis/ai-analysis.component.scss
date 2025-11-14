@@ -1,0 +1,99 @@
+:host { display: block; }
+
+/* Keep content inside page column */
+.ai-container {
+  max-width: 1100px;    /* adapt to your page column width */
+  width: 100%;
+  margin: 0 auto;
+  padding: 12px;
+}
+
+.full { width: 100%; box-sizing: border-box; }
+
+.subtitle { margin: 0 0 8px 0; opacity: .8; }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+
+.history { display: grid; gap: 10px; margin-top: 12px; }
+.history-item { border-radius: 12px; }
+.qline { display: flex; justify-content: space-between; align-items: baseline; }
+.time { opacity: .6; font-size: 12px; }
+.aline .bubble { background: #f6ffed; border: 1px solid #b7eb8f; padding: 8px 10px; border-radius: 8px; display: inline-block; }
+
+.result-card { border-radius: 16px; margin-top: 12px; }
+.answer { font-size: 15px; line-height: 1.5; margin-bottom: 8px; overflow-wrap: anywhere; }
+
+.sql { display: none; } /* safety — never show */
+
+.table-wrap { overflow-x: auto; } /* wrapper ensures scroll on small screens */
+.result-table { margin-top: 8px; white-space: nowrap; } /* prevent cell wrapping that widens card */
+
+.footer-line {
+  margin-top: 10px;
+  display: flex; justify-content: space-between; align-items: center;
+  opacity: .9;
+}
+
+/* Ask bar sticks within the container (not full page) */
+.askbar {
+  position: sticky;
+  bottom: 0;
+  display: flex; gap: 8px; align-items: center;
+  background: #fff; padding: 10px; border-top: 1px solid #f0f0f0; margin-top: 12px;
+
+  textarea { flex: 1; resize: none; max-height: 120px; }
+}
+
+/* mini bar chart */
+.mini-chart {
+  margin: 8px 0 12px 0;
+  padding: 10px 12px;
+  border: 1px solid #f0f0f0;
+  border-radius: 10px;
+  background: #fafafa;
+
+  /* if bars are many, allow horizontal scroll without breaking layout */
+  &.scroll-x { overflow-x: auto; }
+
+  .chart-title {
+    font-weight: 600;
+    margin-bottom: 8px;
+    opacity: .9;
+  }
+
+  .bars {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(56px, 1fr);
+    gap: 8px;
+    align-items: end;
+    min-height: 140px;
+  }
+
+  .bar {
+    display: grid;
+    grid-template-rows: 1fr auto auto;
+    gap: 4px;
+    text-align: center;
+  }
+
+  .bar-fill {
+    background: #1677ff22;
+    border: 1px solid #1677ff55;
+    border-radius: 6px 6px 0 0;
+    transition: height .3s ease;
+  }
+
+  .bar-label {
+    font-size: 11px;
+    line-height: 1.1;
+    max-height: 24px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .bar-value {
+    font-size: 12px;
+    opacity: .85;
+  }
+}

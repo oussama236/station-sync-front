@@ -1,4 +1,5 @@
 export const environment = {
   production: false,
-  shellApiUrl: 'https://unadministrable-margravial-zelda.ngrok-free.dev/SS'
+  shellApiUrl: 'https://station-sync-render.onrender.com/SS',
+  aiApiUrl: 'https://station-sync-render.onrender.com/SS'
 };

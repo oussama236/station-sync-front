@@ -1,0 +1,77 @@
+<div class="ai-container">
+    <nz-card nzTitle="Analyse IA" class="full">
+      <p class="subtitle">Posez vos questions en français sur vos données StationSync.</p>
+  
+      <!-- Chips -->
+      <div class="chips">
+        <nz-tag *ngFor="let c of contexts"
+                nzMode="checkable"
+                [nzChecked]="selected === c.key"
+                (nzCheckedChange)="pick(c.key)">
+          {{ c.label }}
+        </nz-tag>
+      </div>
+    </nz-card>
+  
+    <!-- Current result (no SQL shown) -->
+    <nz-card *ngIf="result" nzTitle="Résultat" class="result-card full">
+        <p class="answer" *ngIf="result.answerText">
+            {{ cleanAnswer(result.answerText) }}
+          </p>
+            
+      <!-- Mini chart (auto) -->
+      <div *ngIf="chart" class="mini-chart scroll-x">
+        <div class="chart-title">{{ chart.title }}</div>
+        <div class="bars">
+          <div class="bar" *ngFor="let v of chart.values; let i = index">
+            <div class="bar-fill" [style.height.%]="(v / chart.max) * 100"></div>
+            <div class="bar-label" [title]="chart.labels[i]">{{ chart.labels[i] }}</div>
+            <div class="bar-value">{{ v | number:'1.0-0' }}</div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Table: scroll horizontally if wide -->
+      <div class="table-wrap">
+        <nz-table *ngIf="hasRows()"
+                  [nzData]="result.rowsPreview"
+                  [nzFrontPagination]="false"
+                  [nzScroll]="{ x: 'max-content' }"
+                  nzSize="middle"
+                  class="result-table">
+          <thead>
+            <tr>
+              <th *ngFor="let key of colKeys()">{{ key }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of result.rowsPreview">
+              <td *ngFor="let key of colKeys()">{{ row[key] }}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+  
+      <div class="footer-line">
+        <button nz-button nzType="default" nzSize="small" (click)="clear()">Effacer</button>
+      </div>
+    </nz-card>
+  
+    <!-- Ask bar -->
+    <div class="askbar full">
+      <textarea nz-input
+                [disabled]="!selected || loading"
+                [(ngModel)]="question"
+                rows="1"
+                placeholder="{{ selected ? 'Écrivez votre question… (Entrée pour envoyer)' : 'Choisissez une table pour commencer' }}"
+                (keydown.enter)="onEnter($event)"></textarea>
+  
+      <button nz-button nzType="primary"
+              [disabled]="!selected || !question.trim() || loading"
+              (click)="ask()">
+        <span *ngIf="!loading">Envoyer</span>
+        <span *ngIf="loading">…</span>
+      </button>
+    </div>
+  </div>
+  

@@ -18,6 +18,9 @@ import { OperationsComponent } from './root/bank/operations/operations.component
 import { RegisterComponent } from './root/auth/register/register.component';
 import { LoginComponent } from './root/auth/login/login.component';
 import { StatementComponent } from './root/bank/statement/statement.component';
+import { AiAnalysisComponent } from './root/ai/ai-analysis/ai-analysis.component';
+import { AiIndexComponent } from './root/ai/index/ai-index/ai-index.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -51,6 +54,16 @@ const routes: Routes = [
       { path: 'prelevements', component: PrelevementsComponent },
       { path: 'operations', component: OperationsComponent },
       { path: 'statement', component: StatementComponent },
+    ]
+  },
+
+  {
+    path: 'ai',
+    component: AiIndexComponent,      // layout (sidebar + breadcrumb)
+    canActivate: [AuthGuard],
+    children: [
+      { path: '', component: AiAnalysisComponent }, // default: /ai
+      // you can add more AI sub-pages later here
     ]
   },
 

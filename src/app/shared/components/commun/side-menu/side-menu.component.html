@@ -1,6 +1,6 @@
 <nz-sider >
     <ul class="side-menu-holder" nz-menu nzMode="inline" [nzTheme]="'dark'">
-        <li class="side-menu-title-holder" nz-menu-group nzTitle="Shell">
+        <li class="side-menu-title-holder" nz-menu-group nzTitle="Factures">
           <ul>
             <li nz-menu-item nzSelected routerLink="/shell/factures">Toutes les factures</li>
             <li nz-menu-item routerLink="/shell/avoir">Avoir</li>
@@ -10,11 +10,19 @@
             <li nz-menu-item routerLink="/shell/analyse">Statistiques</li>
           </ul>
         </li>
-        <li class="side-menu-title-holder" nz-menu-group nzTitle="Bank">
+        <li class="side-menu-title-holder" nz-menu-group nzTitle="Banque">
           <ul>
             <li nz-menu-item [nzSelected]="test ? true : false" routerLink="/bank/prelevements">Prélèvements</li>
             <li nz-menu-item [nzSelected]="test ? true : false" routerLink="/bank/operations">Operations</li>
             <li nz-menu-item [nzSelected]="test ? true : false" routerLink="/bank/statement">Statement</li>
+
+          </ul>
+        </li>
+
+        <li class="side-menu-title-holder" nz-menu-group nzTitle="Statistiques">
+          <ul>
+            <li nz-menu-item routerLink="/ai" routerLinkActive="ant-menu-item-selected">Ai</li>
+          
 
           </ul>
         </li>
