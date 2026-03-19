@@ -1,12 +1,41 @@
 <div class="statement-header">
+  <div class="header-title">
     <h2>📄 Relevé Bancaire</h2>
-    <div class="balance-box">
-      <span class="balance-label">Solde :</span>
-      <span class="balance-value" [ngClass]="{ 'positive': getBalance() > 0, 'negative': getBalance() < 0 }">
-        {{ getBalance() | number:'1.2-2' }} TND
-      </span>
-    </div>
   </div>
+
+  <div class="header-filters">
+    <div class="filter-group">
+      <label for="dateFrom">De</label>
+      <input id="dateFrom" type="date" [(ngModel)]="dateFrom" />
+    </div>
+
+    <div class="filter-group">
+      <label for="dateTo">À</label>
+      <input id="dateTo" type="date" [(ngModel)]="dateTo" />
+    </div>
+
+    <button class="search-btn" (click)="searchStatement()">
+      Rechercher
+    </button>
+
+    <button class="download-btn" (click)="downloadPdf()">
+      Télécharger
+    </button>
+  </div>
+
+  <div class="balance-box">
+    <span class="balance-label">Solde :</span>
+    <span
+      class="balance-value"
+      [ngClass]="{
+        'positive': getBalance() > 0,
+        'negative': getBalance() < 0
+      }"
+    >
+      {{ getBalance() | number:'1.2-2' }} TND
+    </span>
+  </div>
+</div>
   
   <div class="table-wrapper">
     <table class="statement-table">
@@ -27,14 +56,14 @@
           <td>{{ r.credit?.dateOperation | date:'dd/MM/yyyy' }}</td>
           <td>{{ r.credit?.natureOperationBank || '' }}</td>
           <td class="credit vr">
-            {{ r.credit?.montant ? '+ ' + (r.credit.montant | number:'1.2-2') : '' }}
+            {{ r.credit?.montant ? '+ ' + (r.credit.montant.toFixed(3)) : '' }}
           </td>
       
           <!-- Débit (right) -->
           <td>{{ r.debit?.dateOperation | date:'dd/MM/yyyy' }}</td>
           <td>{{ r.debit ? 'Prélèvement' : '' }}</td>
           <td class="debit">
-            {{ r.debit?.montant ? '- ' + (r.debit.montant | number:'1.2-2') : '' }}
+            {{ r.debit?.montant ? '- ' + (r.debit.montant.toFixed(3) ) : '' }}
           </td>
         </tr>
       </tbody>
@@ -44,10 +73,10 @@
       <tfoot>
         <tr class="totals-row">
           <th colspan="2" class="text-end">Total Crédits :</th>
-          <th class="credit vr total-value">+ {{ totalCredits() | number:'1.2-2' }}</th>
+          <th class="credit vr total-value">+ {{ totalCredits() }}</th>
           <th></th>
           <th class="text-end">Total Débits :</th>
-          <th class="debit total-value">- {{ totalDebits() | number:'1.2-2' }}</th>
+          <th class="debit total-value">- {{ totalDebits()}}</th>
         </tr>
       </tfoot>
     </table>

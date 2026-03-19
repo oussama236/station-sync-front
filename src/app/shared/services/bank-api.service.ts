@@ -40,9 +40,30 @@ export class BankApiService {
     return this.http.put(`${this.bankApiUrl}/Banque/statut/${id}`, {});
   }
 
-  getBankStatement(station?: string): Observable<any> {
+  getBankStatement(dateFrom?: string, dateTo?: string, station?: string): Observable<any> {
     const params: any = {};
+  
+    if (dateFrom) params.dateFrom = dateFrom;
+    if (dateTo) params.dateTo = dateTo;
     if (station) params.station = station;
+  
     return this.http.get(`${this.bankApiUrl}/api/bank-statement`, { params });
   }
+
+  downloadBankStatementPdf(dateFrom?: string, dateTo?: string) {
+    let params: any = {};
+  
+    if (dateFrom) {
+      params.dateFrom = dateFrom;
+    }
+  
+    if (dateTo) {
+      params.dateTo = dateTo;
+    }
+    return this.http.get(`${this.bankApiUrl}/api/bank-statement/pdf`, {
+      params,
+      responseType: 'blob'
+    });
+  }
+
 }

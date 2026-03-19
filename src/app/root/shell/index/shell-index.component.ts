@@ -19,7 +19,6 @@ export class ShellIndexComponent implements OnInit, OnDestroy {
     this.url = this.router.url;
     console.log("Shell URL:", this.url);
     
-    // Subscribe to router navigation events to update URL on navigation
     this.routerSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event) => {
@@ -30,7 +29,6 @@ export class ShellIndexComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Clean up subscription to prevent memory leaks
     this.routerSubscription.unsubscribe();
   }
 }

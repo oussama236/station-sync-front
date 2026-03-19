@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Notification } from '../models/notification.model';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 
 @Injectable({ providedIn: 'root' })
@@ -15,7 +15,12 @@ export class NotificationApiService {
 
   // notification-api.service.ts
 getAllNotifications(): Observable<Notification[]> {
-  return this.http.get<Notification[]>(`${this.baseUrl}/dropdown`);
+  return this.http.get<Notification[]>(`${
+    this.baseUrl}/dropdown`
+    )
+    .pipe(
+      tap((data) => console.log("notif data", data))
+    )
 }
 
   

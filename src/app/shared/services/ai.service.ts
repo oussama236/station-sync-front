@@ -7,7 +7,7 @@ import { AiNlQueryRequest, AiNlQueryResponse } from '../models/ai-nl.types';
 
 @Injectable({ providedIn: 'root' })
 export class AiApiService {
-  private aiApiUrl = environment.aiApiUrl; // e.g. https://.../SS
+  private aiApiUrl = environment.aiApiUrl; 
 
   constructor(private http: HttpClient) {}
 

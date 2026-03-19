@@ -78,6 +78,8 @@ export class NavBarComponent implements OnInit, OnDestroy {
           (a, b) => +new Date(b.createdAt) - +new Date(a.createdAt)
         );
         this.recentNotifications = openOrRead; // ✅ no slice() → show all
+
+        console.log("recentNotifications", this.recentNotifications)
       },
       error: () => (this.recentNotifications = []),
     });
