@@ -1,32 +1,31 @@
 import { Injectable } from '@angular/core';
 import {
-  HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest
+  HttpEvent, HttpHandler, HttpInterceptor,
+  HttpRequest, HttpErrorResponse
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
-  constructor(private auth: AuthService) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.auth.token;
+    console.log('🛡️ Interceptor:', req.url, '| token:', token ? '✅' : '❌ NULL'); // 👈 add this
 
-    // 🔹 Skip auth endpoints + static assets
+
     const SKIP = ['/auth/login', '/auth/register', '/login', '/register', '/assets/'];
     const shouldSkip = SKIP.some(s => req.url.includes(s));
 
-    // ✅ Add Authorization header if we have a token and not skipping
     if (token && !shouldSkip) {
       req = req.clone({
         setHeaders: { Authorization: `Bearer ${token}` }
       });
     }
 
-    // ✅ Add special ngrok header (to bypass browser warning HTML)
     if (req.url.includes('ngrok-free.dev')) {
       req = req.clone({
         setHeaders: {
@@ -36,6 +35,15 @@ export class JwtInterceptor implements HttpInterceptor {
       });
     }
 
-    return next.handle(req);
+    // 👇 Only this line changes
+    return next.handle(req).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401) {
+          localStorage.removeItem('token');
+          this.router.navigate(['/auth/login']);
+        }
+        return throwError(() => error);
+      })
+    );
   }
 }

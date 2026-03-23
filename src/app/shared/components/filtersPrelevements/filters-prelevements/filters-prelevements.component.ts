@@ -15,16 +15,21 @@ export class FiltersPrelevementsComponent {
   @Output() filtresStarted = new EventEmitter<void>(); // ✅ Ajout pour le spinner dans le parent
 
   constructor(private prelevementApiService: PrelevementApiService) {}
-
   lancerRecherche() {
-    this.filtresStarted.emit(); // ✅ Signale au parent que le chargement commence
-
+    console.log('🔑 Token:', localStorage.getItem('token'));
+    console.log('🔑 authToken:', localStorage.getItem('authToken'));
+    console.log('🔑 jwt:', localStorage.getItem('jwt'));
+    // log ALL localStorage keys to find where the token is stored
+    console.log('🔑 All localStorage:', JSON.stringify(localStorage));
+    
+    this.filtresStarted.emit();
+  
     this.prelevementApiService.searchPrelevements(
       this.selectedDate || undefined,
       this.selectedMontant !== null ? this.selectedMontant : undefined
     ).subscribe({
       next: (data) => {
-        this.filtresAppliques.emit(data); // ✅ Résultats reçus → émis au parent
+        this.filtresAppliques.emit(data);
       },
       error: (err) => {
         console.error('Erreur lors de la recherche :', err);

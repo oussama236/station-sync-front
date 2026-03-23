@@ -23,7 +23,7 @@ export class OperationsComponent implements OnInit, OnDestroy {
     dateOperation: '',
     natureOperationBank: '',
     numeroBordereau: '',
-    montant: 0,
+    montant: null,
     numeroCompte: 20,
     station: ''
   };

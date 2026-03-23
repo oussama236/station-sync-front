@@ -7,8 +7,8 @@
       background-color: #f0f5ff;
       border: 1px solid #91d5ff;
       border-radius: 6px;
-      padding: 10px 16px;
-      font-size: 17px;
+      padding: 6px 12px;
+      font-size: 14px;
       font-weight: 600;
       color: #0050b3;
       width: fit-content;
@@ -25,7 +25,7 @@
     [ngStyle]="
       showForm
         ? { width: '45px', height: '45px', padding: '0', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '18px', fontWeight: 'bold' }
-        : { padding: '10px 24px', height: '45px', fontSize: '16px' }">
+        : { padding: '6px 12px', height: '45px', fontSize: '14px' }">
     <span *ngIf="!showForm">+ Ajouter Operation</span>
     <span *ngIf="showForm">X</span>
   </button>
@@ -33,57 +33,58 @@
 
 <!-- Formulaire d'ajout visible uniquement après clic -->
 <div *ngIf="showForm" style="margin-top: 20px;">
-  <div style="display: flex; flex-wrap: wrap; gap: 45px; align-items: center;">
+  <div style="display: flex; flex-wrap: nowrap; gap: 45px; align-items: flex-end; overflow-x: auto;">
 
-    <label style="display: flex; flex-direction: column;">
+    <label style="display: flex; flex-direction: column; white-space: nowrap;">
       Date:
       <input nz-input type="date" [(ngModel)]="newOperation.dateOperation" name="dateOperation" required />
     </label>
 
-    <label style="display: flex; flex-direction: column;">
+    <label style="display: flex; flex-direction: column; white-space: nowrap;">
       Nature:
       <nz-select [(ngModel)]="newOperation.natureOperationBank" name="natureOperationBank" style="width: 160px;" placeholder="Nature">
         <nz-option *ngFor="let option of natureOptions" [nzValue]="option" [nzLabel]="option"></nz-option>
       </nz-select>
     </label>
 
-    <label style="display: flex; flex-direction: column;">
+    <label style="display: flex; flex-direction: column; white-space: nowrap;">
       Numéro Bordereau:
       <input nz-input type="text" [(ngModel)]="newOperation.numeroBordereau" name="numeroBordereau" required />
     </label>
 
-    <label style="display: flex; flex-direction: column;">
+    <label style="display: flex; flex-direction: column; white-space: nowrap;">
       Montant:
       <input nz-input type="number" [(ngModel)]="newOperation.montant" name="montant" required />
     </label>
 
-    <label style="display: flex; flex-direction: column;">
+    <label style="display: flex; flex-direction: column; white-space: nowrap;">
       Compte:
-      <input nz-input type="number" [(ngModel)]="newOperation.numeroCompte" name="numeroCompte" required />
+      <input nz-input type="number" [(ngModel)]="newOperation.numeroCompte" name="numeroCompte" disabled style="background:none;border:none;outline:none;color:#000000;font-weight:500;font-size:17px;"/>
     </label>
 
-    <label style="display: flex; flex-direction: column;">
+    <label style="display: flex; flex-direction: column; white-space: nowrap;">
       Station:
       <nz-select [(ngModel)]="newOperation.station" name="station" style="width: 130px;" placeholder="Station">
         <nz-option *ngFor="let station of stationOptions" [nzValue]="station" [nzLabel]="station"></nz-option>
       </nz-select>
     </label>
 
-    <nz-col nzSpan="3">
-      <button nz-button nzType="primary" (click)="submitOperation()" style="height: 35px; width: 80%; margin-top: 15px;">
+    <div style="display: flex; flex-direction: column; justify-content: flex-end;">
+      <button nz-button nzType="primary" (click)="submitOperation()" style="height: 35px; width: 80px;">
         Valider
       </button>
-    </nz-col>
+    </div>
 
   </div>
 </div>
+
 
 <!-- Tableau des opérations -->
 <div class="operations-table-holder">
   <nz-table
     #basicTable
     [nzData]="operations"
-    [nzScroll]="{ y: '300px' }"
+    [nzScroll]="{ y: showForm ? '220px' : '300px' }"
     [nzPageSize]="pageSize"
     [nzPageIndex]="pageIndex"
     (nzPageIndexChange)="onPageIndexChange($event)"

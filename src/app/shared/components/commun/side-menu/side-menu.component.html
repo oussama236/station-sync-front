@@ -1,30 +1,50 @@
-<nz-sider >
-    <ul class="side-menu-holder" nz-menu nzMode="inline" [nzTheme]="'dark'">
-        <li class="side-menu-title-holder" nz-menu-group nzTitle="Factures">
-          <ul>
-            <li nz-menu-item nzSelected routerLink="/shell/factures">Toutes les factures</li>
-            <li nz-menu-item routerLink="/shell/avoir">Avoir</li>
-            <li nz-menu-item routerLink="/shell/carburant">Carburant</li>
-            <li nz-menu-item routerLink="/shell/lubrifiant">Lubrifiant</li>
-            <li nz-menu-item routerLink="/shell/loyer">Loyer</li>
-            <li nz-menu-item routerLink="/shell/analyse">Statistiques</li>
-          </ul>
-        </li>
-        <li class="side-menu-title-holder" nz-menu-group nzTitle="Banque">
-          <ul>
-            <li nz-menu-item [nzSelected]="test ? true : false" routerLink="/bank/prelevements">Prélèvements</li>
-            <li nz-menu-item [nzSelected]="test ? true : false" routerLink="/bank/operations">Operations</li>
-            <li nz-menu-item [nzSelected]="test ? true : false" routerLink="/bank/statement">Statement</li>
+<nz-sider>
+  <ul class="side-menu-holder" nz-menu nzMode="inline" [nzTheme]="'dark'">
 
-          </ul>
+    <li class="side-menu-title-holder" nz-menu-group nzTitle="Factures">
+      <ul>
+        <li nz-menu-item routerLink="/shell/factures" routerLinkActive="ant-menu-item-selected" [routerLinkActiveOptions]="{ exact: true }">
+          Toutes les factures
         </li>
-
-        <li class="side-menu-title-holder" nz-menu-group nzTitle="Statistiques">
-          <ul>
-            <li nz-menu-item routerLink="/ai" routerLinkActive="ant-menu-item-selected">Ai</li>
-          
-
-          </ul>
+        <li nz-menu-item routerLink="/shell/avoir" routerLinkActive="ant-menu-item-selected">
+          Avoir
         </li>
-    </ul>
+        <li nz-menu-item routerLink="/shell/carburant" routerLinkActive="ant-menu-item-selected">
+          Carburant
+        </li>
+        <li nz-menu-item routerLink="/shell/lubrifiant" routerLinkActive="ant-menu-item-selected">
+          Lubrifiant
+        </li>
+        <li nz-menu-item routerLink="/shell/loyer" routerLinkActive="ant-menu-item-selected">
+          Loyer
+        </li>
+        <li nz-menu-item routerLink="/shell/analyse" routerLinkActive="ant-menu-item-selected">
+          Statistiques
+        </li>
+      </ul>
+    </li>
+
+    <li class="side-menu-title-holder" nz-menu-group nzTitle="Banque">
+      <ul>
+        <li nz-menu-item routerLink="/bank/prelevements" routerLinkActive="ant-menu-item-selected">
+          Prélèvements
+        </li>
+        <li nz-menu-item routerLink="/bank/operations" routerLinkActive="ant-menu-item-selected">
+          Operations
+        </li>
+        <li nz-menu-item routerLink="/bank/statement" routerLinkActive="ant-menu-item-selected">
+          Statement
+        </li>
+      </ul>
+    </li>
+
+    <li class="side-menu-title-holder" nz-menu-group nzTitle="AI">
+      <ul>
+        <li nz-menu-item routerLink="/ai" routerLinkActive="ant-menu-item-selected" [routerLinkActiveOptions]="{ exact: true }">
+          Ask me
+        </li>
+      </ul>
+    </li>
+
+  </ul>
 </nz-sider>

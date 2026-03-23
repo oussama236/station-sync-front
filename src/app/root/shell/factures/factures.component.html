@@ -19,54 +19,53 @@
 
 <!-- Formulaire d'ajout -->
 <div *ngIf="showForm" style="margin-top:20px;">
-  <div style="display:flex;flex-wrap:wrap;gap:45px;align-items:center;">
-    <label style="display:flex;flex-direction:column;">
-      Date:
+  <div style="display:flex;flex-wrap:nowrap;gap:20px;align-items:flex-end;overflow-x:auto;">
+
+    <label style="display:flex;flex-direction:column;white-space:nowrap;">
+      Date
       <input nz-input type="date" [(ngModel)]="newFacture.dateOperation" name="dateOperation" required (ngModelChange)="calculateDatePrelevement()" />
     </label>
 
-    <label style="display:flex;flex-direction:column;">
-      #Num:
+    <label style="display:flex;flex-direction:column;white-space:nowrap;">
+      Num Facture
       <input nz-input type="text" [(ngModel)]="newFacture.numeroFacture" name="numeroFacture" required />
     </label>
 
-    <label style="display:flex;flex-direction:column;">
-      Nature:
+    <label style="display:flex;flex-direction:column;white-space:nowrap;">
+      Nature
       <nz-select [(ngModel)]="newFacture.natureOperation" name="natureOperation" style="width:200px;" placeholder="Nature"
                  (ngModelChange)="calculateDatePrelevement()">
         <nz-option *ngFor="let option of natureOptions" [nzValue]="option" [nzLabel]="option"></nz-option>
       </nz-select>
     </label>
 
-    <label style="display:flex;flex-direction:column;">
-      Montant:
+    <label style="display:flex;flex-direction:column;white-space:nowrap;">
+      Montant
       <input nz-input type="number" [(ngModel)]="newFacture.montant" name="montant" required />
     </label>
 
-    <label style="display:flex;flex-direction:column;">
-      Station:
+    <label style="display:flex;flex-direction:column;white-space:nowrap;">
+      Station
       <nz-select [(ngModel)]="newFacture.station" name="station" style="width:150px;" placeholder="Station">
         <nz-option *ngFor="let station of stationOptions" [nzValue]="station" [nzLabel]="station"></nz-option>
       </nz-select>
     </label>
 
-    <label style="display:flex;flex-direction:column;">
-      Date Prélèvement (calculée):
+    <label style="display:flex;flex-direction:column;white-space:nowrap;">
+      Date Prélèvement 
       <input
         type="date"
         [value]="newFacture.calculatedDatePrelevement"
         disabled
         style="background:none;border:none;outline:none;color:#000000;font-weight:500;font-size:17px;"/>
     </label>
-    
-    
 
-    <nz-col nzSpan="3">
-      <button nz-button nzType="primary" (click)="submitFacture()"
-              style="height:35px;width:80%;margin-top:15px;">
+    <div style="display:flex;flex-direction:column;justify-content:flex-end;">
+      <button nz-button nzType="primary" (click)="submitFacture()" style="height:35px;width:80px;">
         Valider
       </button>
-    </nz-col>
+    </div>
+
   </div>
 </div>
 
@@ -76,7 +75,7 @@
     #basicTable
     [nzData]="shells"
     [nzPaginationPosition]="'top'"
-    [nzScroll]="{ y: '300px' }"
+    [nzScroll]="{ y: showForm ? '220px' : '300px' }"
     [nzPageSize]="pageSize"
     [nzPageIndex]="pageIndex"
     (nzPageIndexChange)="onPageIndexChange($event)"

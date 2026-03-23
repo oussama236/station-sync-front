@@ -16,7 +16,7 @@ export class PrelevementsComponent implements OnInit {
 
   // Add
   showForm = false;
-  newPrelevement: any = { dateOperation: '', numeroCompte: 20, montant: 0 };
+  newPrelevement: any = { dateOperation: '', numeroCompte: 20, montant: null };
 
   // Edit inline
   editId: number | null = null;

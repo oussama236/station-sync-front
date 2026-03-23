@@ -25,7 +25,7 @@ export class FacturesComponent implements OnInit, OnDestroy {
     dateOperation: '',
     numeroFacture: '',
     natureOperation: '',
-    montant: 0,
+    montant: null,
     station: '',
     calculatedDatePrelevement: ''
   };
@@ -111,7 +111,7 @@ export class FacturesComponent implements OnInit, OnDestroy {
       dateOperation: '',
       numeroFacture: '',
       natureOperation: '',
-      montant: 0,
+      montant: '',
       station: '',
       calculatedDatePrelevement: ''
     };
