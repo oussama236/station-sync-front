@@ -95,13 +95,18 @@ pipeline {
 }
 
     stage('Deploy to VM') {
-  when { branch 'main' }
+  when {
+    anyOf {
+      expression { env.GIT_BRANCH == 'origin/main' }
+      expression { env.BRANCH_NAME == 'main' }
+      expression { env.CHANGE_TARGET == 'main' }
+    }
+  }
   steps {
     sh """
       set -e
       cd /opt/stationsync
 
-      # Use the freshly built tag WITHOUT touching .env
       FRONT_IMAGE=${IMAGE_NAME}:${TAG} docker compose pull frontend
       FRONT_IMAGE=${IMAGE_NAME}:${TAG} docker compose up -d --no-deps --force-recreate --pull always frontend
 
@@ -110,7 +115,6 @@ pipeline {
     """
   }
 }
-
   }
 
   post {
