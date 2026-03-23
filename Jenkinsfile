@@ -85,6 +85,15 @@ pipeline {
       }
     }
 
+    stage('Debug Branch') {
+  steps {
+    echo "BRANCH_NAME = ${env.BRANCH_NAME}"
+    echo "GIT_BRANCH = ${env.GIT_BRANCH}"
+    echo "CHANGE_BRANCH = ${env.CHANGE_BRANCH}"
+    echo "CHANGE_TARGET = ${env.CHANGE_TARGET}"
+  }
+}
+
     stage('Deploy to VM') {
   when { branch 'main' }
   steps {
