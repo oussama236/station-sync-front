@@ -14,7 +14,6 @@ export class JwtInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.auth.token;
-    console.log('🛡️ Interceptor:', req.url, '| token:', token ? '✅' : '❌ NULL'); // 👈 add this
 
 
     const SKIP = ['/auth/login', '/auth/register', '/login', '/register', '/assets/'];

@@ -74,10 +74,16 @@ export class AiAnalysisComponent {
         this.loading = false;
         this.msg.success(`Résultats: ${res.rowCount} ligne(s)`);
       },
-      error: () => {
+      error: (error) => {
         this.result = undefined;
         this.chart = undefined;
         this.loading = false;
+      
+        if (error.status === 503) {
+          this.msg.warning(error?.error?.message || 'Le service AI est temporairement indisponible. Veuillez réessayer plus tard.');
+          return;
+        }
+      
         this.msg.error('Erreur lors de la requête IA');
       }
     });

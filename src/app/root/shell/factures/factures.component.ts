@@ -217,7 +217,7 @@ export class FacturesComponent implements OnInit, OnDestroy {
     this.shellApiService.updateShell(facture.idShell, facture).subscribe({
       next: () => {
         this.shellApiService.updateStatuts().subscribe({
-          next: () => { this.message.success('Facture mise à jour et statut recalculé'); this.editId = null; this.loadShells(); },
+          next: () => { this.message.success('Facture mise à jour'); this.editId = null; this.loadShells(); },
           error: () => { this.message.success('Facture mise à jour'); this.editId = null; this.loadShells(); }
         });
       },

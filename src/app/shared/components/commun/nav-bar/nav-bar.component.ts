@@ -29,7 +29,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const rawUsername = this.authService.getUsername?.();
-    this.username = rawUsername ? `Mr. ${rawUsername}` : null;
+    this.username = rawUsername ? `Bonjour ${rawUsername}` : null;
   
     // ✅ Load notifications immediately if already logged in
     if (this.authService.token) {

@@ -105,47 +105,77 @@
         <!-- Date -->
         <td>
           <ng-container *ngIf="editId === data.idShell; else viewDate">
-            <input nz-input type="date" [(ngModel)]="data.dateOperation" (ngModelChange)="onEditFactureChange(data)" />
+            <input
+              nz-input
+              type="date"
+              [(ngModel)]="data.dateOperation"
+              [disabled]="data.statut === 'OK'"
+              (ngModelChange)="onEditFactureChange(data)" />
           </ng-container>
-          <ng-template #viewDate>{{ data.dateOperation | date: 'd MMMM y':'':'fr' }}</ng-template>
+          <ng-template #viewDate>
+            {{ data.dateOperation | date: 'd MMMM y':'':'fr' }}
+          </ng-template>
         </td>
 
         <!-- Numéro -->
         <td>
           <ng-container *ngIf="editId === data.idShell; else viewNum">
-            <input nz-input [(ngModel)]="data.numeroFacture" />
+            <input
+              nz-input
+              [(ngModel)]="data.numeroFacture" />
           </ng-container>
-          <ng-template #viewNum>{{ data.numeroFacture }}</ng-template>
+          <ng-template #viewNum>
+            {{ data.numeroFacture }}
+          </ng-template>
         </td>
 
         <!-- Nature -->
         <td>
           <ng-container *ngIf="editId === data.idShell; else viewNature">
-            <nz-select [(ngModel)]="data.natureOperation" (ngModelChange)="onEditFactureChange(data)" style="width:100%;">
-              <nz-option *ngFor="let option of natureOptions" [nzValue]="option" [nzLabel]="option">
-                {{ option }}
+            <nz-select
+              [(ngModel)]="data.natureOperation"
+              [nzDisabled]="data.statut === 'OK'"
+              (ngModelChange)="onEditFactureChange(data)"
+              style="width:100%;">
+              <nz-option
+                *ngFor="let option of natureOptions"
+                [nzValue]="option"
+                [nzLabel]="option">
               </nz-option>
             </nz-select>
           </ng-container>
-          <ng-template #viewNature>{{ data.natureOperation }}</ng-template>
+          <ng-template #viewNature>
+            {{ data.natureOperation }}
+          </ng-template>
         </td>
 
         <!-- Date Prélèvement -->
         <td>
           <ng-container *ngIf="editId === data.idShell; else viewPrel">
-            <input nz-input type="date"
-                   [value]="data._calcDatePrelevement || (data.dateOperation && data.natureOperation ? (computePrelevement(data.dateOperation, data.natureOperation)) : '')"
-                   disabled style="background:none;border:none;outline:none;color:#000000;font-weight:500;" />
+            <input
+              nz-input
+              type="date"
+              [value]="data._calcDatePrelevement || (data.dateOperation && data.natureOperation ? computePrelevement(data.dateOperation, data.natureOperation) : '')"
+              disabled
+              style="background:none;border:none;outline:none;color:#000000;font-weight:500;" />
           </ng-container>
-          <ng-template #viewPrel>{{ data.datePrelevement | date: 'd MMMM y':'':'fr' }}</ng-template>
+          <ng-template #viewPrel>
+            {{ data.datePrelevement | date: 'd MMMM y':'':'fr' }}
+          </ng-template>
         </td>
 
         <!-- Montant -->
         <td>
           <ng-container *ngIf="editId === data.idShell; else viewMontant">
-            <input nz-input type="number" [(ngModel)]="data.montant" />
+            <input
+              nz-input
+              type="number"
+              [(ngModel)]="data.montant"
+              [disabled]="data.statut === 'OK'" />
           </ng-container>
-          <ng-template #viewMontant>{{ data.montant.toFixed(3) }}</ng-template>
+          <ng-template #viewMontant>
+            {{ data.montant.toFixed(3) }}
+          </ng-template>
         </td>
 
         <!-- Statut -->
@@ -160,41 +190,71 @@
         <!-- Station -->
         <td>
           <ng-container *ngIf="editId === data.idShell; else viewStation">
-            <nz-select [(ngModel)]="data.station" style="width:100%;">
-              <nz-option *ngFor="let option of stationOptions" [nzValue]="option" [nzLabel]="option">
-                {{ option }}
+            <nz-select
+              [(ngModel)]="data.station"
+              style="width:100%;">
+              <nz-option
+                *ngFor="let option of stationOptions"
+                [nzValue]="option"
+                [nzLabel]="option">
               </nz-option>
             </nz-select>
           </ng-container>
-          <ng-template #viewStation>{{ data.station }}</ng-template>
+          <ng-template #viewStation>
+            {{ data.station }}
+          </ng-template>
         </td>
 
         <!-- Actions -->
         <td style="text-align:center;">
           <div style="display:flex;justify-content:center;gap:8px;">
             <ng-container *ngIf="editId === data.idShell; else viewButtons">
-              <button nz-button nzType="primary" nzSize="small" nzTooltip="Valider les modifications"
-                      (click)="saveFacture(data)" style="width:40px;">
+              <button
+                nz-button
+                nzType="primary"
+                nzSize="small"
+                nzTooltip="Valider les modifications"
+                (click)="saveFacture(data)"
+                style="width:40px;">
                 <i nz-icon nzType="check" style="font-size:18px;"></i>
               </button>
-              <button nz-button nzType="default" nzSize="small" nzTooltip="Annuler"
-                      (click)="cancelEdit()" style="width:40px;">
+
+              <button
+                nz-button
+                nzType="default"
+                nzSize="small"
+                nzTooltip="Annuler"
+                (click)="cancelEdit()"
+                style="width:40px;">
                 <i nz-icon nzType="close" style="font-size:18px;color:red;"></i>
               </button>
             </ng-container>
 
             <ng-template #viewButtons>
-              <button nz-button nzType="default" nzSize="small" nzTooltip="Modifier"
-                      (click)="editId = data.idShell" style="width:40px;">
+              <button
+                nz-button
+                nzType="default"
+                nzSize="small"
+                nzTooltip="Modifier"
+                (click)="editId = data.idShell"
+                style="width:40px;">
                 <i nz-icon nzType="edit" style="font-size:18px;"></i>
               </button>
-              <button nz-button nzType="default" nzDanger nzSize="small" nzTooltip="Supprimer"
-                      (click)="deleteFacture(data)" style="width:40px;">
+
+              <button
+                nz-button
+                nzType="default"
+                nzDanger
+                nzSize="small"
+                nzTooltip="Supprimer"
+                (click)="deleteFacture(data)"
+                style="width:40px;">
                 <i nz-icon nzType="delete" style="font-size:18px;color:#cc0000;"></i>
               </button>
             </ng-template>
           </div>
         </td>
+
       </tr>
     </tbody>
   </nz-table>

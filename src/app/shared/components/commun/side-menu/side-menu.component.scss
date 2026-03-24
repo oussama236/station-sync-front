@@ -1,17 +1,17 @@
-.side-menu-holder{
-    background-color: #000a83;
-    color: white;
-    height: fit-content;
-    width: 180px;
-    min-height: 650px;
-}
-
-.side-menu-title-holder{
-    margin-top: 20px;
-}
 .full-height-sider {
     height: 100vh !important;
     display: flex;
     flex-direction: column;
   }
   
+  .side-menu-holder {
+    background-color: #000a83;
+    color: white;
+    width: 180px;
+    height: 100%;
+    min-height: 100%;
+  }
+  
+  .side-menu-title-holder {
+    margin-top: 20px;
+  }
