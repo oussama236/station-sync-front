@@ -14,21 +14,19 @@
         </ng-template>
   
         <nz-collapse class="last-update-holder">
-          <nz-collapse-panel nzHeader="Dernière Facture" [nzActive]="true">
-  
+          <nz-collapse-panel [nzHeader]="'GENERAL.LAST_INVOICE' | translate" [nzActive]="true">  
             <ng-container *ngIf="(lastShells?.length || 0) > 0; else noLastShell">
                 <div nz-row class="column-holder">
-                <div nz-col nzSpan="8">Date</div>
-                <div nz-col nzSpan="8">Nature</div>
-                <div nz-col nzSpan="8">Montant</div>
+                  <div nz-col nzSpan="8">{{ 'GENERAL.DATE' | translate }}</div>
+                  <div nz-col nzSpan="8">{{ 'GENERAL.NATURE' | translate }}</div>
+                  <div nz-col nzSpan="8">{{ 'GENERAL.AMOUNT' | translate }}</div>
               </div>
   
               <ng-container *ngFor="let s of (lastShells | slice:0:1)">
                 <div nz-row>
                   <div nz-col nzSpan="8">
-                    {{ s?.dateOperation | date:'d MMMM y':'':'fr-FR' }}
-                  </div>
-                  <div nz-col nzSpan="8">{{ s?.natureOperation }}</div>
+                    {{ s?.dateOperation | date:'d MMMM y':'':translate.currentLang }}                  </div>
+                  <div nz-col nzSpan="8">{{ ('GENERAL.' + s?.natureOperation) | translate }}</div>
                   <div nz-col nzSpan="8">{{ s?.montant }}</div>
                 </div>
               </ng-container>
@@ -61,21 +59,20 @@
         </ng-template>
   
         <nz-collapse class="last-update-holder">
-          <nz-collapse-panel nzHeader="Dernière Opération" [nzActive]="true">
-  
+          <nz-collapse-panel [nzHeader]="'GENERAL.LAST_OPERATION' | translate" [nzActive]="true">  
             <ng-container *ngIf="(lastOperations?.length || 0) > 0; else noLastOp">
                 <div nz-row class="column-holder">
-                <div nz-col nzSpan="8">Date</div>
-                <div nz-col nzSpan="8">Nature</div>
-                <div nz-col nzSpan="8">Montant</div>
+                  <div nz-col nzSpan="8">{{ 'GENERAL.DATE' | translate }}</div>
+                  <div nz-col nzSpan="8">{{ 'GENERAL.NATURE' | translate }}</div>
+                  <div nz-col nzSpan="8">{{ 'GENERAL.AMOUNT' | translate }}</div>
               </div>
   
               <ng-container *ngFor="let op of (lastOperations | slice:0:1)">
                 <div nz-row>
                   <div nz-col nzSpan="8">
-                    {{ op?.dateOperation | date:'d MMMM y':'':'fr-FR' }}
+                    {{ op?.dateOperation | date:'d MMMM y':'':translate.currentLang }}
                   </div>
-                  <div nz-col nzSpan="8">{{ op?.natureOperationBank }}</div>
+                  <div nz-col nzSpan="8">{{ ('GENERAL.' + op?.natureOperationBank) | translate }}</div>
                   <div nz-col nzSpan="8">{{ op?.montant }}</div>
                 </div>
               </ng-container>
@@ -108,20 +105,18 @@
         </ng-template>
   
         <nz-collapse class="last-update-holder">
-          <nz-collapse-panel nzHeader="Dernier Prélèvement" [nzActive]="true">
-  
+          <nz-collapse-panel [nzHeader]="'GENERAL.LAST_WITHDRAWAL' | translate" [nzActive]="true">  
             <ng-container *ngIf="(lastPrelevements?.length || 0) > 0; else noLastPrev">
                 <div nz-row class="column-holder">
-                <div nz-col nzSpan="8">Date</div>
-                <div nz-col nzSpan="8">Num. Compte</div>
-                <div nz-col nzSpan="8">Montant</div>
+                  <div nz-col nzSpan="8">{{ 'GENERAL.DATE' | translate }}</div>
+                <div nz-col nzSpan="8">{{ 'GENERAL.ACCOUNT_NUMBER' | translate }}</div>
+                <div nz-col nzSpan="8">{{ 'GENERAL.AMOUNT' | translate }}</div>
               </div>
   
               <ng-container *ngFor="let p of (lastPrelevements | slice:0:1)">
                 <div nz-row>
                   <div nz-col nzSpan="8">
-                    {{ p?.dateOperation | date:'d MMMM y':'':'fr-FR' }}
-                  </div>
+                    {{ p?.dateOperation | date:'d MMMM y':'':translate.currentLang }}                  </div>
                   <div nz-col nzSpan="8">{{ p?.numeroCompte }}</div>
                   <div nz-col nzSpan="8">{{ p?.montant }}</div>
                 </div>

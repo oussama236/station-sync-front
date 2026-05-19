@@ -53,17 +53,19 @@
 
     <thead>
       <tr>
-        <th nzWidth="180px">Date Opération</th>
-        <th nzWidth="180px">Numéro de Compte</th>
-        <th nzWidth="150px">Montant</th>
-        <th nzWidth="150px">Factures associées</th>
-        <th nzWidth="160px">Actions</th>
+        <th nzWidth="180px" style="text-align:center;">Date Opération</th>
+        <th nzWidth="180px" style="text-align:center;">Numéro de Compte</th>
+        <th nzWidth="150px" style="text-align:center;">Montant</th>
+        <th nzWidth="150px" style="text-align:center;">Factures associées</th>
+        <th nzWidth="160px" style="text-align:center;">Actions</th>
       </tr>
     </thead>
 
     <tbody>
-      <tr *ngFor="let p of prelevements">
-        <!-- Date -->
+      <tbody>
+        <tr *ngFor="let p of prelevements" class="row-center">
+                  
+          <!-- Date -->
         <td>
           <ng-container *ngIf="editId === p.idPrelevement; else viewDate">
             <input nz-input type="date" [(ngModel)]="edited!.dateOperation" />

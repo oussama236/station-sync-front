@@ -16,6 +16,24 @@
         "WITHDRAWAL": "Withdrawal",
         "WITHDRAWALS": "Withdrawals",
         "DETAILS": "Details",
-        "LOGOUT": "Logout"
+        "LOGOUT": "Logout",
+        "LAST_INVOICE": "Last Invoice",
+"LAST_OPERATION": "Last Operation",
+"LAST_WITHDRAWAL": "Last Withdrawal",
+"DATE": "Date",
+"NATURE": "Nature",
+"AMOUNT": "Amount",
+"ACCOUNT_NUMBER": "Account Number",
+"NO_INVOICE_FOUND": "No invoice found.",
+"NO_OPERATION_FOUND": "No operation found.",
+"NO_WITHDRAWAL_FOUND": "No withdrawal found.",
+"FACTURE_CARBURANT": "Fuel Invoice",
+"FACTURE_LUBRIFIANT": "Lubricant Invoice",
+"AVOIR": "Credit Note",
+"LOYER": "Rent",
+"ESPECE_PISTE": "Cash Station",
+"ESPECE_SHOP": "Cash Shop",
+"CARTE_BANK": "Bank Card",
+"TRAITE": "Promissory Note"
     }
 }

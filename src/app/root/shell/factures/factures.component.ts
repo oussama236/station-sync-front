@@ -175,11 +175,29 @@ export class FacturesComponent implements OnInit, OnDestroy {
   }
 
   getTotalMontant(): number {
-    return this.shells.reduce((total, shell) =>
-      shell.natureOperation === 'AVOIR' ? total - shell.montant : total + shell.montant, 0);
+    return this.shells.reduce((total, shell) => {
+      const montant = Number(shell.montant) || 0;
+  
+      return shell.natureOperation === 'AVOIR'
+        ? total - montant
+        : total + montant;
+    }, 0);
   }
 
   deleteFacture(facture: any): void {
+
+    if (facture.statut === 'OK') {
+
+      const datePrelevementAssociee =
+  facture.prelevement?.dateOperation
+    ? this.formatDate(facture.prelevement.dateOperation)
+    : 'non disponible';
+    
+      this.message.warning(
+        `Impossible de supprimer. Vous devez vérifier le prélèvement du ${this.formatDate(facture.prelevement.dateOperation)}`
+      );
+      return;
+    }
     this.modal.confirm({
       nzTitle: 'Confirmation de suppression',
       nzContent: `Voulez-vous vraiment supprimer la facture n° ${facture.numeroFacture} ?`,
@@ -195,6 +213,8 @@ export class FacturesComponent implements OnInit, OnDestroy {
         })
     });
   }
+
+  
 
   loadShells(): void {
     this.loadingSpinner = true;
@@ -266,5 +286,9 @@ export class FacturesComponent implements OnInit, OnDestroy {
     this.highlightTimer = setTimeout(() => {
       this.ngZone.run(() => { this.highlightedId = null; });
     }, 3000);
+  }
+
+  formatDate(date: string): string {
+    return new Date(date).toLocaleDateString('fr-FR');
   }
 }

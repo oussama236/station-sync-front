@@ -1,8 +1,13 @@
 <div class="modal-content">
-  <h2 style="margin-bottom: 20px;">Simulation de l'affectation</h2>
 
-  <!-- Résumé Montant -->
-  <div class="resume-montant" style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+  <h3
+  *ngIf="!loading && messageInfo && !modeManuel"
+  class="message-info"
+>
+  ({{ numberOfExactSolutions }}) solutions ont été trouvées
+</h3>
+
+  <div class="resume-montant">
     <div>
       <strong>Montant du prélèvement :</strong>
       <span>{{ montant }} DT</span>
@@ -13,13 +18,12 @@
     </div>
   </div>
 
-  <!-- Table en mode automatique -->
   <nz-table
-    *ngIf="!loading && !modeManuel && shellSimules.length > 0"
+    *ngIf="!loading && matchType === 'UNIQUE_MATCH' && shellSimules.length > 0"
     [nzData]="shellSimules"
     [nzBordered]="true"
     [nzSize]="'middle'"
-  >
+    [nzShowPagination]="false">
     <thead>
       <tr>
         <th>Date de prélèvement</th>
@@ -29,16 +33,66 @@
     </thead>
     <tbody>
       <tr *ngFor="let shell of shellSimules">
-        <td>{{ shell.datePrelevement | date: 'd MMMM y':'':'fr'}}</td>
-        <td>{{ shell.natureOperation }}</td>
+        <td>{{ shell.datePrelevement | date: 'd MMMM y':'':'fr' }}</td>
+        <td>{{ formatNature(shell.natureOperation) }}</td>
         <td>{{ shell.montant }}</td>
       </tr>
     </tbody>
   </nz-table>
 
-  <!-- Table en mode manuel avec checkbox -->
+  <div
+    *ngIf="!loading && matchType === 'AMBIGUOUS_MATCH' && exactSolutions.length > 0"
+    class="solutions-wrapper"
+  >
+    <div
+      class="solution-block"
+      *ngFor="let solution of exactSolutions; let i = index"
+      [class.selected]="isSolutionSelected(i)"
+    >
+      <div class="solution-header">
+        <strong>Solution {{ i + 1 }}</strong>
+      </div>
+
+      <nz-table
+        [nzData]="solution.shells"
+        [nzBordered]="true"
+        [nzSize]="'small'"
+        [nzShowPagination]="false"
+      >
+        <thead>
+          <tr>
+            <th>Date prélèvement</th>
+            <th>Nature</th>
+            <th>Montant</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let shell of solution.shells">
+            <td>{{ shell.datePrelevement | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ formatNature(shell.natureOperation) }}</td>
+            <td>{{ shell.montant }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+
+      <div class="solution-footer">
+        <span><strong>Total :</strong> {{ solution.montantTotal }} DT</span>
+
+        <label class="solution-choice">
+          <input
+            type="radio"
+            name="selectedSolution"
+            [checked]="isSolutionSelected(i)"
+            (change)="choisirSolution(i)"
+          />
+          Choisir cette solution
+        </label>
+      </div>
+    </div>
+  </div>
+
   <nz-table
-    *ngIf="!loading && modeManuel && shellsManuels.length > 0"
+    *ngIf="!loading && matchType === 'NO_EXACT_MATCH' && shellsManuels.length > 0"
     [nzData]="shellsManuels"
     [nzBordered]="true"
     [nzSize]="'middle'"
@@ -49,7 +103,7 @@
         <th>Date de prélèvement</th>
         <th>Nature</th>
         <th>Montant</th>
-        <th>Date d oepration</th>
+        <th>Date d'opération</th>
       </tr>
     </thead>
     <tbody>
@@ -59,44 +113,53 @@
             type="checkbox"
             [checked]="selectedShellIds.includes(shell.idShell)"
             (change)="onShellCheckboxChangeEvent(shell, $event)"
-
-
           />
         </td>
-        <td>{{ shell.datePrelevement| date: 'd MMMM y':'':'fr' }}</td>
-        <td>{{ shell.natureOperation }}</td>
+        <td>{{ shell.datePrelevement | date: 'd MMMM y':'':'fr' }}</td>
+        <td>{{ formatNature(shell.natureOperation) }}</td>
         <td>{{ shell.montant }}</td>
         <td>{{ shell.dateOperation | date: 'd MMMM y':'':'fr' }}</td>
-
       </tr>
     </tbody>
   </nz-table>
 
-  <!-- Loading -->
-  <div *ngIf="loading" style="text-align: center; margin: 20px 0;">
+  <div *ngIf="loading" class="loading-block">
     <nz-spin></nz-spin>
     <p>Chargement...</p>
   </div>
 
-  <!-- Boutons -->
-  <div class="modal-actions" style="margin-top: 30px; text-align: right;">
-    <button
-      nz-button
-      nzType="default"
-      (click)="allerAffectationManuelle()"
-      style="margin-right: 10px;"
-      *ngIf="!modeManuel"
-    >
-      Affectation manuelle
-    </button>
+  <div *ngIf="!loading && matchType === 'NO_EXACT_MATCH' && shellsManuels.length === 0" class="empty-state">
+    Aucune facture candidate trouvée.
+  </div>
+
+  <div class="modal-actions">
 
     <button
       nz-button
+      nzType="default"
+      *ngIf="modeManuel && numberOfExactSolutions > 0"
+      (click)="retourAuxSolutions()"
+    >
+      Retour
+    </button>
+  
+    <button
+      nz-button
+      nzType="default"
+      *ngIf="!modeManuel && (matchType === 'UNIQUE_MATCH' || matchType === 'AMBIGUOUS_MATCH')"
+      (click)="allerAffectationManuelle()"
+    >
+      Affectation manuelle
+    </button>
+  
+    <button
+      nz-button
       nzType="primary"
-      [disabled]="modeManuel ? !exactMatch : !exactMatch"
+      [disabled]="!exactMatch"
       (click)="validerSimulation()"
     >
       Valider
     </button>
+  
   </div>
 </div>

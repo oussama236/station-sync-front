@@ -6,7 +6,8 @@ import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
-
+import localeEn from '@angular/common/locales/en';
+import localeAr from '@angular/common/locales/ar';
 // NG-ZORRO & Charts
 import { NgZorroModule } from './shared/modules/ng-zorro/ng-zorro.module';
 import { NzModalModule } from 'ng-zorro-antd/modal';
@@ -58,8 +59,10 @@ import { AiIndexComponent } from './root/ai/index/ai-index/ai-index.component';
 
 
 
-registerLocaleData(localeFr);
 
+registerLocaleData(localeFr, 'fr');
+registerLocaleData(localeEn, 'en');
+registerLocaleData(localeAr, 'ar');
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');

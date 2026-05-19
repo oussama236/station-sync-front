@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { BankApiService } from 'src/app/shared/services/bank-api.service';
 import { PrelevementApiService } from 'src/app/shared/services/prelevement-api.service';
 import { ShellApiService } from 'src/app/shared/services/shell-api.service';
+import { TranslateService } from '@ngx-translate/core';
 
 interface HasDateOp { dateOperation?: string | Date | null; }
 
@@ -59,7 +60,10 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private shellApiService: ShellApiService,
     private banlApiService: BankApiService,
-    private prelevementApiService: PrelevementApiService
+    private prelevementApiService: PrelevementApiService,
+    public translate: TranslateService
+
+    
   ) {}
 
   ngOnInit(): void {

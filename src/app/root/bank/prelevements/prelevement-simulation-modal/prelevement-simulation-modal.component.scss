@@ -1,24 +1,84 @@
 .modal-content {
   padding: 20px;
+}
 
-  .resume-montant {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    font-size: 16px;
+.modal-title {
+  margin-bottom: 20px;
+}
 
-    span {
-      margin-left: 5px;
-    }
+.message-info {
+  margin-bottom: 16px;
+  color: #555;
+}
+
+.resume-montant {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  font-size: 16px;
+
+  span {
+    margin-left: 5px;
   }
+}
 
-  .modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 30px;
+.solutions-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 
-    button {
-      margin-left: 10px;
-    }
-  }
+.solution-block {
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  padding: 12px;
+  background: #fafafa;
+}
+
+.solution-block.selected {
+  border: 2px solid #1677ff;
+  background: #f0f7ff;
+}
+
+.solution-header {
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.solution-footer {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.solution-choice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.loading-block,
+.empty-state {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 30px;
+  gap: 10px;
+}
+
+::ng-deep .solution-block .ant-table {
+  font-size: 12px;
+}
+
+::ng-deep .solution-block .ant-table-thead > tr > th,
+::ng-deep .solution-block .ant-table-tbody > tr > td {
+  padding: 8px 6px;
+  white-space: nowrap;
 }

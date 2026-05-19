@@ -52,3 +52,23 @@
   background: #fff3cd; /* soft yellow */
   transition: background 0.8s ease;
 }
+
+.operations-table-holder ::ng-deep .ant-table-tbody > tr > td {
+  padding: 8px 12px !important;
+  height: 48px;
+  vertical-align: middle;
+}
+
+.operations-table-holder ::ng-deep .ant-select-selector {
+  height: 32px !important;
+  display: flex;
+  align-items: center;
+}
+
+.operations-table-holder ::ng-deep input[nz-input] {
+  height: 32px;
+}
+
+.operations-table-holder ::ng-deep .custom-switch {
+  transform: scale(0.9);
+}

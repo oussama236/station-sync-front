@@ -16,6 +16,25 @@
         "WITHDRAWAL": "Prélèvement",
         "WITHDRAWALS": "Prélèvements",
         "DETAILS": "Détails",
-        "LOGOUT": "Se déconnecter"
+        "LOGOUT": "Se déconnecter",
+        "LAST_INVOICE": "Dernière facture",
+"LAST_OPERATION": "Dernière opération",
+"LAST_WITHDRAWAL": "Dernier prélèvement",
+"DATE": "Date",
+"NATURE": "Nature",
+"AMOUNT": "Montant",
+"ACCOUNT_NUMBER": "Num. Compte",
+"NO_INVOICE_FOUND": "Aucune facture trouvée.",
+"NO_OPERATION_FOUND": "Aucune opération trouvée.",
+"NO_WITHDRAWAL_FOUND": "Aucun prélèvement trouvé.",
+"FACTURE_CARBURANT": "Facture carburant",
+"FACTURE_LUBRIFIANT": "Facture lubrifiant",
+"AVOIR": "Avoir",
+"LOYER": "Loyer",
+"ESPECE_PISTE": "Espèce piste",
+"ESPECE_SHOP": "Espèce shop",
+"CARTE_BANK": "Carte bancaire",
+"TRAITE": "Traite"
+        
     }
 }

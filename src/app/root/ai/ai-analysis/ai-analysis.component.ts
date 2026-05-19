@@ -194,6 +194,9 @@ export class AiAnalysisComponent {
       // Generic bracket patterns
       .replace(/<s>|<\/s>/g, '')
       .replace(/\[\/?(OUT|OST|THOUGHT|INTERNAL|SYS|RESULT|ANSWER)\]/g, '')
+      .replace(/€/g, 'DT')
+      .replace(/\bEUR\b/gi, 'DT')
+      .replace(/\beuros?\b/gi, 'DT')
       .trim();
   }
   

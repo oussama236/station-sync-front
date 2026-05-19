@@ -82,15 +82,16 @@
 <!-- Tableau des opérations -->
 <div class="operations-table-holder">
   <nz-table
-    #basicTable
-    [nzData]="operations"
-    [nzScroll]="{ y: showForm ? '220px' : '300px' }"
-    [nzPageSize]="pageSize"
-    [nzPageIndex]="pageIndex"
-    (nzPageIndexChange)="onPageIndexChange($event)"
-    nzSize="middle"
-    [nzLoading]="loadingSpinner"
-    [nzNoResult]="'Aucune donnée disponible'">
+  #basicTable
+  [nzData]="operations"
+  [nzPaginationPosition]="'top'"
+  [nzScroll]="{ y: showForm ? '220px' : '300px' }"
+  [nzPageSize]="pageSize"
+  [nzPageIndex]="pageIndex"
+  (nzPageIndexChange)="onPageIndexChange($event)"
+  nzSize="middle"
+  [nzLoading]="loadingSpinner"
+  [nzNoResult]="'No Data Available'">
 
     <thead>
       <tr>

@@ -16,6 +16,25 @@
         "WITHDRAWAL": "عمليات السحب",
         "WITHDRAWALS": "عمليات السحب",
         "DETAILS": "التفاصيل",
-        "LOGOUT": "تسجيل الخروج"
+        "LOGOUT": "تسجيل الخروج",
+        "LAST_INVOICE": "آخر فاتورة",
+"LAST_OPERATION": " آخر عملية",
+"LAST_WITHDRAWAL": "آخر عملية سحب",
+"DATE": "التاريخ",
+"NATURE": "النوع",
+"AMOUNT": "المبلغ",
+"ACCOUNT_NUMBER": "رقم الحساب",
+"NO_INVOICE_FOUND": "لم يتم العثور على أي فاتورة.",
+"NO_OPERATION_FOUND": "لم يتم العثور على أي عملية.",
+"NO_WITHDRAWAL_FOUND": "لم يتم العثور على أي عملية سحب.",
+"FACTURE_CARBURANT": "فاتورة وقود",
+"FACTURE_LUBRIFIANT": "فاتورة زيوت",
+"AVOIR": "إشعار دائن",
+"LOYER": "إيجار",
+"ESPECE_PISTE": "نقدي المحطة",
+"ESPECE_SHOP": "نقدي المتجر",
+"CARTE_BANK": "بطاقة بنكية",
+"TRAITE": "كمبيالة"
+
     }
 }
